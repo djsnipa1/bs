@@ -31,6 +31,7 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.38.0",
+    "extract-colors": "^4.0.6",
     "get-video-id": "^4.1.5",
     "grade-js": "^1.0.10",
     "node-vibrant": "3.2.0-alpha",
@@ -51,8 +52,5 @@
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
     "vite-plugin-commonjs": "^0.10.1"
-  },
-  "dependencies": {
-    "beatstar-practicer": "file:"
   }
 }

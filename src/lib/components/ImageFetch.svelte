@@ -2,17 +2,13 @@
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
   import { videoId } from '$lib/stores/store.js';
-  // import Grade from 'grade-js';
-  //import { getDominantColors, getImageBufferCanvas, rgbToHex } from 'color-supreme'
-  /* let colorSupreme;
-  (async () => {
-      colorSupreme = await import('color-supreme');
-      const { getDominantColors, getImageBufferCanvas, rgbToHex } = colorSupreme;
-  })();
-*/
 
-  let backgroundImage;
+  import { extractColors } from 'extract-colors'
 
+  
+  let imageUrl;
+  
+  /*
   async function fetchAndEncodeImage(imageUrl) {
     try {
       const response = await fetch(imageUrl);
@@ -36,18 +32,16 @@
 
   let color1, color2, gradientWrap;
   let imageUrl = '';
-
+*/
   onMount(async () => {
     // $: console.log(`color1: ${color1}`)
 
     imageUrl = `https://img.youtube.com/vi/${$videoId}/hqdefault.jpg`;
 
-    const getColors = async (url, colors = 5) => {
-      const pixels = await getImageFromUrl(url);
-      return getDominantColors(pixels, colors).map(rgbToHex);
-    };
 
-    getColors(imageUrl).then(console.log);
+    extractColors(imageUrl)
+      .then(console.log)
+      .catch(console.error)
 
     /*   
     const response = await fetch(imageUrl);
@@ -84,18 +78,11 @@
             },
           );
 
-          Grade(document.querySelectorAll('.gradient-wrap'));
-//Grade(gradientWrap)
-          const finalColor1 = `rgba(${color1.r}, ${color1.g}, ${color1.b}, ${color1.a})`;
-
-          console.log(finalColor1);
-*/
-
-    backgroundImage = await fetchAndEncodeImage(imageUrl);
+   */
   });
 </script>
 
-<div style="background-image: url({backgroundImage});">
+<div style="background-image: url({imageUrl});">
   <!-- Your content here -->
 </div>
 
