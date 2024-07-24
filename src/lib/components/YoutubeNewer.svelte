@@ -5,13 +5,18 @@
     isVideoPlaying,
     isVideoPaused,
     playerStore,
-    isPlayerReady
+    isPlayerReady,
+    videoId
   } from '$lib/stores/store.js';
 
   export let player;
   export let initialVideoId = '9B1SQX9a_hU';
 
   const ytPlayerId = 'youtube-player';
+
+  $: if ($videoId !== '9B1SQX9a_hU') {
+    initialVideoId = $videoId;
+  }
 
   onMount(() => {
     function load() {

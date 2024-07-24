@@ -1,9 +1,15 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 
 export const youtubeUrl = writable('https://youtu.be/9B1SQX9a_hU');
 
 // export const videoId = writable('M7lc1UVf-VE');
 export const videoId = writable('9B1SQX9a_hU');
+
+// Define the dependent store based on the base store
+export const newYtUrl = derived(
+  videoId,
+  ($videoId) => `https://img.youtube.com/vi/${$videoId}/hqdefault.jpg` // Constructing the URL based on videoId
+);
 
 export const cssPosition = writable(0);
 // nudges cssPosition left in FineTuning.svelte
@@ -43,3 +49,5 @@ export const playerStore = writable(null);
 export const hideMainElements = writable(true);
 
 export const isAnimationDone = writable(false);
+
+export const showYoutubeTransition = writable(false);

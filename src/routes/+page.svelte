@@ -7,7 +7,10 @@
     SettingsButton,
     UrlButton,
     PlayerControlsTest,
-    Intro
+    Intro,
+    Mask,
+    CircleImage,
+    HelpScreen
   } from '$lib';
   import { videoId } from '$lib/stores/store.js';
   import { copy } from 'svelte-copy';
@@ -19,19 +22,32 @@
     isVideoPlaying,
     isVideoPaused,
     hideMainElements,
-    isAnimationDone
+    isAnimationDone,
+    showYoutubeTransition,
+    isPlayerReady
   } from '$lib/stores/store.js';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
+  import { page } from '$app/stores';
 
-  let skipToIntro = false;
+  export let data;
+
+  $: color = data.color;
+
+  let skipToIntro = true;
   let player;
+  //let showBackground = true;
 
   onMount(async () => {
     //   isUrlOpen.set(true);
-    consoleLog();
     if (skipToIntro) {
-      goto('/intro');
+      // TO SKIP INTRO
+      // isAnimationDone = true
+      // hideMainElements = false
+      isAnimationDone.set(true);
+      hideMainElements.set(false);
+      //   isUrlOpen.set(true)
     }
   });
 
@@ -62,31 +78,34 @@
 
   $: style = `width: ${value}vw; height: ${value}px;`;
 
-  function clickOutside(element: HTMLElememt) {
-    function handleClick(event: MouseEvent) {
-      const targetEl = event.target as HTMLElement;
+function clickOutside(element: HTMLElememt) {
+function handleClick(event: MouseEvent) {
+  const targetEl = event.target as HTMLElement;
 
-      if (element && !element.contains(targetEl)) {
-        const clickOutsideEvent = new CustomEvent('outside');
-        element.dispatchEvent(clickOutsideEvent);
-      }
-    }
-
-    document.addEventListener('click', handleClick, true);
-
-    return {
-      destroy() {
-        document.removeEventListener('click', handleClick, true);
-      }
-    };
+  if (element && !element.contains(targetEl)) {
+    const clickOutsideEvent = new CustomEvent('outside');
+    element.dispatchEvent(clickOutsideEvent);
   }
-  function consoleLog() {
-    $: console.log(`isUrlOpen: ${$isUrlOpen}`);
+}
+
+document.addEventListener('click', handleClick, true);
+
+return {
+  destroy() {
+    document.removeEventListener('click', handleClick, true);
   }
+};
+}
+
+  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
 </script>
 
+<!-- background color -->
+<div class="gradient-animation absolute z-[-10] min-h-screen min-w-full"></div>
+<!-- end background color -->
+
 <div
-  class="landscape:hidden absolute z-[10000] flex h-screen w-full items-center justify-center {$isAnimationDone
+  class="absolute z-[10000] flex h-screen w-full items-center justify-center landscape:hidden {$isAnimationDone
     ? 'displayNone'
     : ''}"
 >
@@ -94,14 +113,56 @@
 </div>
 
 <div
-  class="landscape:hidden relative min-h-screen min-w-full touch-none border-0 {$hideMainElements
-    ? 'hidden'
-    : ''}"
+  class="min-h-screen min-w-full touch-none border-0
+  landscape:hidden {$hideMainElements ? 'hidden' : ''}"
 >
+  <div class="relative top-20 h-20 w-20 border-blue-500 bg-pink-500"></div>
+
+  <div
+    class="{!$isUrlOpen ? 'endPos' : 'startPos'} absolute z-[2] min-w-full"
+    on:outside={() => {
+      if (!$isUrlOpen) {
+        // $isUrlOpen = false;
+        isUrlOpen.update((value) => !value);
+      }
+    }}
+    use:clickOutside
+  >
+    <InputBoxFinal />
+  </div>
+
+  <button
+    class="button btn absolute items-center justify-center"
+    on:click={() => {
+      //if (!$showYoutubeTransition) {
+      // $isUrlOpen = false;
+      showYoutubeTransition.update((value) => !value);
+      //}
+    }}>showYoutubeTransition: {$showYoutubeTransition}</button
+  >
+
+  {#if $showYoutubeTransition}
+    <div class="absolute right-0 top-0 z-[-5] w-screen">
+      <Mask>
+        <div
+          class="top-0 w-full"
+          class:initialPosition={!$isControlsOpen}
+          class:endPosition={$isControlsOpen}
+        >
+          <ControlsNew />
+        </div>
+
+        <YoutubeNewer bind:player />
+
+        <!-- <PlayerControlsTest /> -->
+      </Mask>
+    </div>
+  {/if}
+
   <nav
     class="absolute top-0 z-[500] flex h-12 w-full items-center justify-between rounded-sm bg-[linear-gradient(180deg,#ffe636_0%,#ffd430_5%,#ffc12b_10%,#ffb72c_25%,#ffa51a_40%,#f6a200_60%,#f59c00_75%,#f39500_90%,#f28d00_95%,#f78d00_100%)] opacity-100 shadow-lg"
   >
-    <div class="absolute left-[30px] top-[350px] z-[2000] text-4xl"></div>
+    <!-- <div class="absolute left-[30px] top-[350px] z-[2000] text-4xl"></div> -->
     <UrlButton
       class="button ml-4 flex-none rounded-md bg-slate-300 p-1 text-slate-700 shadow-md hover:bg-slate-400 hover:text-slate-800"
       on:click={() => {
@@ -119,6 +180,7 @@
     />
   </nav>
 
+  <!--
   <div
     class="absolute top-0 z-[10] w-full"
     class:initialPosition={!$isControlsOpen}
@@ -126,58 +188,27 @@
   >
     <ControlsNew />
   </div>
-
-  <div class="z-[5] translate-y-16">
+-->
+  <div class="z-[50] translate-y-16">
     <PlayerControlsTest />
   </div>
+</div>
 
-  <div
-    class="z-[15] {!$isUrlOpen ? 'endPos' : 'startPos'}"
-    on:outside={() => {
-      //    $isUrlOpen = false;
-      $: console.log(`* $isUrlOpen: ${$isUrlOpen}`);
-      if (!$isUrlOpen) {
-        // $isUrlOpen = false;
-        isUrlOpen.update((value) => !value);
-      }
-    }}
-    use:clickOutside
+<div class="absolute right-0 top-0 z-[15] w-screen">
+  <HelpScreen />
+</div>
+
+<!--
+<div
+  class="relative flex min-h-screen min-w-full touch-none items-center justify-center border-0 portrait:hidden"
+>
+  <p
+    class="flex items-center justify-center text-center font-kiona text-3xl text-white"
   >
-    <InputBoxFinal />
-  </div>
-
-  <div class="container">
-    <YoutubeNewer bind:player />
-  </div>
-
-  <!--	<div class="justify-items container">
-		<button
-			class="tooltip tooltip-left absolute right-4 z-[40] m-2 rounded-md bg-slate-600 p-2 text-slate-300 shadow-sm hover:bg-amber-500"
-			data-tip="copied!"
-			use:copy="{'https://m.youtube.com/watch?v=9B1SQX9a_hU'}">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				width="1em"
-				height="1em"
-				viewBox="0 0 24 24"
-				{...$$props}>
-				<path
-					fill="currentColor"
-					d="M5.503 4.627L5.5 6.75v10.504a3.25 3.25 0 0 0 3.25 3.25h8.616a2.251 2.251 0 0 1-2.122 1.5H8.75A4.75 4.75 0 0 1 4 17.254V6.75c0-.98.627-1.815 1.503-2.123M17.75 2A2.25 2.25 0 0 1 20 4.25v13a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-13A2.25 2.25 0 0 1 8.75 2zm0 1.5h-9a.75.75 0 0 0-.75.75v13c0 .414.336.75.75.75h9a.75.75 0 0 0 .75-.75v-13a.75.75 0 0 0-.75-.75" />
-			</svg>
-		</button>
-
-		<div class="mockup-code m-4 bg-slate-900 text-xs">
-			<pre><code>https://m.youtube.com/watch?v=9B1SQX9a_hU</code></pre>
-		</div>
-	</div>
-	-->
+    Beatstar Practicer can only<br />be viewed in portrait mode
+  </p>
 </div>
-
-<div class="portrait:hidden relative min-h-screen min-w-full touch-none border-0 flex items-center justify-center">
-  <p class="text-3xl text-white font-kiona flex items-center justify-center text-center">Beatstar Practicer can only<br />be viewed in portrait mode</p>
-</div>
-
+-->
 <style>
   .initialPosition {
     transform: translateY(-230px);
@@ -208,14 +239,90 @@
   .startPos {
     transform: translateY(-166px);
     transition: transform 0.6s cubic-bezier(0.5, 0, 0.75, 0);
-    z-index: 15;
   }
   .endPos {
-    transform: translateY(-106px);
+    transform: translateY(-34px);
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    z-index: 15;
   }
   .displayNone {
     display: none;
+  }
+  .gradient {
+    background-image: linear-gradient(
+      109.6deg,
+      rgba(62, 161, 219, 1) 11.2%,
+      rgba(93, 52, 236, 1) 100.2%
+    );
+  }
+
+  .gradient-animation {
+    background: radial-gradient(
+        100% 100% at var(--g5-1-x-position) var(--g5-1-y-position),
+        rgba(62, 161, 219, 1) -52%,
+        transparent
+      ),
+      radial-gradient(
+        100% 100% at var(--g5-2-x-position) var(--g5-2-y-position),
+        rgba(93, 52, 236, 1) 0%,
+        transparent
+      ),
+      radial-gradient(
+        100% 100% at var(--g5-3-x-position) var(--g5-3-y-position),
+        rgba(62, 161, 219, 1) 0%,
+        transparent
+      ),
+      #ffffff;
+    animation-name: g-5;
+    animation-iteration-count: infinite;
+    animation-duration: 16s;
+    transition-timing-function: ease-in-out;
+  }
+  @property --g5-1-x-position {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 1.0937500000000024%;
+  }
+  @property --g5-1-y-position {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+  }
+  @property --g5-2-x-position {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 15.312500000000002%;
+  }
+  @property --g5-2-y-position {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 85.46875%;
+  }
+  @property --g5-3-x-position {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 97.1875%;
+  }
+  @property --g5-3-y-position {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 48.515625%;
+  }
+  :root {
+    --g5-1-x-position: 1.0937500000000024%;
+    --g5-1-y-position: 0%;
+    --g5-2-x-position: 15.312500000000002%;
+    --g5-2-y-position: 85.46875%;
+    --g5-3-x-position: 97.1875%;
+    --g5-3-y-position: 48.515625%;
+  }
+  @keyframes g-5 {
+    50% {
+      --g5-1-x-position: 99.0234375%;
+      --g5-1-y-position: 99.0234375%;
+      --g5-2-x-position: 84.1796875%;
+      --g5-2-y-position: 13.671875%;
+      --g5-3-x-position: 2.8906249999999996%;
+      --g5-3-y-position: 46.1328125%;
+    }
   }
 </style>

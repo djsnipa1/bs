@@ -1,10 +1,15 @@
 <script>
   import { PasteButton } from '$lib';
-  import { isUrlOpen, videoId, menuOpen } from '$lib/stores/store.js';
+  import {
+    isUrlOpen,
+    videoId,
+    menuOpen,
+    showYoutubeTransition
+  } from '$lib/stores/store.js';
   import getVideoId from 'get-video-id';
 
   $: currentBind = '';
-  let newId;
+  let inputBox;
 
   function getYouTubeID(url) {
     const { id } = getVideoId(url); //=> 'dQw4w9WgXcQ'
@@ -35,11 +40,18 @@
       //      console.log('The function returned a truthy value:', ytValue);
       $videoId = ytValue;
       isUrlOpen.update((value) => !value);
+      //isUrlOpen.set(true)
+      showYoutubeTransition.set(true);
+      inputBox.value = '';
     }
+  }
+
+  function fill() {
+    inputBox.value = 'https://youtu.be/m_xoN8KlP3w';
   }
 </script>
 
-<div class="container glass flex h-16 items-center justify-center">
+<div class="glass flex h-16 items-center justify-center">
   <!--  <PasteButton
     class="button mx-4 flex-1 rounded-md bg-slate-300 p-1 text-slate-700 shadow-md hover:bg-slate-400 hover:text-slate-800"
   />
@@ -49,6 +61,9 @@
     type="text"
     placeholder="https://youtu.be/m_xoN8KlP3w"
     on:input={handleInput}
+    bind:this={inputBox}
     class="input input-sm input-bordered w-full max-w-xs md:input-md md:max-w-md lg:max-w-lg xl:max-w-xl"
   />
 </div>
+
+<button class="btn" on:click={fill}>fill</button>

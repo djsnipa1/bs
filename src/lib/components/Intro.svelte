@@ -238,7 +238,7 @@
     >
       Beatstar<br />Practicer
     </h1>
-    
+
     <!-- animationOne -->
     <div
       class="absolute h-20 w-20 rounded-full border-8 border-white opacity-0"

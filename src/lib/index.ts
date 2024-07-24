@@ -20,3 +20,7 @@ export { default as PasteButton } from './components/PasteButton.svelte';
 export { default as PlayerControls } from './components/PlayerControls.svelte';
 export { default as PlayerControlsTest } from './components/PlayerControlsTest.svelte';
 export { default as Intro } from './components/Intro.svelte';
+export { default as Mask } from './components/Mask.svelte';
+export { default as CircleImage } from './components/CircleImage.svelte';
+export { default as HelpScreen } from './components/HelpScreen.svelte';
+export { default as YoutubeLogo } from './components/YoutubeLogo.svelte';

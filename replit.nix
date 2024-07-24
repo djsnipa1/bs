@@ -3,6 +3,7 @@
       pkgs.unzip
       pkgs.fd
       pkgs.neovim
+      pkgs.vim
       pkgs.pastel
     # pkgs.pastebinit
       pkgs.zip

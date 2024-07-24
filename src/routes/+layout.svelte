@@ -12,7 +12,7 @@
 <div
   class="{$hideMainElements
     ? 'bg-black'
-    : 'gradient'} flex h-screen w-full items-center justify-center"
+    : 'bg-transparent'} flex h-screen w-full items-center justify-center"
 >
   <slot />
 </div>
