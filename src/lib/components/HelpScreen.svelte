@@ -1,5 +1,6 @@
 <script>
   import anime from "animejs";
+  import { YoutubeLogo } from '$lib';
   import {browser} from "$app/environment";
   import {blur} from "svelte/transition";
   import {cubicIn} from "svelte/easing";
@@ -114,7 +115,7 @@ animation2.add({
     duration: 400
     },
  scale: {
-  value: [1, 3],
+  value: [.5, 2],
   duration: 500
  }
 })
@@ -192,11 +193,26 @@ animation2.add({
 
 {#if show}
 <div
-  class="min-h-screen flex flex-col items-center justify-center relative overflow-hidden flex"
+  class="min-h-screen flex flex-row flex-nowrap items-center justify-center relative overflow-hidden flex"
 >
 
+<!--<div class="form-wrapper 
+         min-h-screen
+         [ p-4 md:p-6 lg:p-8 ]
+         [ flex justify-center items-center ]"> 
+  <div class="signup-form
+               max-w-sm
+               rounded-2xl
+               text-[#1A2421]
+               backdrop-blur-lg
+               [ p-8 md:p-10 lg:p-10 ]
+               [ bg-gradient-to-b from-white/40 to-white/20 ]
+               [ border-[1px] border-solid border-white border-opacity-30 ]
+               [ shadow-black/70 shadow-2xl ]">
+      -->         
+
   <div
-    class="glass border-2 border-red-500 relative rounded-md max-w-full mx-4 px-4 top-0 shadow-xl shadow-slate-700/40 ring-1 ring-gray-900/5 h-[300px]"
+     class="glass relative rounded-md max-w-full mx-4 px-4 top-0 shadow-xl shadow-slate-700/40 ring-1 ring-gray-900/5 h-[300px] "
     transition:customFadeBlur
   >
     <h1
@@ -206,16 +222,17 @@ animation2.add({
       Help
     </h1>
     <div
-      class="prose prose-slate border-2 border-green-500 mx-auto prose-sm font-sofiasans text-slate-700"
+      class="prose prose-slate border-2 border-green-500 mx-auto prose-sm font-sofiasans text-slate-200"
     >
       <ol
         class="list-decimal list-outside marker:text-slate-700 border-yellow-500 border"
       >
-       <li class="border-blue-500 outline-4 outline outline-yellow-500/0 outside border-0 border-box" id="helpText1" bind:this="{helpText1}">
+     <li class="flex justify-evenly outside border-0 border-box second-glass" id="helpText1" bind:this="{helpText1}">
           <p class="m-0 p-0 help">
             Find a YouTube video of your favorite streamer getting a Diamond
             Perfect on the song you would like to practice.
           </p>
+           <YoutubeLogo style="top: -10px; border: 2px yellow solid;" />
         </li>
         <li bind:this="{helpText2}">
           <p class="m-0 p-0 help">
@@ -263,6 +280,7 @@ animation2.add({
       </svg>
       -->
     </div>
+    
   </div>
 </div>
 {/if}
@@ -389,12 +407,13 @@ animation2.add({
 */
 
 #helpText1 {
-  box-shadow: 0 0 10px 5px rgba(255,255,0,0.6);
+  /* box-shadow: 0 0 10px 5px rgba(255,255,0,0.6); */
+  /* transform: rotateZ(-2deg); */
   @apply rounded-lg;
   
 }
 
-li {
+li { 
  @apply border-pink-500 border my-4;
 }
 
@@ -406,5 +425,9 @@ li {
 
 svg {
  overflow: visible;
+}
+
+.second-glass {
+ /* @apply glass shadow-none shadow-slate-700/40 ring ring-gray-200/5; */
 }
 </style>
