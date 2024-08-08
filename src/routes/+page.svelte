@@ -78,24 +78,24 @@
 
   $: style = `width: ${value}vw; height: ${value}px;`;
 
-function clickOutside(element: HTMLElememt) {
-function handleClick(event: MouseEvent) {
-  const targetEl = event.target as HTMLElement;
+  function clickOutside(element: HTMLElememt) {
+    function handleClick(event: MouseEvent) {
+      const targetEl = event.target as HTMLElement;
 
-  if (element && !element.contains(targetEl)) {
-    const clickOutsideEvent = new CustomEvent('outside');
-    element.dispatchEvent(clickOutsideEvent);
+      if (element && !element.contains(targetEl)) {
+        const clickOutsideEvent = new CustomEvent('outside');
+        element.dispatchEvent(clickOutsideEvent);
+      }
+    }
+
+    document.addEventListener('click', handleClick, true);
+
+    return {
+      destroy() {
+        document.removeEventListener('click', handleClick, true);
+      }
+    };
   }
-}
-
-document.addEventListener('click', handleClick, true);
-
-return {
-  destroy() {
-    document.removeEventListener('click', handleClick, true);
-  }
-};
-}
 
   $: console.log(`isUrlOpen: ${$isUrlOpen}`);
 </script>
@@ -194,7 +194,10 @@ return {
   </div>
 </div>
 
-<div class="absolute right-0 top-0 z-[15] w-screen">
+<div
+  class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
+>
+  <CircleImage />
   <HelpScreen />
 </div>
 
