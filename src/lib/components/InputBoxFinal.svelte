@@ -4,7 +4,8 @@
     isUrlOpen,
     videoId,
     menuOpen,
-    showYoutubeTransition
+    showYoutubeTransition,
+    showCircleAnimation
   } from '$lib/stores/store.js';
   import getVideoId from 'get-video-id';
 
@@ -13,7 +14,6 @@
 
   function getYouTubeID(url) {
     const { id } = getVideoId(url); //=> 'dQw4w9WgXcQ'
-
     return id;
   }
 
@@ -41,13 +41,14 @@
       $videoId = ytValue;
       isUrlOpen.update((value) => !value);
       //isUrlOpen.set(true)
-      showYoutubeTransition.set(true);
       inputBox.value = '';
+      showCircleAnimation.set(true);
     }
   }
 
   function fill() {
-    inputBox.value = 'https://youtu.be/m_xoN8KlP3w';
+    inputValue = 'https://youtu.be/OVTcnWT00s8';
+    handleInput({ target: { value: inputValue } });
   }
 </script>
 
@@ -62,8 +63,9 @@
     placeholder="https://youtu.be/m_xoN8KlP3w"
     on:input={handleInput}
     bind:this={inputBox}
+    bind:value={inputValue}
     class="input input-sm input-bordered w-full max-w-xs md:input-md md:max-w-md lg:max-w-lg xl:max-w-xl"
   />
 </div>
 
-<button class="btn" on:click={fill}>fill</button>
+<button class="btn btn-sm" on:click={fill}> fill </button>

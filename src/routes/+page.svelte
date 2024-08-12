@@ -10,6 +10,7 @@
     Intro,
     Mask,
     CircleImage,
+    CircleImageNew,
     HelpScreen
   } from '$lib';
   import { videoId } from '$lib/stores/store.js';
@@ -24,7 +25,8 @@
     hideMainElements,
     isAnimationDone,
     showYoutubeTransition,
-    isPlayerReady
+    isPlayerReady,
+    showCircleAnimation
   } from '$lib/stores/store.js';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
@@ -37,6 +39,7 @@
 
   let skipToIntro = true;
   let player;
+  
   //let showBackground = true;
 
   onMount(async () => {
@@ -116,10 +119,14 @@
   class="min-h-screen min-w-full touch-none border-0
   landscape:hidden {$hideMainElements ? 'hidden' : ''}"
 >
-  <div class="relative top-20 h-20 w-20 border-blue-500 bg-pink-500"></div>
+  <div
+    class="relative top-20 z-[7500] h-20 w-20 border-blue-500 bg-pink-500"
+  ></div>
 
   <div
-    class="{!$isUrlOpen ? 'endPos' : 'startPos'} absolute z-[2] min-w-full"
+    class="{!$isUrlOpen
+      ? 'endPos'
+      : 'startPos'} absolute z-[2] z-[696969] min-w-full"
     on:outside={() => {
       if (!$isUrlOpen) {
         // $isUrlOpen = false;
@@ -131,8 +138,9 @@
     <InputBoxFinal />
   </div>
 
+  <!-- changed z-index of this button to get it to work with CircleImage and HelpScreen present -->
   <button
-    class="button btn absolute items-center justify-center"
+    class="button btn btn-xs absolute z-[10000] items-center justify-center"
     on:click={() => {
       //if (!$showYoutubeTransition) {
       // $isUrlOpen = false;
@@ -197,7 +205,11 @@
 <div
   class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
 >
-  <CircleImage />
+
+{#if $showCircleAnimation}
+  <CircleImageNew />
+{/if}
+
   <HelpScreen />
 </div>
 
@@ -327,5 +339,10 @@
       --g5-3-x-position: 2.8906249999999996%;
       --g5-3-y-position: 46.1328125%;
     }
+  }
+
+  * {
+    outline: 1px solid red;
+    outline-offset: -1px;
   }
 </style>

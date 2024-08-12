@@ -25,3 +25,4 @@ export { default as CircleImage } from './components/CircleImage.svelte';
 export { default as HelpScreen } from './components/HelpScreen.svelte';
 export { default as YoutubeLogo } from './components/YoutubeLogo.svelte';
 export { default as ImageFetch } from './components/ImageFetch.svelte';
+export { default as CircleImageNew } from './components/CircleImageNew.svelte';
