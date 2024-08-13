@@ -10,7 +10,6 @@
     Intro,
     Mask,
     CircleImage,
-    CircleImageNew,
     HelpScreen
   } from '$lib';
   import { videoId } from '$lib/stores/store.js';
@@ -206,7 +205,7 @@
   class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
 >
   {#if $showCircleAnimation}
-    <CircleImageNew />
+    <CircleImage />
   {/if}
 
   <HelpScreen />
