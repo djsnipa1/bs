@@ -39,7 +39,7 @@
 
   let skipToIntro = true;
   let player;
-  
+
   //let showBackground = true;
 
   onMount(async () => {
@@ -104,7 +104,7 @@
 </script>
 
 <!-- background color -->
-<div class="gradient-animation absolute z-[-10] min-h-screen min-w-full"></div>
+<div class="background-gradient absolute z-[-10] min-h-screen min-w-full"></div>
 <!-- end background color -->
 
 <div
@@ -205,10 +205,9 @@
 <div
   class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
 >
-
-{#if $showCircleAnimation}
-  <CircleImageNew />
-{/if}
+  {#if $showCircleAnimation}
+    <CircleImageNew />
+  {/if}
 
   <HelpScreen />
 </div>
@@ -267,6 +266,16 @@
       109.6deg,
       rgba(62, 161, 219, 1) 11.2%,
       rgba(93, 52, 236, 1) 100.2%
+    );
+  }
+
+  .background-gradient {
+    background-image: radial-gradient(
+      circle,
+      hsl(192deg 76% 50%) 0%,
+      hsl(203deg 100% 43%) 33%,
+      hsl(213deg 80% 40%) 67%,
+      hsl(215deg 80% 29%) 100%
     );
   }
 
