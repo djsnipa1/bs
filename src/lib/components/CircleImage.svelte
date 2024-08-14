@@ -299,7 +299,7 @@
 
 <div
   id="parentDiv"
-  class="relative flex h-64 w-full items-center justify-center border border-gray-200 hover:bg-gray-500/75"
+  class="relative flex h-64 w-full items-center justify-center border border-gray-200"
 >
   <div
     class="absolute z-[5] aspect-square h-[125px] scale-[3] rounded-full object-cover opacity-80"
@@ -310,15 +310,16 @@
     id="whiteBlur"
   ></div>
 
-
-<div class="absolute border-2 border-white z-[1] size-[125px] rounded-full overflow-hidden" id="thumbnail">
-  <img
-    src={thumbnailUrl}
-    alt="youtube_thumbnail"
-    class="w-full h-full object-cover opacity-100 transform scale-[1.35]"
-  />
-</div>
-
+  <div
+    class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white"
+    id="thumbnail"
+  >
+    <img
+      src={thumbnailUrl}
+      alt="youtube_thumbnail"
+      class="h-full w-full scale-[1.35] transform object-cover opacity-100"
+    />
+  </div>
 </div>
 
 {#if $globalVars.showCircleAnimationControls}
