@@ -168,7 +168,6 @@
             blurValue = 0;
           }
         }
-
         // console.log(blurValue);
         thumbnail.style.filter = `blur(${blurValue}px)`;
       },
@@ -177,19 +176,44 @@
         whiteBlurAnim.play();
       }
     });
-    /*
+    
     tl.add({
-      targets: '#thumbnail',
-      opacity: .4,
-      scaleX: [
-        { value: [1, 0.2],
-        duration: 1200 },
-        { value: 1,
-        duration: 100}
+        targets: '#blurOnlyDiv',
+        opacity: [
+          { value: [0, 0], duration: 600 },
+          { value: [0, .5], duration: 100 },
+          { value: [.5, .5], duration: 800 },
+          { value: [.5, 0], duration: 100 }
         ],
-      duration: 1800
-    }, '-=100')
-    */
+        scale: [
+        {
+          value: 1,
+          duration: 450
+        },
+        {
+          value: [1, 0.7],
+          duration: 1000
+        },
+        {
+          value: 1,
+          duration: 150
+        }
+      ],
+        scaleX: [
+          { value: [1, 1], duration: 1350, easing: 'linear' },
+          { value: 0.3, duration: 100, easing: 'linear' },
+          { value: [0.3, 1], duration: 50, easing: 'linear' }
+        ],
+        scaleY: [
+          { value: [1, 1], duration: 1450, easing: 'linear' },
+          { value: 1.3, duration: 100, easing: 'linear' },
+          { value: [1.3, 1], duration: 50, easing: 'linear' }
+        ],
+        duration: 1600,
+        easing: 'easeInQuad',
+        loop: false,
+        }, '-=1599')
+        
     tl.add({
       targets: '#circle1',
       opacity: [
@@ -309,6 +333,17 @@
     class="absolute z-[10] aspect-square h-[125px] scale-[3] rounded-full object-cover opacity-0"
     id="whiteBlur"
   ></div>
+  
+<div
+    class="absolute z-[3] size-[125px] overflow-hidden rounded-full border-2 border-white opacity-0"
+    id="blurOnlyDiv"
+  >
+    <img
+      src={thumbnailUrl}
+      alt="youtube_thumbnail"
+      class="h-full w-full scale-[1.35] transform object-cover opacity-100"
+    />
+  </div>
 
   <div
     class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white"
@@ -429,6 +464,10 @@
 
   .radial-gradient {
     background: radial-gradient(circle, transparent 40%, 70%, white);
+  }
+  
+  #blurOnlyDiv {
+    filter: blur(3px);
   }
 
   #whiteHot {
