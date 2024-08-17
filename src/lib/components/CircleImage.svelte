@@ -9,7 +9,8 @@
   } from '$lib/stores/store.js';
 
   let thumbnailUrl, tl;
-
+  let loopAnimation = false;
+  
   onMount(() => {
     thumbnailUrl = `https://img.youtube.com/vi/${$videoId}/hqdefault.jpg`;
 
@@ -64,7 +65,7 @@
     });
 
     tl = anime.timeline({
-      loop: false,
+      loop: loopAnimation,
       autoplay: true,
       easing: 'easeInExpo',
       // Update the scrubber position when the timeline plays
@@ -237,7 +238,7 @@
     whiteHotAnim.add({
       targets: '#whiteHot',
       opacity: [
-        { value: [0, 7], duration: 100 },
+        { value: [0, 0.7], duration: 50 },
         { value: [0.7, 0.7], duration: 100 },
         { value: [0.7, 0], duration: 150 }
       ],
@@ -246,22 +247,23 @@
         delay: -150
       },
       easing: 'easeOutQuad',
-      duration: 750
+      duration: 300
     });
 
     whiteBlurAnim.add({
       targets: '#whiteBlur',
       opacity: [
-        { value: [0, 0.8], duration: 100 },
-        { value: [0.8, 0.8], duration: 300 },
-        { value: [0.8, 0], duration: 500 }
+        { value: [0, 0.8], duration: 50 },
+        { value: [0.8, 0.8], duration: 50 },
+        { value: [0.8, 0], duration: 100 }
       ],
       scale: {
-        value: [2.3, 0.85],
+        value: [3, 2],
         delay: -150
       },
       easing: 'easeOutQuad',
-      duration: 800
+      duration: 200,
+    //  begin: function() { whiteBlurAnim.pause()}
     });
     
     tl.add(circlesScaling('#circle4'), '-=1100');
@@ -274,22 +276,27 @@
    */
     tl.add(
       circlesScaling('#reverseGradient', {
-        duration: 1300
+        duration: 1000,
+        opacity: [0, .5, 0],
+        scale: {
+        value: [0.5, 4],
+        //delay: -150
+      },
       }),
-      '-=1000'
+      '-=2200'
     )
     tl.add(
       circlesScaling('#gradientCircle', {
         duration: 1000
       }),
-      '-=1050'
+      '-=2050'
     )
     tl.add(circlesScaling('#circle2', {
       duration: 1000,
       complete: function () {
         showYoutubeTransition.set(true);
       }
-    }), '-=950')
+    }), '-=1550')
     tl.add(circlesScaling('#circle3'), '-=1250');
 
     /* 
@@ -336,16 +343,16 @@
   class="relative flex h-64 w-full items-center justify-center border border-gray-200"
 >
   <div
-    class="absolute z-[5] aspect-square h-[125px] scale-[3] rounded-full object-cover opacity-80"
+    class="absolute z-[5] aspect-square h-[125px] scale-[3] rounded-full object-cover opacity-0"
     id="whiteHot"
   ></div>
   <div
-    class="absolute z-[20] aspect-square h-[125px] scale-[3] rounded-full object-cover opacity-0"
+    class="absolute z-[20] aspect-square h-[125px] scale-[5] rounded-full object-cover opacity-0"
     id="whiteBlur"
   ></div>
   
   <div
-    class="absolute z-[15] aspect-square h-[125px] scale-[1] rounded-full object-cover opacity-80"
+    class="absolute z-[15] aspect-square h-[125px] scale-[3] rounded-full object-cover opacity-0"
     id="reverseGradient"
   ></div>
   
@@ -509,14 +516,21 @@
       transparent 70%,
       transparent
     );
-    background-blend-mode: lighten;
+    background-blend-mode: color-dodge;
   }
   
   #reverseGradient {
-   /* background: #31C77300; */
-background: radial-gradient(circle at center center, #31C77300 0%, #00000000 50%, #1F429B 68%, #1F429B 100%)
+   /* background: #31C77300; 
+background: radial-gradient(circle at center center, #31C77300 0%, #00000000 50%, #1F429B 68%, #1F429B 100%); */
+background: radial-gradient(circle, rgba(255, 255, 255, .5) 19%, rgba(255, 255, 255, 1) 34%, rgba(255, 255, 255, 1) 66%, rgba(255, 255, 255, 0) 73%, rgba(255, 255, 255, 0) 100%);
+background-blend-mode: color-dodge;
   }
 
+#reverseGradient2 {
+ border: red 2px solid; 
+background: radial-gradient(circle, rgba(255, 255, 255, .5) 19%, rgba(255, 255, 255, 1) 34%, rgba(255, 255, 255, 1) 66%, rgba(255, 255, 255, 0) 73%, rgba(255, 255, 255, 0) 100%);
+background-blend-mode: color-dodge;
+}
   .cropped-transform {
     position: absolute;
     top: 0;
