@@ -50,16 +50,16 @@
     const circlesScaling = (targets, opts) => ({
       targets,
       opacity: [
-        { value: [0, 1], duration: 1 },
-        { value: 1, duration: 999 },
-        { value: [1, 0], duration: 1000 }
+        { value: [0, 1], duration: 100 },
+        { value: 1, duration: 700 },
+        { value: [1, 0], duration: 200 }
       ],
       scale: {
         value: [0.5, 6],
         delay: -150
       },
       easing: 'easeOutQuad',
-      duration: 2000,
+      duration: 1000,
       ...opts
     });
 
@@ -204,8 +204,8 @@
           { value: 0.3, duration: 100, easing: 'linear' },
           { value: [0.3, 1], duration: 50, easing: 'linear' }
         ],
-        scaleY: [
-          { value: [1, 1], duration: 1450, easing: 'linear' },
+      scaleY: [
+          { value: [1, 1], duration: 1450, easing: 'linear' },-
           { value: 1.3, duration: 100, easing: 'linear' },
           { value: [1.3, 1], duration: 50, easing: 'linear' }
         ],
@@ -221,25 +221,25 @@
         { value: 1 },
         { value: [1, 0], duration: 1000 }
       ],
+      borderColor: 'rgb(200, 160, 255)',
       scale: {
-        value: [0, 3],
+        value: [0, 4],
         delay: -150
       },
-      borderWidth: 3,
+      borderWidth: 4,
       easing: 'easeOutQuad',
-      duration: 1000,
+      duration: 1050,
       complete: function () {
-        showYoutubeTransition.set(true);
         fadeAway.play();
-      }
+      } 
     });
 
     whiteHotAnim.add({
       targets: '#whiteHot',
       opacity: [
-        { value: [0, 0.75], duration: 100 },
-        { value: [0.75, 0.5], duration: 200 },
-        { value: [0.5, 0], duration: 250 }
+        { value: [0, 7], duration: 100 },
+        { value: [0.7, 0.7], duration: 100 },
+        { value: [0.7, 0], duration: 150 }
       ],
       scale: {
         value: [3, 3.5],
@@ -252,19 +252,19 @@
     whiteBlurAnim.add({
       targets: '#whiteBlur',
       opacity: [
-        { value: [0, 0.8], duration: 50 },
-        { value: [0.8, 0.8], duration: 250 },
-        { value: [0.8, 0.0], duration: 800 }
+        { value: [0, 0.8], duration: 100 },
+        { value: [0.8, 0.8], duration: 300 },
+        { value: [0.8, 0], duration: 500 }
       ],
       scale: {
-        value: [2.3, 0.05],
+        value: [2.3, 0.85],
         delay: -150
       },
       easing: 'easeOutQuad',
-      duration: 1600
+      duration: 800
     });
-    //let circleNum
-    tl.add(circlesScaling('#circle1'));
+    
+    tl.add(circlesScaling('#circle4'), '-=1100');
 
     // testing a for loop with dynamic divs
     /*
@@ -272,15 +272,25 @@
       tl.add(circlesScaling(`#circle${i}`))
     }
    */
-
+    tl.add(
+      circlesScaling('#reverseGradient', {
+        duration: 1300
+      }),
+      '-=1000'
+    )
     tl.add(
       circlesScaling('#gradientCircle', {
-        duration: 3000
+        duration: 1000
       }),
-      '-=1900'
-    );
-    tl.add(circlesScaling('#circle2'), '-=2500');
-    tl.add(circlesScaling('#circle3'), '-=2500');
+      '-=1050'
+    )
+    tl.add(circlesScaling('#circle2', {
+      duration: 1000,
+      complete: function () {
+        showYoutubeTransition.set(true);
+      }
+    }), '-=950')
+    tl.add(circlesScaling('#circle3'), '-=1250');
 
     /* 
     for (let i = 1; i <= 5; i++) {
@@ -330,30 +340,39 @@
     id="whiteHot"
   ></div>
   <div
-    class="absolute z-[10] aspect-square h-[125px] scale-[3] rounded-full object-cover opacity-0"
+    class="absolute z-[20] aspect-square h-[125px] scale-[3] rounded-full object-cover opacity-0"
     id="whiteBlur"
   ></div>
   
+  <div
+    class="absolute z-[15] aspect-square h-[125px] scale-[1] rounded-full object-cover opacity-80"
+    id="reverseGradient"
+  ></div>
+  
 <div
-    class="absolute z-[3] size-[125px] overflow-hidden rounded-full border-2 border-white opacity-0"
+    class="absolute z-[3] size-[125px] overflow-hidden rounded-full border-2 border-white opacity-0" style="--backgroundImage: url({thumbnailUrl})" 
     id="blurOnlyDiv"
   >
+  <!--
     <img
       src={thumbnailUrl}
       alt="youtube_thumbnail"
       class="h-full w-full scale-[1.35] transform object-cover opacity-100"
     />
+    -->
   </div>
 
   <div
-    class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white"
+    class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white" style="--backgroundImage: url({thumbnailUrl})" 
     id="thumbnail"
   >
+  <!--
     <img
       src={thumbnailUrl}
       alt="youtube_thumbnail"
-      class="h-full w-full scale-[1.35] transform object-cover opacity-100"
+      class="h-full w-full relative z-[2] scale-[1.35] transform object-cover opacity-100"
     />
+    -->
   </div>
 </div>
 
@@ -457,8 +476,10 @@
     transform-origin: 50% 50%;
     transform-box: border-box;
     object-fit: cover;
-    transform: translateY(500px);
-
+    box-shadow: inset 0 0px 1px 1px rgba(0, 0, 0, 0.5);
+    background-image: var(--backgroundImage);
+    background-size: 200%;
+    background-position: center;
     /*transition: filter 1s;*/
   }
 
@@ -467,7 +488,7 @@
   }
   
   #blurOnlyDiv {
-    filter: blur(3px);
+  filter: blur(3px);
   }
 
   #whiteHot {
@@ -490,6 +511,11 @@
     );
     background-blend-mode: lighten;
   }
+  
+  #reverseGradient {
+   /* background: #31C77300; */
+background: radial-gradient(circle at center center, #31C77300 0%, #00000000 50%, #1F429B 68%, #1F429B 100%)
+  }
 
   .cropped-transform {
     position: absolute;
@@ -504,7 +530,7 @@
   #box {
     width: 50px;
     height: 50px;
-    background-color: #3498db;
+      background-color: #3498db;
   }
 
   #scrubber {
