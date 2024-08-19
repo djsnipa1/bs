@@ -25,12 +25,14 @@
     isAnimationDone,
     showYoutubeTransition,
     isPlayerReady,
-    showCircleAnimation
+    showCircleAnimation,
+    debugModeEnabled
   } from '$lib/stores/store.js';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { page } from '$app/stores';
+  import { tailwindSize } from '$lib/util/tailwindSize.js';
 
   export let data;
 
@@ -42,6 +44,9 @@
   //let showBackground = true;
 
   onMount(async () => {
+    if ($debugModeEnabled) {
+      tailwindSize();
+    }
     //   isUrlOpen.set(true);
     if (skipToIntro) {
       // TO SKIP INTRO

@@ -10,7 +10,7 @@
 
   let thumbnailUrl, tl;
   let loopAnimation = false;
-  
+
   onMount(() => {
     thumbnailUrl = `https://img.youtube.com/vi/${$videoId}/hqdefault.jpg`;
 
@@ -177,44 +177,47 @@
         whiteBlurAnim.play();
       }
     });
-    
-    tl.add({
+
+    tl.add(
+      {
         targets: '#blurOnlyDiv',
         opacity: [
           { value: [0, 0], duration: 600 },
-          { value: [0, .5], duration: 100 },
-          { value: [.5, .5], duration: 800 },
-          { value: [.5, 0], duration: 100 }
+          { value: [0, 0.5], duration: 100 },
+          { value: [0.5, 0.5], duration: 800 },
+          { value: [0.5, 0], duration: 100 }
         ],
         scale: [
-        {
-          value: 1,
-          duration: 450
-        },
-        {
-          value: [1, 0.7],
-          duration: 1000
-        },
-        {
-          value: 1,
-          duration: 150
-        }
-      ],
+          {
+            value: 1,
+            duration: 450
+          },
+          {
+            value: [1, 0.7],
+            duration: 1000
+          },
+          {
+            value: 1,
+            duration: 150
+          }
+        ],
         scaleX: [
           { value: [1, 1], duration: 1350, easing: 'linear' },
           { value: 0.3, duration: 100, easing: 'linear' },
           { value: [0.3, 1], duration: 50, easing: 'linear' }
         ],
-      scaleY: [
-          { value: [1, 1], duration: 1450, easing: 'linear' },-
-          { value: 1.3, duration: 100, easing: 'linear' },
+        scaleY: [
+          { value: [1, 1], duration: 1450, easing: 'linear' },
+          -{ value: 1.3, duration: 100, easing: 'linear' },
           { value: [1.3, 1], duration: 50, easing: 'linear' }
         ],
         duration: 1600,
         easing: 'easeInQuad',
-        loop: false,
-        }, '-=1599')
-        
+        loop: false
+      },
+      '-=1599'
+    );
+
     tl.add({
       targets: '#circle1',
       opacity: [
@@ -232,7 +235,7 @@
       duration: 1050,
       complete: function () {
         fadeAway.play();
-      } 
+      }
     });
 
     whiteHotAnim.add({
@@ -262,10 +265,10 @@
         delay: -150
       },
       easing: 'easeOutQuad',
-      duration: 200,
-    //  begin: function() { whiteBlurAnim.pause()}
+      duration: 200
+      //  begin: function() { whiteBlurAnim.pause()}
     });
-    
+
     tl.add(circlesScaling('#circle4'), '-=1100');
 
     // testing a for loop with dynamic divs
@@ -277,26 +280,29 @@
     tl.add(
       circlesScaling('#reverseGradient', {
         duration: 1000,
-        opacity: [0, .5, 0],
+        opacity: [0, 0.5, 0],
         scale: {
-        value: [0.5, 4],
-        //delay: -150
-      },
+          value: [0.5, 4]
+          //delay: -150
+        }
       }),
       '-=2200'
-    )
+    );
     tl.add(
       circlesScaling('#gradientCircle', {
         duration: 1000
       }),
       '-=2050'
-    )
-    tl.add(circlesScaling('#circle2', {
-      duration: 1000,
-      complete: function () {
-        showYoutubeTransition.set(true);
-      }
-    }), '-=1550')
+    );
+    tl.add(
+      circlesScaling('#circle2', {
+        duration: 1000,
+        complete: function () {
+          showYoutubeTransition.set(true);
+        }
+      }),
+      '-=1550'
+    );
     tl.add(circlesScaling('#circle3'), '-=1250');
 
     /* 
@@ -350,17 +356,18 @@
     class="absolute z-[20] aspect-square h-[125px] scale-[5] rounded-full object-cover opacity-0"
     id="whiteBlur"
   ></div>
-  
+
   <div
     class="absolute z-[15] aspect-square h-[125px] scale-[3] rounded-full object-cover opacity-0"
     id="reverseGradient"
   ></div>
-  
-<div
-    class="absolute z-[3] size-[125px] overflow-hidden rounded-full border-2 border-white opacity-0" style="--backgroundImage: url({thumbnailUrl})" 
+
+  <div
+    class="absolute z-[3] size-[125px] overflow-hidden rounded-full border-2 border-white opacity-0"
+    style="--backgroundImage: url({thumbnailUrl})"
     id="blurOnlyDiv"
   >
-  <!--
+    <!--
     <img
       src={thumbnailUrl}
       alt="youtube_thumbnail"
@@ -370,10 +377,11 @@
   </div>
 
   <div
-    class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white" style="--backgroundImage: url({thumbnailUrl})" 
+    class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white"
+    style="--backgroundImage: url({thumbnailUrl})"
     id="thumbnail"
   >
-  <!--
+    <!--
     <img
       src={thumbnailUrl}
       alt="youtube_thumbnail"
@@ -493,9 +501,9 @@
   .radial-gradient {
     background: radial-gradient(circle, transparent 40%, 70%, white);
   }
-  
+
   #blurOnlyDiv {
-  filter: blur(3px);
+    filter: blur(3px);
   }
 
   #whiteHot {
@@ -518,19 +526,33 @@
     );
     background-blend-mode: color-dodge;
   }
-  
+
   #reverseGradient {
-   /* background: #31C77300; 
+    /* background: #31C77300; 
 background: radial-gradient(circle at center center, #31C77300 0%, #00000000 50%, #1F429B 68%, #1F429B 100%); */
-background: radial-gradient(circle, rgba(255, 255, 255, .5) 19%, rgba(255, 255, 255, 1) 34%, rgba(255, 255, 255, 1) 66%, rgba(255, 255, 255, 0) 73%, rgba(255, 255, 255, 0) 100%);
-background-blend-mode: color-dodge;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.5) 19%,
+      rgba(255, 255, 255, 1) 34%,
+      rgba(255, 255, 255, 1) 66%,
+      rgba(255, 255, 255, 0) 73%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-blend-mode: color-dodge;
   }
 
-#reverseGradient2 {
- border: red 2px solid; 
-background: radial-gradient(circle, rgba(255, 255, 255, .5) 19%, rgba(255, 255, 255, 1) 34%, rgba(255, 255, 255, 1) 66%, rgba(255, 255, 255, 0) 73%, rgba(255, 255, 255, 0) 100%);
-background-blend-mode: color-dodge;
-}
+  #reverseGradient2 {
+    border: red 2px solid;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.5) 19%,
+      rgba(255, 255, 255, 1) 34%,
+      rgba(255, 255, 255, 1) 66%,
+      rgba(255, 255, 255, 0) 73%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-blend-mode: color-dodge;
+  }
   .cropped-transform {
     position: absolute;
     top: 0;
@@ -544,7 +566,7 @@ background-blend-mode: color-dodge;
   #box {
     width: 50px;
     height: 50px;
-      background-color: #3498db;
+    background-color: #3498db;
   }
 
   #scrubber {

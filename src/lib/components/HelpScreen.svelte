@@ -181,7 +181,7 @@
 <!-- <div class="min-w-full min-h-screen flex flex-col items-center justify-center"> -->
 
 <button class="btn absolute top-[300px] z-[5000]" on:click={handleClick}>
-  toggle show
+  show {show}
 </button>
 
 {#if show}
