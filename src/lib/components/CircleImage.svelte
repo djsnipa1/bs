@@ -5,7 +5,7 @@
     showYoutubeTransition,
     videoId,
     newYtUrl,
-    globalVars
+    debugModeEnabled
   } from '$lib/stores/store.js';
 
   let thumbnailUrl, tl;
@@ -40,7 +40,7 @@
       return 1 - Math.sqrt(1 - Math.pow(x, 2));
     }
 
-    if ($globalVars.showCircleAnimationControls) {
+    if ($debugModeEnabled) {
       // Get the scrubber elements
       const scrubber = document.getElementById('scrubber');
       const playBtn = document.getElementById('playBtn');
@@ -56,7 +56,7 @@
         { value: [1, 0], duration: 200 }
       ],
       scale: {
-        value: [0.5, 6],
+        value: [0.5, 7],
         delay: -150
       },
       easing: 'easeOutQuad',
@@ -71,7 +71,7 @@
       // Update the scrubber position when the timeline plays
       update: function (anim) {
         const progress = anim.progress / 100;
-        if ($globalVars.showCircleAnimationControls) {
+        if ($debugModeEnabled) {
           scrubber.value = tl.progress.toFixed(0);
         }
       }
@@ -230,7 +230,7 @@
         value: [0, 4],
         delay: -150
       },
-      borderWidth: 4,
+      borderWidth: [4, 4],
       easing: 'easeOutQuad',
       duration: 1050,
       complete: function () {
@@ -269,7 +269,9 @@
       //  begin: function() { whiteBlurAnim.pause()}
     });
 
-    tl.add(circlesScaling('#circle4'), '-=1100');
+    tl.add(circlesScaling('#circle4', {
+        borderWidth: [3, 3],
+    }), '-=1100');
 
     // testing a for loop with dynamic divs
     /*
@@ -297,21 +299,26 @@
     tl.add(
       circlesScaling('#circle2', {
         duration: 1000,
-        complete: function () {
-          showYoutubeTransition.set(true);
-        }
+        borderWidth: [5, 5],
+        borderColor: 'rgb(255, 0, 0)'
       }),
       '-=1550'
     );
-    tl.add(circlesScaling('#circle3'), '-=1250');
-
+ 
+    tl.add(circlesScaling('#circle3', {
+      borderWidth: [3, 3],
+      complete: function () {
+          showYoutubeTransition.set(true);
+        }
+    }), '-=1450');
+    
     /* 
     for (let i = 1; i <= 5; i++) {
       tl.add(circlesScaling(`#circle${i}`))
     }
     */
 
-    if ($globalVars.showCircleAnimationControls) {
+    if ($debugModeEnabled) {
       // Update the timeline progress when the scrubber value changes
       scrubber.addEventListener('input', function () {
         tl.seek(tl.duration * (scrubber.value / 100));
@@ -376,11 +383,13 @@
     -->
   </div>
 
+<div class="absolute z-[1] size-[125px] dropped-shadow">
   <div
-    class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white"
+    class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white drop-shadow-lg"
     style="--backgroundImage: url({thumbnailUrl})"
     id="thumbnail"
   >
+  </div>
     <!--
     <img
       src={thumbnailUrl}
@@ -391,7 +400,7 @@
   </div>
 </div>
 
-{#if $globalVars.showCircleAnimationControls}
+{#if $debugModeEnabled}
   <div class="container border-2 border-teal-500">
     <input
       type="range"
@@ -540,7 +549,11 @@ background: radial-gradient(circle at center center, #31C77300 0%, #00000000 50%
     );
     background-blend-mode: color-dodge;
   }
-
+/*
+.dropped-shadow {
+  filter: drop-shadow(0.35rem 0.35rem 0.4rem rgba(0, 0, 0, 0.5));
+}
+*/
   #reverseGradient2 {
     border: red 2px solid;
     background: radial-gradient(

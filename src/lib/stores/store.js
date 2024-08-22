@@ -58,6 +58,4 @@ export const showYoutubeTransition = writable(false);
 
 export const showCircleAnimation = writable(false);
 
-export const globalVars = writable(variables);
-
 export const debugModeEnabled = writable(true);
