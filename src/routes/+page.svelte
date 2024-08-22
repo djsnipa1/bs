@@ -104,7 +104,7 @@
     };
   }
 
-  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
+//  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
 </script>
 
 <!-- background color -->
@@ -130,7 +130,7 @@
   <div
     class="{!$isUrlOpen
       ? 'endPos'
-      : 'startPos'} absolute z-[2] z-[696969] min-w-full"
+      : 'startPos'} absolute z-[2] z-[450] min-w-full"
     on:outside={() => {
       if (!$isUrlOpen) {
         // $isUrlOpen = false;
