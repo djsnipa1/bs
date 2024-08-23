@@ -1,6 +1,7 @@
-# Circle Wipe Transition
+# Circle Wipe Transitio
 
 (https://trevorblades.com/lab/circle-transition/)[https://trevorblades.com/lab/circle-transition/]
+
 
 At the time of writing, my homepage features a neat little transition where a circle grows from the center of the page as you scroll down until it fills the screen. The next section starts immediately after the circle fills the entirety of the viewport.
 
@@ -9,6 +10,7 @@ It's like the inverse of this moment from _The Phantom Menace_:
 ![circular wipe from Star Wars](https://trevorblades.com/fd9eb7f33f49732bad9f9563013e886f/wipe.webp)
 
 This post is going to explain how I achieved this effect and the mathematical principles that make it possible.
+
 
 ## Pull out your ruler
 
@@ -57,7 +59,7 @@ const clamped = Math.min(max, Math.min(min, number));
 ```
 
 > ## 💡 Did you know?
->
+> 
 > `useWindowScroll` is another handy hook from the `react-use` that tracks the scroll position.
 
 ```
@@ -87,11 +89,12 @@ I wrap my circle in a sticky-positioned container with a height of one viewport 
 
 Check out the CodeSandbox below for a complete example and live demo of this effect in action.
 
+
 ## Resources
 
 As I was writing this post, I realized that Google used a similar technique on their [Pixel 5 website](https://store.google.com/ca/product/pixel_5). If you end up doing something like this in your own website, I'd be thrilled if you [let me know](https://twitter.com/trevorblades)!
 
 I leaned on a few helpful resources to understand and execute this feature. If you want to learn more about the mathematical techniques highlighted in this post, I suggest checking them out:
 
-- [http://mathcentral.uregina.ca/QQ/database/QQ.09.06/s/benneth1.html](http://mathcentral.uregina.ca/QQ/database/QQ.09.06/s/benneth1.html)
-- [https://courses.lumenlearning.com/boundless-algebra/chapter/trigonometry-and-right-triangles/](https://courses.lumenlearning.com/boundless-algebra/chapter/trigonometry-and-right-triangles/)
+*   [http://mathcentral.uregina.ca/QQ/database/QQ.09.06/s/benneth1.html](http://mathcentral.uregina.ca/QQ/database/QQ.09.06/s/benneth1.html)
+*   [https://courses.lumenlearning.com/boundless-algebra/chapter/trigonometry-and-right-triangles/](https://courses.lumenlearning.com/boundless-algebra/chapter/trigonometry-and-right-triangles/)

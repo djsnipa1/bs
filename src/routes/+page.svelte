@@ -40,6 +40,7 @@
 
   let skipToIntro = true;
   let player;
+  //let showBackground = true;
 
   //let showBackground = true;
 
@@ -85,17 +86,17 @@
 
   $: style = `width: ${value}vw; height: ${value}px;`;
 
-  function clickOutside(element: HTMLElememt) {
-    function handleClick(event: MouseEvent) {
-      const targetEl = event.target as HTMLElement;
+function clickOutside(element: HTMLElememt) {
+function handleClick(event: MouseEvent) {
+  const targetEl = event.target as HTMLElement;
 
-      if (element && !element.contains(targetEl)) {
-        const clickOutsideEvent = new CustomEvent('outside');
-        element.dispatchEvent(clickOutsideEvent);
-      }
-    }
+  if (element && !element.contains(targetEl)) {
+    const clickOutsideEvent = new CustomEvent('outside');
+    element.dispatchEvent(clickOutsideEvent);
+  }
+}
 
-    document.addEventListener('click', handleClick, true);
+document.addEventListener('click', handleClick, true);
 
     return {
       destroy() {
