@@ -24,12 +24,15 @@
     hideMainElements,
     isAnimationDone,
     showYoutubeTransition,
-    isPlayerReady
+    isPlayerReady,
+    showCircleAnimation,
+    debugModeEnabled
   } from '$lib/stores/store.js';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { page } from '$app/stores';
+  import { tailwindSize } from '$lib/util/tailwindSize.js';
 
   export let data;
 
@@ -39,7 +42,12 @@
   let player;
   //let showBackground = true;
 
+  //let showBackground = true;
+
   onMount(async () => {
+    if ($debugModeEnabled) {
+      tailwindSize();
+    }
     //   isUrlOpen.set(true);
     if (skipToIntro) {
       // TO SKIP INTRO
@@ -90,18 +98,18 @@ function handleClick(event: MouseEvent) {
 
 document.addEventListener('click', handleClick, true);
 
-return {
-  destroy() {
-    document.removeEventListener('click', handleClick, true);
+    return {
+      destroy() {
+        document.removeEventListener('click', handleClick, true);
+      }
+    };
   }
-};
-}
 
-  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
+//  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
 </script>
 
 <!-- background color -->
-<div class="gradient-animation absolute z-[-10] min-h-screen min-w-full"></div>
+<div class="background-gradient absolute z-[-10] min-h-screen min-w-full"></div>
 <!-- end background color -->
 
 <div
@@ -116,10 +124,14 @@ return {
   class="min-h-screen min-w-full touch-none border-0
   landscape:hidden {$hideMainElements ? 'hidden' : ''}"
 >
-  <div class="relative top-20 h-20 w-20 border-blue-500 bg-pink-500"></div>
+  <div
+    class="relative top-20 z-[7500] h-20 w-20 border-blue-500 bg-pink-500"
+  ></div>
 
   <div
-    class="{!$isUrlOpen ? 'endPos' : 'startPos'} absolute z-[2] min-w-full"
+    class="{!$isUrlOpen
+      ? 'endPos'
+      : 'startPos'} absolute z-[2] z-[450] min-w-full"
     on:outside={() => {
       if (!$isUrlOpen) {
         // $isUrlOpen = false;
@@ -131,8 +143,9 @@ return {
     <InputBoxFinal />
   </div>
 
+  <!-- changed z-index of this button to get it to work with CircleImage and HelpScreen present -->
   <button
-    class="button btn absolute items-center justify-center"
+    class="button btn btn-xs absolute z-[10000] items-center justify-center"
     on:click={() => {
       //if (!$showYoutubeTransition) {
       // $isUrlOpen = false;
@@ -194,7 +207,13 @@ return {
   </div>
 </div>
 
-<div class="absolute right-0 top-0 z-[15] w-screen">
+<div
+  class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
+>
+  {#if $showCircleAnimation}
+    <CircleImage />
+  {/if}
+
   <HelpScreen />
 </div>
 
@@ -252,6 +271,16 @@ return {
       109.6deg,
       rgba(62, 161, 219, 1) 11.2%,
       rgba(93, 52, 236, 1) 100.2%
+    );
+  }
+
+  .background-gradient {
+    background-image: radial-gradient(
+      circle,
+      hsl(192deg 76% 50%) 0%,
+      hsl(203deg 100% 43%) 33%,
+      hsl(213deg 80% 40%) 67%,
+      hsl(215deg 80% 29%) 100%
     );
   }
 
@@ -324,5 +353,10 @@ return {
       --g5-3-x-position: 2.8906249999999996%;
       --g5-3-y-position: 46.1328125%;
     }
+  }
+
+  * {
+    outline: 1px solid red;
+    outline-offset: -1px;
   }
 </style>

@@ -1,6 +1,7 @@
-# Circle Wipe Transition
- 
- (https://trevorblades.com/lab/circle-transition/)[https://trevorblades.com/lab/circle-transition/]
+# Circle Wipe Transitio
+
+(https://trevorblades.com/lab/circle-transition/)[https://trevorblades.com/lab/circle-transition/]
+
 
 At the time of writing, my homepage features a neat little transition where a circle grows from the center of the page as you scroll down until it fills the screen. The next section starts immediately after the circle fills the entirety of the viewport.
 
@@ -46,7 +47,6 @@ function MyComponent() {
   );
 }
 ```
-
 
 ## The big wipe
 

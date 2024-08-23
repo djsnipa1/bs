@@ -1,5 +1,9 @@
 import { writable, derived } from 'svelte/store';
 
+const variables = {
+  showCircleAnimationControls: true
+};
+
 export const youtubeUrl = writable('https://youtu.be/9B1SQX9a_hU');
 
 // export const videoId = writable('M7lc1UVf-VE');
@@ -51,3 +55,7 @@ export const hideMainElements = writable(true);
 export const isAnimationDone = writable(false);
 
 export const showYoutubeTransition = writable(false);
+
+export const showCircleAnimation = writable(false);
+
+export const debugModeEnabled = writable(true);
