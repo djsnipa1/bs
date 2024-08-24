@@ -131,7 +131,7 @@ document.addEventListener('click', handleClick, true);
   <div
     class="{!$isUrlOpen
       ? 'endPos'
-      : 'startPos'} absolute z-[2] z-[450] min-w-full"
+      : 'startPos'} absolute z-[450] min-w-full"
     on:outside={() => {
       if (!$isUrlOpen) {
         // $isUrlOpen = false;
