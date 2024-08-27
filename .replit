@@ -33,4 +33,4 @@ start = "css-languageserver --stdio"
 
 [[ports]]
 localPort = 5173
-externalPort = 80
+externalPort = 5173

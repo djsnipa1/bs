@@ -1,6 +1,7 @@
 <script>
   import anime from 'animejs';
   import { onMount } from 'svelte';
+  import { ImageFetchNew } from '$lib';
   import {
     showYoutubeTransition,
     videoId,
@@ -381,6 +382,7 @@
       class="h-full w-full scale-[1.35] transform object-cover opacity-100"
     />
     -->
+    <ImageFetchNew />
   </div>
 
 <div class="absolute z-[1] size-[125px] dropped-shadow">

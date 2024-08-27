@@ -10,7 +10,8 @@
     Intro,
     Mask,
     CircleImage,
-    HelpScreen
+    HelpScreen,
+    ImageFetchNew
   } from '$lib';
   import { videoId } from '$lib/stores/store.js';
   import { copy } from 'svelte-copy';
@@ -40,8 +41,6 @@
 
   let skipToIntro = true;
   let player;
-  //let showBackground = true;
-
   //let showBackground = true;
 
   onMount(async () => {
@@ -215,6 +214,10 @@ document.addEventListener('click', handleClick, true);
   {/if}
 
   <HelpScreen />
+
+  <ImageFetchNew />
+
+
 </div>
 
 <!--
