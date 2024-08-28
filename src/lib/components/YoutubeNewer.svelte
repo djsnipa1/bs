@@ -6,7 +6,8 @@
     isVideoPaused,
     playerStore,
     isPlayerReady,
-    videoId
+    videoId,
+    isVideoLoaded
   } from '$lib/stores/store.js';
 
   export let player;
@@ -53,7 +54,10 @@
     }
 
     function onPlayerStateChange(event) {
-      if (event.data == YT.PlayerState.PAUSED) {
+      if (event.data == YT.PlayerState.CUED) {
+        console.log('Video is loaded');
+        isVideoLoaded.set(true);
+      } else if (event.data == YT.PlayerState.PAUSED) {
         console.log('The video is paused.');
         isVideoPaused.set(true);
         isVideoPlaying.set(false);

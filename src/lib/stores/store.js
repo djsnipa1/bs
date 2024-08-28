@@ -44,6 +44,8 @@ export const menuOpen = writable(false);
 
 export const isPlayerReady = writable(false);
 
+export const isVideoLoaded = writable(false);
+
 export const isVideoPlaying = writable(null);
 
 export const isVideoPaused = writable(null);

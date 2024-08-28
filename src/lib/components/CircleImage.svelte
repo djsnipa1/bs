@@ -5,8 +5,8 @@
   import {
     showYoutubeTransition,
     videoId,
-    newYtUrl,
-    debugModeEnabled
+    debugModeEnabled,
+    isVideoLoaded
   } from '$lib/stores/store.js';
 
   let thumbnailUrl, tl;
@@ -15,7 +15,7 @@
   onMount(() => {
     thumbnailUrl = `https://img.youtube.com/vi/${$videoId}/hqdefault.jpg`;
 
-    // parent div to attach the following elements to
+    // parent div to attach the following elements
     const parentDiv = document.querySelector('#parentDiv');
 
     // Create 5 circle divs
@@ -310,6 +310,9 @@
       borderWidth: [3, 3],
       complete: function () {
           showYoutubeTransition.set(true);
+          tl.restart();
+        tl.seek(0);
+        tl.pause();
         }
     }), '-=1450');
     
@@ -348,7 +351,9 @@
     }
 
     //setTimeout(startAnimations, 3000)
-    startAnimations();
+    if ($isVideoLoaded) {
+      startAnimations();
+    }
   });
 </script>
 
@@ -382,7 +387,7 @@
       class="h-full w-full scale-[1.35] transform object-cover opacity-100"
     />
     -->
-    <ImageFetchNew />
+  
   </div>
 
 <div class="absolute z-[1] size-[125px] dropped-shadow">
@@ -391,6 +396,8 @@
     style="--backgroundImage: url({thumbnailUrl})"
     id="thumbnail"
   >
+    
+  <ImageFetchNew />
   </div>
     <!--
     <img

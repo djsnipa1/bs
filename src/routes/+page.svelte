@@ -10,8 +10,7 @@
     Intro,
     Mask,
     CircleImage,
-    HelpScreen,
-    ImageFetchNew
+    HelpScreen
   } from '$lib';
   import { videoId } from '$lib/stores/store.js';
   import { copy } from 'svelte-copy';
@@ -209,14 +208,14 @@ document.addEventListener('click', handleClick, true);
 <div
   class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
 >
+  <div class="text-2xl absolute bottom-20 text-yellow-500">
+    {$showCircleAnimation}
+  </div>
   {#if $showCircleAnimation}
     <CircleImage />
   {/if}
 
   <HelpScreen />
-
-  <ImageFetchNew />
-
 
 </div>
 
