@@ -7,7 +7,9 @@
     "build": "vite build",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "dev": "vite dev --host",
+    "dev": "sleep 10 && vite dev --host",
+    "tmole": "tmole 5173",
+    "devall": "run-p tmole dev",
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "preview": "vite preview --host",
@@ -35,6 +37,7 @@
     "eslint-plugin-svelte": "^2.38.0",
     "get-video-id": "^4.1.5",
     "node-vibrant": "3.2.0-alpha",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.38",
     "postcss-load-config": "^5.1.0",
     "posthog-js": "^1.131.4",
@@ -49,7 +52,9 @@
     "tailwindcss": "^3.4.3",
     "tailwindcss-document-cli": "^1.1.0",
     "tslib": "^2.6.2",
+    "tunnelmole": "^2.2.14",
     "typescript": "^5.4.5",
     "vite": "^5.2.11"
-  }
+  },
+  "packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1"
 }
