@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:svelte/recommended',
+    'plugin:svelte/prettier',
     'prettier'
   ],
   parser: '@typescript-eslint/parser',
@@ -24,7 +25,12 @@ module.exports = {
       files: ['*.svelte'],
       parser: 'svelte-eslint-parser',
       parserOptions: {
-        parser: '@typescript-eslint/parser'
+        parser: {
+          // Specify a parser for each lang.
+          ts: '@typescript-eslint/parser',
+          js: 'espree',
+          typescript: '@typescript-eslint/parser'
+        }
       }
     }
   ]

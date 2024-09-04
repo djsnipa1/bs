@@ -1,16 +1,18 @@
 <script>
-  import anime from 'animejs';
-  import { onMount } from 'svelte';
   import { ImageFetchNew } from '$lib';
   import {
-    showYoutubeTransition,
-    videoId,
     debugModeEnabled,
-    isVideoLoaded
+    isVideoLoaded,
+    showYoutubeTransition,
+    videoId
   } from '$lib/stores/store.js';
+  import anime from 'animejs';
+  import { onMount } from 'svelte';
 
   let thumbnailUrl, tl;
   let loopAnimation = false;
+
+  let thumbnail, progress, scrubber, playBtn, pauseBtn, restartBtn;
 
   onMount(() => {
     thumbnailUrl = `https://img.youtube.com/vi/${$videoId}/hqdefault.jpg`;
@@ -41,12 +43,13 @@
       return 1 - Math.sqrt(1 - Math.pow(x, 2));
     }
 
+
     if ($debugModeEnabled) {
       // Get the scrubber elements
-      const scrubber = document.getElementById('scrubber');
-      const playBtn = document.getElementById('playBtn');
-      const pauseBtn = document.getElementById('pauseBtn');
-      const restartBtn = document.getElementById('restartBtn');
+      scrubber = document.getElementById('scrubber');
+      playBtn = document.getElementById('playBtn');
+      pauseBtn = document.getElementById('pauseBtn');
+      restartBtn = document.getElementById('restartBtn');
     }
 
     const circlesScaling = (targets, opts) => ({
@@ -71,7 +74,7 @@
       easing: 'easeInExpo',
       // Update the scrubber position when the timeline plays
       update: function (anim) {
-        const progress = anim.progress / 100;
+        progress = anim.progress / 100;
         if ($debugModeEnabled) {
           scrubber.value = tl.progress.toFixed(0);
         }
@@ -112,7 +115,6 @@
       scaleX: {
         value: ['90%', '100%']
       },
-      //  rotateZ: 20,
       translateY: ['250px', '0px'],
       opacity: {
         value: [0, 1],
@@ -160,7 +162,7 @@
       easing: 'easeInQuad',
       loop: false,
       update: function (anim) {
-        const progress = anim.progress / 100; // Normalize progress to range from 0 to 1
+        let progress = anim.progress / 100; // Normalize progress to range from 0 to 1
         let blurValue = 0;
 
         if (progress >= 0.25) {
@@ -309,10 +311,10 @@
     tl.add(circlesScaling('#circle3', {
       borderWidth: [3, 3],
       complete: function () {
-          showYoutubeTransition.set(true);
-          tl.restart();
-        tl.seek(0);
-        tl.pause();
+        showYoutubeTransition.set(true);
+       //  tl.restart();
+       //  tl.seek(0);
+       //  tl.pause();
         }
     }), '-=1450');
     
@@ -394,7 +396,7 @@
   <div
     class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white drop-shadow-lg"
     style="--backgroundImage: url({thumbnailUrl})"
-    id="thumbnail"
+    id="thumbnail" bind:this={thumbnail}
   >
     
   <ImageFetchNew />

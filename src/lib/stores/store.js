@@ -61,3 +61,5 @@ export const showYoutubeTransition = writable(false);
 export const showCircleAnimation = writable(false);
 
 export const debugModeEnabled = writable(true);
+
+export const imageUrlStore = writable(null);
