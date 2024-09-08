@@ -1,38 +1,40 @@
 <!-- Main Route +page.svelte -->
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
   import {
-    YoutubeNewer,
-    InputBoxFinal,
+    CircleImage,
     ControlsNew,
-    SettingsButton,
-    UrlButton,
-    PlayerControlsTest,
+    HelpScreen,
+    InputBoxFinal,
     Intro,
     Mask,
-    CircleImage,
-    HelpScreen
+    PlayerControlsTest,
+    SettingsButton,
+    UrlButton,
+    YoutubeNewer
   } from '$lib';
-  import { videoId } from '$lib/stores/store.js';
-  import { copy } from 'svelte-copy';
+  import DominantColor from '$lib/components/DominantColor.svelte';
+  import DominantColorOrig from '$lib/components/DominantColorOrig.svelte';
   import {
     cssPosition,
-    isControlsOpen,
-    isUrlOpen,
-    menuOpen,
-    isVideoPlaying,
-    isVideoPaused,
+    debugModeEnabled,
     hideMainElements,
     isAnimationDone,
-    showYoutubeTransition,
+    isControlsOpen,
     isPlayerReady,
+    isUrlOpen,
+    isVideoPaused,
+    isVideoPlaying,
+    menuOpen,
     showCircleAnimation,
-    debugModeEnabled
+    showYoutubeTransition,
+    videoId
   } from '$lib/stores/store.js';
-  import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
-  import { fade } from 'svelte/transition';
-  import { page } from '$app/stores';
   import { tailwindSize } from '$lib/util/tailwindSize.js';
+  import { onMount } from 'svelte';
+  import { copy } from 'svelte-copy';
+  import { fade } from 'svelte/transition';
 
   export let data;
 
@@ -84,17 +86,17 @@
 
   $: style = `width: ${value}vw; height: ${value}px;`;
 
-function clickOutside(element: HTMLElememt) {
-function handleClick(event: MouseEvent) {
-  const targetEl = event.target as HTMLElement;
+  function clickOutside(element: HTMLElememt) {
+    function handleClick(event: MouseEvent) {
+      const targetEl = event.target as HTMLElement;
 
-  if (element && !element.contains(targetEl)) {
-    const clickOutsideEvent = new CustomEvent('outside');
-    element.dispatchEvent(clickOutsideEvent);
-  }
-}
+      if (element && !element.contains(targetEl)) {
+        const clickOutsideEvent = new CustomEvent('outside');
+        element.dispatchEvent(clickOutsideEvent);
+      }
+    }
 
-document.addEventListener('click', handleClick, true);
+    document.addEventListener('click', handleClick, true);
 
     return {
       destroy() {
@@ -103,7 +105,7 @@ document.addEventListener('click', handleClick, true);
     };
   }
 
-//  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
+  //  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
 </script>
 
 <!-- background color -->
@@ -127,9 +129,7 @@ document.addEventListener('click', handleClick, true);
   ></div>
 
   <div
-    class="{!$isUrlOpen
-      ? 'endPos'
-      : 'startPos'} absolute z-[450] min-w-full"
+    class="{!$isUrlOpen ? 'endPos' : 'startPos'} absolute z-[450] min-w-full"
     on:outside={() => {
       if (!$isUrlOpen) {
         // $isUrlOpen = false;
@@ -208,15 +208,21 @@ document.addEventListener('click', handleClick, true);
 <div
   class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
 >
-  <div class="text-2xl absolute bottom-20 text-yellow-500">
+  <div class="absolute bottom-20 text-2xl text-yellow-500">
     {$showCircleAnimation}
   </div>
+
   {#if $showCircleAnimation}
     <CircleImage />
   {/if}
 
-  <HelpScreen />
+  <div class="absolute bottom-40">
+    <h2>Dominant Color</h2>
+    <DominantColorOrig />
+    <DominantColor />
+  </div>
 
+  <HelpScreen />
 </div>
 
 <!--
