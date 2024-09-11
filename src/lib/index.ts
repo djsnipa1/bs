@@ -26,3 +26,4 @@ export { default as HelpScreen } from './components/HelpScreen.svelte';
 export { default as YoutubeLogo } from './components/YoutubeLogo.svelte';
 export { default as ImageFetch } from './components/ImageFetch.svelte';
 export { default as ImageFetchNew } from './components/ImageFetchNew.svelte';
+export { default as Background } from './components/Background.svelte';

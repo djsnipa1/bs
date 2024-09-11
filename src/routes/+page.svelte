@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import {
+    Background,
     CircleImage,
     ControlsNew,
     HelpScreen,
@@ -109,7 +110,8 @@
 </script>
 
 <!-- background color -->
-<div class="background-gradient absolute z-[-10] min-h-screen min-w-full"></div>
+<Background />
+<!-- <div class="background-gradient absolute z-[-10] min-h-screen min-w-full"></div> -->
 <!-- end background color -->
 
 <div

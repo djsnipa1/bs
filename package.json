@@ -13,7 +13,32 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "preview": "vite preview --host",
-    "test": "playwright test"
+    "test": "playwright test",
+    "vomit": "pnpx vomitorium"
+  },
+  "vomitorium": {
+    "scan": ".",
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "node_modules",
+      ".git",
+      "dist",
+      "build"
+    ],
+    "excludeFiles": [
+      "package.json",
+      "package-lock.json"
+    ],
+    "extensions": [
+      ".js",
+      ".ts",
+      ".svelte"
+    ],
+    "showExcluded": true,
+    "showSkipped": false,
+    "outputFile": "output.sick"
   },
   "devDependencies": {
     "@fontsource-variable/sofia-sans": "^5.0.15",
@@ -57,5 +82,8 @@
     "tunnelmole": "^2.2.14",
     "typescript": "^5.5.4",
     "vite": "^5.4.3"
+  },
+  "dependencies": {
+    "@texel/color": "^1.1.2"
   }
 }

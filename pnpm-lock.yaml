@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@texel/color':
+        specifier: ^1.1.2
+        version: 1.1.2
     devDependencies:
       '@fontsource-variable/sofia-sans':
         specifier: ^5.0.15
@@ -1017,6 +1021,9 @@ packages:
     resolution: {integrity: sha512-AqhlCXl+8grUz8uqExv5OTtgpjuVIwFTSXTrh8y9/pw6q2ek7fJ+Y8ZEVw7EB2DCcuCOtEjf9w3+J3rzts01uA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20'
+
+  '@texel/color@1.1.2':
+    resolution: {integrity: sha512-PlBKHFSJZc52rTOW5EbKtQ/btl0kcuAXZes3ca+swA759GcxbCrTX45b36hTchBNSTQFOIm3p1qddXR1nvniHQ==}
 
   '@types/animejs@3.1.12':
     resolution: {integrity: sha512-fpdH+ZtlO0kqjTOqRaBdsEmvpRNOayI8k4EVkEtitL5l6wducDOXk0rgQgfZqWf/ZX9DzXrHf257S5i9xTcISQ==}
@@ -4359,6 +4366,8 @@ snapshots:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.10
+
+  '@texel/color@1.1.2': {}
 
   '@types/animejs@3.1.12': {}
 

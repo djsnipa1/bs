@@ -1,11 +1,10 @@
 <script>
-  // import ColorThief from 'https://raw.githack.com/null2/color-thief/master/package.json';
-  // import { onMount } from 'svelte';
   import { gradientColor, newYtUrl, videoId } from '$lib/stores/store.js';
   import { getPalette } from '$lib/util/getColors.js';
 
   // let url = `https://img.youtube.com/vi/pgtF0Zdcpbo/hqdefault.jpg`;
-  let url = 'https://picsum.photos/300/200';
+  // let url = 'https://picsum.photos/300/200';
+  $: url = `api/fetch-image?id=${$videoId}`;
 
   let palette = [];
   let dominantColor = [];
