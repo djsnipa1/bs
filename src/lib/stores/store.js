@@ -64,4 +64,4 @@ export const debugModeEnabled = writable(true);
 
 export const imageUrlStore = writable(null);
 
-export const gradientColor = writable(null);
+export const gradientColors = writable({});

@@ -32,15 +32,18 @@
   <div
     class="background-gradient absolute z-[-10] min-h-screen min-w-full"
   ></div>
-  <button class="button btn" on:click={switchGradient}>Switch</button>
+  <button
+    class="button btn absolute top-80 z-[999999999]"
+    on:click={switchGradient}>Switch</button
+  >
 </div>
 
 <!-- React Div -->
-<main
-  class="absolute z-[999999999] flex min-h-[100dvh] w-full items-center justify-center"
->
-  <button class="button btn" on:click={switchGradient}>Switch</button>
-</main>
+<!-- <main -->
+<!-- class="absolute z-[999999999] flex min-h-[100dvh] w-full items-center justify-center" -->
+<!-- > -->
+<!-- <button class="button btn" on:click={switchGradient}>Switch</button> -->
+<!-- </main> -->
 
 <style>
   :root {
@@ -60,9 +63,9 @@
     );
     transition:
       --color1 0.5s,
-      --color2 0.5s,
-      --color3 0.5s,
-      --color4 0.5s;
+      --color2 1s,
+      --color3 1.5s,
+      --color4 2s;
   }
 
   @property --color1 {

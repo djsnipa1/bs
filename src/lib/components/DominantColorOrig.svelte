@@ -1,6 +1,8 @@
 <script>
-  import { gradientColor, newYtUrl, videoId } from '$lib/stores/store.js';
+  import { gradientColors, newYtUrl, videoId } from '$lib/stores/store.js';
   import { getPalette } from '$lib/util/getColors.js';
+
+  import DominantColor from './DominantColor.svelte';
 
   // let url = `https://img.youtube.com/vi/pgtF0Zdcpbo/hqdefault.jpg`;
   // let url = 'https://picsum.photos/300/200';
@@ -8,6 +10,7 @@
 
   let palette = [];
   let dominantColor = [];
+  let allColors = {};
 
   async function fetchPalette() {
     try {
@@ -15,8 +18,11 @@
       palette = result.palette;
       dominantColor = result.dominantColor;
 
-      gradientColor.set(dominantColor);
+      allColors = { dominantColor: dominantColor, ...palette };
 
+      gradientColors.set(allColors);
+
+      console.log('allColors: ', allColors);
       console.log('Palette:', palette);
       console.log('Dominant Color:', dominantColor);
     } catch (error) {
