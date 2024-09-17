@@ -13,7 +13,7 @@
     return val % 360;
   }
 
-  function createScientificPalettes(baseColor) {
+  export function createScientificPalettes(baseColor) {
     const targetHueSteps = {
       analogous: [0, 30, 60],
       triadic: [0, 120, 240],

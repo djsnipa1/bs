@@ -16,7 +16,9 @@ const textShadowPlugin = plugin(function ({ matchUtilities, theme }) {
 /** @type {import('tailwindcss').Config}*/
 const config = {
   content: ['./src/**/*.{html,js,svelte,ts}'],
-
+  daisyui: {
+    logs: false,
+  },
   theme: {
     extend: {
       fontFamily: {

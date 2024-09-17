@@ -8,7 +8,7 @@ export async function getPalette(imageUrl) {
 
     img.onload = () => {
       const colorThief = new ColorThief();
-      const palette = colorThief.getPalette(img, 5);
+      const palette = colorThief.getPalette(img, 9);
       const dominantColor = colorThief.getColor(img);
 
       // Resolve with both the palette and the dominant color
