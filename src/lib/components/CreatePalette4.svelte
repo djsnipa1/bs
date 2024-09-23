@@ -1,9 +1,20 @@
 <script>
-  import { videoId } from '$lib/stores/store';
+  import { dominantColorStore } from '$lib/stores/store';
+  import { tailwindColors } from '$lib/tailwindColors.js';
   import { getPalette } from '$lib/util/getColors.js';
   import ColorThief from 'color-thief-ts';
-  import { converter, differenceEuclidean, formatHex, nearest } from 'culori';
+  import {
+    average,
+    converter,
+    differenceEuclidean,
+    formatHex,
+    nearest,
+    parse,
+    wcagLuminance
+  } from 'culori';
   import { onMount } from 'svelte';
+
+  let paletteFetched = false;
 
   const colorThief = new ColorThief();
   const toLCH = converter('lch');
@@ -145,11 +156,43 @@
   // import ColorThief from 'color-thief-ts';
   // import { converter, differenceEuclidean, nearest } from 'culori';
 
-  $: url = `api/fetch-image?id=${$videoId}`;
+  const youtubeIds = [
+    'UYtz2rzh-ks',
+    'b_xYP3nqFRk',
+    '3Xa-nIimbMw',
+    'hljNbYdMjls',
+    'MQy2lB4R0mo',
+    '39Azo7jKuNk',
+    'oSeDHJE2aSM',
+    'f9wVLFEXH4o',
+    'PJnTP0xGi8c',
+    '9lOkeUF_nQs',
+    'Xncaz-gR-LA',
+    'fUaw78LQgL4',
+    'Ribd8YzVTJM'
+  ];
+
+  const randomId = youtubeIds[Math.floor(Math.random() * youtubeIds.length)];
+  // $: url = `api/fetch-image?id=${$videoId}`;
+  // $: url = `api/fetch-image?id=${randomId}`;
+
+  let picsumUrl = 'https://picsum.photos/1200/900';
+  let imageUrl = encodeURIComponent(picsumUrl);
+
+  const params = new URLSearchParams({
+    // fetchUrl: imageUrl
+    fetchUrl: picsumUrl
+  });
+
+  let url = `api/fetch-image?${params}`;
 
   let palette = [];
   let dominantColor = [];
   let allColors = {};
+  let averageColorHex,
+    averageColor = '';
+  let cssOklchColor,
+    middleOklchCss = '';
 
   // let url = 'https://picsum.photos/800/1200';
 
@@ -158,44 +201,269 @@
       const result = await getPalette(url);
       palette = result.palette;
       dominantColor = result.dominantColor;
+      dominantColorStore.set(dominantColor);
 
       allColors = { dominantColor: dominantColor, ...palette };
 
       console.log('allColors: ', allColors);
       console.log('Palette:', palette);
       console.log('Dominant Color:', dominantColor);
+      sortColors(palette);
+      lightOrDark(dominantColor);
+      paletteFetched = true;
     } catch (error) {
       console.error('Error fetching palette:', error);
     }
   }
+
+  let sortedColors;
+  let lightestColor, middleColor, darkestColor;
+  let tailwindColor;
+  let colorInfo;
+  let hexColor;
+  let dominantOklchCss;
+  let isTextDark = true;
+  let textColor = '';
+
+  function sortColors(colors) {
+    // Sample colors in HEX format
+    // const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00'];
+
+    // Convert HEX to OKLCH
+    const oklchColors = colors.map((color) => converter('oklch')(parse(color)));
+
+    // Sort by lightness (L)
+    oklchColors.sort((a, b) => a.l - b.l);
+
+    // Convert back to HEX
+    sortedColors = oklchColors.map((color) => formatHex(color));
+
+    lightestColor = sortedColors[7];
+    middleColor = sortedColors[4];
+    darkestColor = sortedColors[0];
+
+    console.log('🙂', lightestColor);
+    console.log('🙂', middleColor);
+    console.log('🙂', darkestColor);
+
+    console.log('sorted colors: ', sortedColors);
+
+    averageColor = average(sortedColors);
+    console.log('averageColor: ', JSON.stringify(averageColor));
+    averageColorHex = formatHex(averageColor);
+    console.log('averageColorHex: ', averageColorHex);
+
+    // Step 2: Convert to OKLCH
+    let toOklch = converter('oklch');
+    let oklchColor = toOklch(averageColor);
+
+    let middleOklch = toOklch(middleColor);
+    middleOklch.l += 0.1; // Adjust this value as needed
+    middleOklchCss = `oklch(${middleOklch.l} ${middleOklch.c} ${middleOklch.h})`;
+
+    // Step 3: Increase the chroma
+    oklchColor.l += 0.1; // Adjust this value as needed
+    cssOklchColor = `oklch(${oklchColor.l} ${oklchColor.c} ${oklchColor.h})`;
+
+    console.log('cssOklchColor: ', cssOklchColor); // Outputs the modified color
+
+    let dominantOklch = toOklch(dominantColor);
+    dominantOklch.l -= 0.2;
+    dominantOklchCss = `oklch(${dominantOklch.l} ${dominantOklch.c} ${dominantOklch.h})`;
+
+    // ---------
+    // Flatten the Tailwind color object into an array of color objects
+    const colorsArray = Object.values(tailwindColors).flatMap((colorGroup) =>
+      Object.values(colorGroup).map((color) => parse(color))
+    );
+
+    console.log(colorsArray[1]);
+    // Target color
+    // const targetColor = parse('#ff6347'); // tomato color
+    // const targetColor = '#ff6347'; // tomato color
+    // const targetColor = middleColor;
+    const targetColor = dominantColor;
+
+    // Find the nearest color using the Euclidean distance metric
+    const closestColor = nearest(colorsArray, differenceEuclidean());
+
+    // closestColor(targetColor);
+
+    // Output the closest color in hex format
+    // console.log(closestColor(targetColor, 1));
+    tailwindColor = closestColor(targetColor, 1);
+    console.log('tailwindColor :');
+    console.log(formatHex(tailwindColor[0]));
+
+    hexColor = formatHex(tailwindColor[0]);
+
+    function findTailwindColorName(hex) {
+      for (const [colorName, shades] of Object.entries(tailwindColors)) {
+        for (const [shade, shadeHex] of Object.entries(shades)) {
+          if (shadeHex.toLowerCase() === hex.toLowerCase()) {
+            return { colorName, shade };
+          }
+        }
+      }
+      return null; // Return null if the hex code is not found
+    }
+
+    // Example usage:
+    // const hexColor = '#f87171';
+    colorInfo = findTailwindColorName(hexColor);
+    console.log(colorInfo); // { colorName: 'red', shade: '400' }
+  }
+
+  function lightOrDark(color) {
+    let luminance = wcagLuminance(color);
+    console.log('luminance: ', luminance);
+
+    // Using the HSP value, determine whether the color is light or dark
+    if (luminance > 0.5) {
+      textColor = darkestColor;
+      return 'light';
+    } else {
+      textColor = lightestColor;
+      return 'dark';
+    }
+  }
+
+  // Function to toggle the boolean value
+  function toggleColor() {
+    isTextDark = !isTextDark;
+    console.log(isTextDark ? 'yes its dark' : 'no not dark');
+    // textColor = textColor === lightestColor ? darkestColor : lightestColor;
+  }
+
+  // Call myFunction every 3 seconds (3000 milliseconds)
+  setInterval(toggleColor, 3000);
+
+  // let textColor;
+
+  // $: textColor &&
+  //   textColor.style.setProperty(
+  //     '--text-color',
+  //     isTextDark ? lightestColor : darkestColor
+  // );
 </script>
 
-<div class="content"></div>
+<div style="--text-color: {textColor}">
+  <div
+    style={`--text-color: ${textColor}; background-color: ${dominantColor}; background-image: radial-gradient(circle, ${dominantColor} 0%,  ${dominantOklchCss} 66%);`}
+    class="flex grid min-h-screen grid-cols-2 flex-col items-center space-y-8 p-4"
+  >
+    <!-- Image section -->
+    <div class="mb-4 flex w-full flex-col items-center">
+      <img
+        bind:this={img}
+        src={url}
+        alt="Centered photograph"
+        class="mb-4 aspect-video w-[300px] object-cover"
+      />
 
-<img bind:this={img} class="w-12" src={url} alt="Test Photograph" />
-<button class="button btn" on:click={fetchPalette}>Fetch Palette</button>
-
-<div>
-  {#if palette}
-    <ul>
-      {#each palette as color, i}
-        <li>
-          <div class="box" style={`background-color: ${color};`}></div>
-          {color}
-        </li>
-      {/each}
-    </ul>
-  {/if}
-  {#if dominantColor}
-    <div>
-      <h3>Dominant Color</h3>
-      <div class="box" style={`background-color: ${dominantColor};`}></div>
-      {dominantColor}
+      <!-- Color palette -->
+      {#if sortedColors}
+        <div class="flex justify-center space-x-2">
+          {#each sortedColors as color}
+            <div
+              class="h-8 w-8 rounded-md"
+              style="background-color: {color};"
+            ></div>
+          {/each}
+        </div>
+      {/if}
     </div>
-  {/if}
+
+    <!-- <div> -->
+    <!--   <p class="text">This text color changes based on the boolean value.</p> -->
+    <!--   <button on:click={toggleColor}>Toggle Color</button> -->
+    <!-- </div> -->
+
+    {#if paletteFetched}
+      <section
+        style={`background-color: ${$dominantColorStore};`}
+        class="w-full max-w-md rounded-lg bg-white p-2 shadow-md"
+      >
+        <h2 class="mb-4 text-lg font-bold">dominantColorStore</h2>
+        <p class="mb-4 text-lg" style={`color: ${dominantOklchCss};`}>
+          {$dominantColorStore}
+        </p>
+      </section>
+    {/if}
+
+    <!-- First additional section -->
+    {#if paletteFetched}
+      <section
+        style={`background-color: ${hexColor};`}
+        class="w-full max-w-md rounded-lg bg-white p-6 shadow-md"
+      >
+        <h2 class="mb-4 text-xl font-bold">Tailwind Color</h2>
+        <p class="mb-4 text-lg">{colorInfo.colorName} {colorInfo.shade}</p>
+      </section>
+    {/if}
+    <!-- {#if cssOklchColor} -->
+    <!--   <section -->
+    <!--     style={`background-color: ${cssOklchColor};`} -->
+    <!--     class="w-full max-w-md rounded-lg bg-white p-6 shadow-md" -->
+    <!--   > -->
+    <!--     <h2 class="mb-4 text-xl font-bold">oklch Color</h2> -->
+    <!--   </section> -->
+    <!-- {/if} -->
+
+    <!-- Second additional section -->
+    <!-- {#if middleColor} -->
+    <!--   <section -->
+    <!--     style={`background-color: ${middleColor};`} -->
+    <!--     class="w-full max-w-md rounded-lg bg-white p-6 shadow-md" -->
+    <!--   > -->
+    <!--     <h2 class="mb-4 text-xl font-bold">Middle Color</h2> -->
+    <!--   </section> -->
+    <!-- {/if} -->
+
+    <!-- Third additional section -->
+    {#if middleOklchCss}
+      <section
+        style={`background-color: ${middleOklchCss};`}
+        class="w-full max-w-md rounded-lg bg-white p-6 shadow-md"
+      >
+        <h2 class="mb-4 text-xl font-bold">Middle oklch Color</h2>
+      </section>
+    {/if}
+  </div>
+
+  <hr />
+
+  <button
+    class="button btn absolute left-[25vw] top-[60vh] z-[50]"
+    on:click={fetchPalette}>Fetch Palette</button
+  >
+
+  <!-- <div> -->
+  <!--   {#if palette} -->
+  <!--     <ul> -->
+  <!--       {#each palette as color, i} -->
+  <!--         <li> -->
+  <!--           <div class="box" style={`background-color: ${color};`}></div> -->
+  <!--           {color} -->
+  <!--         </li> -->
+  <!--       {/each} -->
+  <!--     </ul> -->
+  <!--   {/if} -->
+  <!--   {#if dominantColor} -->
+  <!--     <div> -->
+  <!--       <h3>Dominant Color</h3> -->
+  <!--       <div class="box" style={`background-color: ${dominantColor};`}></div> -->
+  <!--       {dominantColor} -->
+  <!--     </div> -->
+  <!--   {/if} -->
+  <!-- </div> -->
 </div>
 
 <style>
+  div {
+    border: hotpink 1px dotted;
+    color: var(--text-color);
+  }
   .box {
     height: 20px;
     width: 20px;
@@ -204,5 +472,20 @@
     box-shadow: var(--shadow-elevation-medium);
     display: inline-block;
     margin-right: 5px;
+  }
+  .background-gradient {
+    background-image: radial-gradient(
+      circle,
+      hsl(192deg 76% 50%) 0%,
+      hsl(203deg 100% 43%) 33%,
+      hsl(213deg 80% 40%) 67%,
+      hsl(215deg 80% 29%) 100%
+    );
+  }
+  :root {
+    --text-color: #222222; /* Default color */
+  }
+  :global(body) {
+    color: var(--text-color);
   }
 </style>

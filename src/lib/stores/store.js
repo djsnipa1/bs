@@ -65,3 +65,5 @@ export const debugModeEnabled = writable(true);
 export const imageUrlStore = writable(null);
 
 export const culoriSortColors = writable({});
+
+export const dominantColorStore = writable(null);

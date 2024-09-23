@@ -1,31 +1,34 @@
-#!/usr/bin/env fish
+function get_url
+    if test -e output.log
+        # Extract the URL from the output using grep and sed
+        set url (grep -o 'https[^ ]*' output.log | sed -n '1p')
+  
+        for arg in $argv
+            switch $arg
+                case '--help' '-h'
+                    echo "Usage: get_url"
+                    echo ""
+                    echo "This is to be used with adding tee output.log"
+                    echo "to tmole in package.json"
+                    echo ""
+                    echo "Example: "
+                    echo "  tmole 5173 | tee output.log"
+                    echo ""
+                    echo "  -h, --help    Show this help message"
+                    return 0
+                case '-c' '--colortest2'
+                    echo "$url/colortest2"
+                    echo "$url/colortest2" | fish_clipboard_copy
+                    echo "URL copied to clipboard"
+                    return 0
+            end
+        end
 
-# might have to run seperately from package.json
-# pnpm devall | tee output.log
-
-if test -e output.log
-    # Extract the URL from the output using grep and sed
-    set url $(grep -o 'https[^ ]*' output.log | sed -n '1p')
-    echo $url
-    echo $url | fish_clipboard_copy
-    rm output.log
-else
-    echo "output.log does not exist"
+        echo $url 
+        echo $url | fish_clipboard_copy
+        echo "URL copied to clipboard"
+        # rm output.log
+    else
+        echo "output.log does not exist"
+    end
 end
-
-# Extract the URL from the output using grep and sed
-# set url $(grep -o 'https[^ ]*' output.log | sed -n '1p')
-
-# Copy the URL to the clipboard
-# echo $url | fish_clipboard_copy
-
-# if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-#     echo $url | xclip -selection clipboard
-# elif [[ "$OSTYPE" == "darwin"* ]]; then
-#     echo $url | pbcopy
-# else
-#     echo "Unsupported OS"
-# fi
-
-echo "shits done"
-echo "URL copied to clipboard: $url"

@@ -1,11 +1,23 @@
 export async function GET({ url }) {
   const id = url.searchParams.get('id');
-  if (!id) {
-    return new Response('ID is required', { status: 400 });
-  }
+  const fetchUrl = url.searchParams.get('fetchUrl');
 
-  // const imageUrl = `https://img.youtube.com/vi/pgtF0Zdcpbo/hqdefault.jpg`;
-  const imageUrl = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+  console.log(typeof fetchUrl, fetchUrl);
+
+  let imageUrl;
+
+  if (!id) {
+    if (!fetchUrl) {
+      return new Response('id or fetchUrl is required', { status: 400 });
+    } else {
+      imageUrl = fetchUrl;
+      console.log(`imageUrl is ${fetchUrl}`)
+    }
+  } else {
+    imageUrl = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+    // const imageUrl = `https://img.youtube.com/vi/pgtF0Zdcpbo/hqdefault.jpg`;
+    console.log(`imageUrl is ${imageUrl}`)
+  }
   const response = await fetch(imageUrl);
 
   if (!response.ok) {
