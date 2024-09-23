@@ -1,12 +1,6 @@
 <script>
-  import {
-    culoriSortColors,
-    gradientColors,
-    videoId
-  } from '$lib/stores/store.js';
+  import { videoId } from '$lib/stores/store.js';
   import { getPalette } from '$lib/util/getColors.js';
-
-  import DominantColor from './DominantColor.svelte';
 
   // let url = `https://img.youtube.com/vi/pgtF0Zdcpbo/hqdefault.jpg`;
   // let url = 'https://picsum.photos/300/200';
@@ -23,8 +17,6 @@
       dominantColor = result.dominantColor;
 
       allColors = { dominantColor: dominantColor, ...palette };
-
-      gradientColors.set(allColors);
 
       console.log('allColors: ', allColors);
       console.log('Palette:', palette);
