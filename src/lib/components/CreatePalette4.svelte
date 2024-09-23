@@ -13,8 +13,10 @@
     wcagLuminance
   } from 'culori';
   import { onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
 
   let paletteFetched = false;
+  let buttonVisible = true;
 
   const colorThief = new ColorThief();
   const toLCH = converter('lch');
@@ -191,7 +193,7 @@
   let allColors = {};
   let averageColorHex,
     averageColor = '';
-  let cssOklchColor,
+  let lighterDominantOklch,
     middleOklchCss = '';
 
   // let url = 'https://picsum.photos/800/1200';
@@ -211,6 +213,7 @@
       sortColors(palette);
       lightOrDark(dominantColor);
       paletteFetched = true;
+      buttonVisible = !buttonVisible;
     } catch (error) {
       console.error('Error fetching palette:', error);
     }
@@ -221,8 +224,8 @@
   let tailwindColor;
   let colorInfo;
   let hexColor;
-  let dominantOklchCss;
-  let isTextDark = true;
+  let dominantOklch;
+  let darkerDominantOklch;
   let textColor = '';
 
   function sortColors(colors) {
@@ -242,10 +245,6 @@
     middleColor = sortedColors[4];
     darkestColor = sortedColors[0];
 
-    console.log('🙂', lightestColor);
-    console.log('🙂', middleColor);
-    console.log('🙂', darkestColor);
-
     console.log('sorted colors: ', sortedColors);
 
     averageColor = average(sortedColors);
@@ -258,18 +257,21 @@
     let oklchColor = toOklch(averageColor);
 
     let middleOklch = toOklch(middleColor);
-    middleOklch.l += 0.1; // Adjust this value as needed
+    middleOklch.l += 0.2; // Adjust this value as needed
     middleOklchCss = `oklch(${middleOklch.l} ${middleOklch.c} ${middleOklch.h})`;
 
-    // Step 3: Increase the chroma
-    oklchColor.l += 0.1; // Adjust this value as needed
-    cssOklchColor = `oklch(${oklchColor.l} ${oklchColor.c} ${oklchColor.h})`;
+    // Step 3: Increase the lightness
+    oklchColor.l += 0.15; // Adjust this value as needed
+    lighterDominantOklch = `oklch(${oklchColor.l} ${oklchColor.c} ${oklchColor.h})`;
 
-    console.log('cssOklchColor: ', cssOklchColor); // Outputs the modified color
+    console.log('cssOklchColor: ', lighterDominantOklch); // Outputs the modified color
 
-    let dominantOklch = toOklch(dominantColor);
-    dominantOklch.l -= 0.2;
-    dominantOklchCss = `oklch(${dominantOklch.l} ${dominantOklch.c} ${dominantOklch.h})`;
+    let temp2DominantOklch = toOklch(dominantColor);
+    dominantOklch = `oklch(${temp2DominantOklch.l} ${temp2DominantOklch.c} ${temp2DominantOklch.h})`;
+
+    let tempDominantOklch = toOklch(dominantColor);
+    tempDominantOklch.l -= 0.3;
+    darkerDominantOklch = `oklch(${tempDominantOklch.l} ${tempDominantOklch.c} ${tempDominantOklch.h})`;
 
     // ---------
     // Flatten the Tailwind color object into an array of color objects
@@ -330,27 +332,17 @@
 
   // Function to toggle the boolean value
   function toggleColor() {
-    isTextDark = !isTextDark;
-    console.log(isTextDark ? 'yes its dark' : 'no not dark');
-    // textColor = textColor === lightestColor ? darkestColor : lightestColor;
+    console.log('this runs every ten seconds...');
   }
 
   // Call myFunction every 3 seconds (3000 milliseconds)
-  setInterval(toggleColor, 3000);
-
-  // let textColor;
-
-  // $: textColor &&
-  //   textColor.style.setProperty(
-  //     '--text-color',
-  //     isTextDark ? lightestColor : darkestColor
-  // );
+  setInterval(toggleColor, 10000);
 </script>
 
-<div style="--text-color: {textColor}">
+<div class="relative h-screen" style="--text-color: {textColor}">
   <div
-    style={`--text-color: ${textColor}; background-color: ${dominantColor}; background-image: radial-gradient(circle, ${dominantColor} 0%,  ${dominantOklchCss} 66%);`}
-    class="flex grid min-h-screen grid-cols-2 flex-col items-center space-y-8 p-4"
+    style={`--text-color: ${textColor}; background-color: ${dominantColor}; background-image: radial-gradient(circle, ${dominantColor} 0%,  ${darkerDominantOklch} 85%);`}
+    class="flex min-h-screen flex-col items-center space-y-8 p-4"
   >
     <!-- Image section -->
     <div class="mb-4 flex w-full flex-col items-center">
@@ -363,7 +355,7 @@
 
       <!-- Color palette -->
       {#if sortedColors}
-        <div class="flex justify-center space-x-2">
+        <div transition:fade class="flex justify-center space-x-2">
           {#each sortedColors as color}
             <div
               class="h-8 w-8 rounded-md"
@@ -379,89 +371,134 @@
     <!--   <button on:click={toggleColor}>Toggle Color</button> -->
     <!-- </div> -->
 
-    {#if paletteFetched}
-      <section
-        style={`background-color: ${$dominantColorStore};`}
-        class="w-full max-w-md rounded-lg bg-white p-2 shadow-md"
-      >
-        <h2 class="mb-4 text-lg font-bold">dominantColorStore</h2>
-        <p class="mb-4 text-lg" style={`color: ${dominantOklchCss};`}>
-          {$dominantColorStore}
-        </p>
-      </section>
-    {/if}
+    <div class="grid grid-cols-2 gap-2">
+      {#if paletteFetched}
+        <section
+          style={`background-color: ${$dominantColorStore};`}
+          class="w-full max-w-md rounded-lg bg-white p-2 shadow-md"
+        >
+          <h2 class="text-md mb-4 font-bold">Dominant Color Store</h2>
+          <p class="text-md mb-4" style={`color: ${darkerDominantOklch};`}>
+            {$dominantColorStore}
+          </p>
+        </section>
+      {/if}
 
-    <!-- First additional section -->
-    {#if paletteFetched}
-      <section
-        style={`background-color: ${hexColor};`}
-        class="w-full max-w-md rounded-lg bg-white p-6 shadow-md"
-      >
-        <h2 class="mb-4 text-xl font-bold">Tailwind Color</h2>
-        <p class="mb-4 text-lg">{colorInfo.colorName} {colorInfo.shade}</p>
-      </section>
-    {/if}
-    <!-- {#if cssOklchColor} -->
-    <!--   <section -->
-    <!--     style={`background-color: ${cssOklchColor};`} -->
-    <!--     class="w-full max-w-md rounded-lg bg-white p-6 shadow-md" -->
-    <!--   > -->
-    <!--     <h2 class="mb-4 text-xl font-bold">oklch Color</h2> -->
-    <!--   </section> -->
-    <!-- {/if} -->
+      <!-- First additional section -->
+      {#if paletteFetched}
+        <section class="flex w-full max-w-md flex-col rounded-lg shadow-md">
+          <div
+            style={`background-color: ${hexColor};`}
+            class="h-1/2 flex-1 rounded-t-lg"
+          >
+            <h2 class="text-md h-1/2 p-2 font-bold">Tailwind Color</h2>
+            <p class="h-1/2 p-2 text-lg">
+              {colorInfo.colorName}
+              {colorInfo.shade}
+            </p>
+          </div>
+          <div
+            style={`background-color: ${$dominantColorStore};`}
+            class="h-1/2 flex-1 rounded-b-lg p-2 font-mono"
+          >
+            {$dominantColorStore}
+          </div>
+        </section>
+      {/if}
 
-    <!-- Second additional section -->
-    <!-- {#if middleColor} -->
-    <!--   <section -->
-    <!--     style={`background-color: ${middleColor};`} -->
-    <!--     class="w-full max-w-md rounded-lg bg-white p-6 shadow-md" -->
-    <!--   > -->
-    <!--     <h2 class="mb-4 text-xl font-bold">Middle Color</h2> -->
-    <!--   </section> -->
-    <!-- {/if} -->
+      <!-- Gradient additional section -->
+      {#if paletteFetched}
+        <!-- <section -->
+        <!--   style={`background-color: ${hexColor}; background-image: radial-gradient(circle, ${dominantColor} 0%,  ${darkerDominantOklch} 66%);`} -->
+        <!--   class="w-full max-w-md rounded-lg bg-white p-2 shadow-md" -->
+        <!-- > -->
+        <section class="flex w-full max-w-md flex-col rounded-lg shadow-md">
+          <div
+            style={`background-color: ${dominantOklch};`}
+            class="h-1/2 flex-1 rounded-t-lg"
+          >
+            <h2 class="text-md h-1/2 p-2 font-bold">Dominant Oklch</h2>
+            <pre
+              style={`background-color: ${darkerDominantOklch};`}
+              class="h-1/2 overflow-y-scroll p-1 text-xs">
+              {dominantOklch}
+            </pre>
+          </div>
+        </section>
+      {/if}
+      <!-- {#if cssOklchColor} -->
+      <!--   <section -->
+      <!--     style={`background-color: ${cssOklchColor};`} -->
+      <!--     class="w-full max-w-md rounded-lg bg-white p-6 shadow-md" -->
+      <!--   > -->
+      <!--     <h2 class="mb-4 text-xl font-bold">oklch Color</h2> -->
+      <!--   </section> -->
+      <!-- {/if} -->
 
-    <!-- Third additional section -->
-    {#if middleOklchCss}
-      <section
-        style={`background-color: ${middleOklchCss};`}
-        class="w-full max-w-md rounded-lg bg-white p-6 shadow-md"
+      <!-- Second additional section -->
+      <!-- {#if middleColor} -->
+      <!--   <section -->
+      <!--     style={`background-color: ${middleColor};`} -->
+      <!--     class="w-full max-w-md rounded-lg bg-white p-6 shadow-md" -->
+      <!--   > -->
+      <!--     <h2 class="mb-4 text-xl font-bold">Middle Color</h2> -->
+      <!--   </section> -->
+      <!-- {/if} -->
+
+      <!-- Third additional section -->
+      {#if middleOklchCss}
+        <section
+          style={`background-color: ${middleOklchCss};`}
+          class="w-full max-w-md rounded-lg bg-white p-6 shadow-md"
+        >
+          <h2 class="mb-4 text-xl font-bold">Middle oklch Color</h2>
+        </section>
+      {/if}
+    </div>
+
+    {#if buttonVisible}
+      <button
+        on:click={fetchPalette}
+        transition:fade
+        class="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-amber-600 px-6 font-medium text-neutral-200 transition hover:scale-110"
+        ><span>Fetch Palette</span>
+        <div
+          class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]"
+        >
+          <div class="relative h-full w-8 bg-white/20"></div>
+        </div></button
       >
-        <h2 class="mb-4 text-xl font-bold">Middle oklch Color</h2>
-      </section>
+      <!-- <button -->
+      <!--   class="button btn absolute left-1/2 top-1/2 z-[50] -translate-x-1/2 -translate-y-1/2" -->
+      <!--   on:click={fetchPalette} -->
+      <!--   transition:fade>Fetch Palette</button -->
+      <!-- > -->
     {/if}
+    <!-- <div> -->
+    <!--   {#if palette} -->
+    <!--     <ul> -->
+    <!--       {#each palette as color, i} -->
+    <!--         <li> -->
+    <!--           <div class="box" style={`background-color: ${color};`}></div> -->
+    <!--           {color} -->
+    <!--         </li> -->
+    <!--       {/each} -->
+    <!--     </ul> -->
+    <!--   {/if} -->
+    <!--   {#if dominantColor} -->
+    <!--     <div> -->
+    <!--       <h3>Dominant Color</h3> -->
+    <!--       <div class="box" style={`background-color: ${dominantColor};`}></div> -->
+    <!--       {dominantColor} -->
+    <!--     </div> -->
+    <!--   {/if} -->
+    <!-- </div> -->
   </div>
-
-  <hr />
-
-  <button
-    class="button btn absolute left-[25vw] top-[60vh] z-[50]"
-    on:click={fetchPalette}>Fetch Palette</button
-  >
-
-  <!-- <div> -->
-  <!--   {#if palette} -->
-  <!--     <ul> -->
-  <!--       {#each palette as color, i} -->
-  <!--         <li> -->
-  <!--           <div class="box" style={`background-color: ${color};`}></div> -->
-  <!--           {color} -->
-  <!--         </li> -->
-  <!--       {/each} -->
-  <!--     </ul> -->
-  <!--   {/if} -->
-  <!--   {#if dominantColor} -->
-  <!--     <div> -->
-  <!--       <h3>Dominant Color</h3> -->
-  <!--       <div class="box" style={`background-color: ${dominantColor};`}></div> -->
-  <!--       {dominantColor} -->
-  <!--     </div> -->
-  <!--   {/if} -->
-  <!-- </div> -->
 </div>
 
 <style>
   div {
-    border: hotpink 1px dotted;
+    /* border: hotpink 1px dotted; */
     color: var(--text-color);
   }
   .box {
