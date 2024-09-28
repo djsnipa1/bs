@@ -1,7 +1,5 @@
 <!-- Main Route +page.svelte -->
 <script lang="ts">
-  import { goto } from '$app/navigation';
-  import { page } from '$app/stores';
   import {
     Background,
     CircleImage,
@@ -221,7 +219,7 @@
   <div class="absolute bottom-40">
     <h2>Dominant Color</h2>
     <DominantColorOrig />
-    <DominantColor />
+    <!-- <DominantColor /> -->
   </div>
 
   <HelpScreen />
