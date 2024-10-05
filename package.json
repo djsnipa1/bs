@@ -29,14 +29,17 @@
     ],
     "excludeFiles": [
       "package.json",
-      "package-lock.json"
+      "package-lock.json",
+      "vite.config.ts",
+      "svelte.config.js",
+      "playwright.config.ts"
     ],
     "extensions": [
       ".js",
       ".ts",
       ".svelte"
     ],
-    "showExcluded": true,
+    "showExcluded": false,
     "showSkipped": false,
     "outputFile": "output.sick"
   },

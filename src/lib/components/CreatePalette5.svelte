@@ -12,7 +12,7 @@
     parse,
     wcagLuminance
   } from 'culori';
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { fade } from 'svelte/transition';
 
   let paletteFetched = false;
@@ -152,81 +152,67 @@
     }, 1000);
   }
 
-  onMount(() => {
-    generatePalette();
-  });
   // import ColorThief from 'color-thief-ts';
   // import { converter, differenceEuclidean, nearest } from 'culori';
 
-  const youtubeIds = [
-    'UYtz2rzh-ks',
-    'b_xYP3nqFRk',
-    '3Xa-nIimbMw',
-    'hljNbYdMjls',
-    'MQy2lB4R0mo',
-    '39Azo7jKuNk',
-    'oSeDHJE2aSM',
-    'f9wVLFEXH4o',
-    'PJnTP0xGi8c',
-    '9lOkeUF_nQs',
-    'Xncaz-gR-LA',
-    'fUaw78LQgL4',
-    'Ribd8YzVTJM'
-  ];
+  // let imageSeed = 1000;
+  let picsumUrl = function (seed) {
+    return `https://picsum.photos/seed/${seed}/1200/900/`;
+  };
 
-  const randomId = youtubeIds[Math.floor(Math.random() * youtubeIds.length)];
-  // $: url = `api/fetch-image?id=${$videoId}`;
-  // $: url = `api/fetch-image?id=${randomId}`;
+  let getRandomNumber = function (num) {
+    return Math.floor(1000 + Math.random() * (num - 1000));
+  };
 
-  let picsumUrl = 'https://picsum.photos/1200/900';
-  let imageUrl = encodeURIComponent(picsumUrl);
+  // let newUrl = picsumUrl(getRandomNumber(10000));
 
-  const params = new URLSearchParams({
-    // fetchUrl: imageUrl
-    fetchUrl: picsumUrl
+  const urlParams = new URLSearchParams({
+    fetchUrl: picsumUrl(getRandomNumber(10000))
   });
 
-  let url = `api/fetch-image?${params}`;
+  let url = `api/fetch-image?${urlParams}`;
 
   let palette = [];
   let dominantColor = [];
-  let allColors = {};
+  // let allColors = {};
+  let averageColorHex,
+    averageColor = '';
+  let middleLighterOklchCss = '';
 
-  // let url = 'https://picsum.photos/800/1200';
+  async function fetchPalette() {
+    const newUrlParams = new URLSearchParams({
+      fetchUrl: picsumUrl(getRandomNumber(10000))
+    });
 
-  let newPalette = async function () {
+    let newUrl = `api/fetch-image?${newUrlParams}`;
+    url = newUrl;
+
     try {
       const result = await getPalette(url);
       palette = result.palette;
       dominantColor = result.dominantColor;
       dominantColorStore.set(dominantColor);
 
-      allColors = { dominantColor: dominantColor, ...palette };
+      // allColors = { dominantColor: dominantColor, ...palette };
 
-      console.log('allColors: ', allColors);
-      console.log('Palette:', palette);
-      console.log('Dominant Color:', dominantColor);
+      // console.log('allColors: ', allColors);
+      // console.log('Palette:', palette);
+      // console.log('Dominant Color:', dominantColor);
+      sortColors(palette);
+      lightOrDark(dominantColor);
       paletteFetched = true;
-      buttonVisible = !buttonVisible;
-      return allColors;
     } catch (error) {
       console.error('Error fetching palette:', error);
     }
-  };
-
-  function doItAll() {
-    // fetchPalette();
-    console.log('newPalette: ', newPalette());
-    console.log('palette: ', palette);
-    sortColors(palette);
-
-    lightOrDark(dominantColor);
   }
 
   let sortedColors;
-  let lightestColor, darkestColor;
-  let dominantOklch;
-  let darkerDominantOklch;
+  let lightestColor, middleColor, darkestColor;
+  let tailwindColor;
+  let colorInfo;
+  let hexColor;
+  let dominantOklch, darkestOklch;
+  let darkerDominantOklch, moreChromaticDominantOklch, darkestChromaticOklch;
   let textColor = '';
 
   function sortColors(colors) {
@@ -243,25 +229,89 @@
     sortedColors = oklchColors.map((color) => formatHex(color));
 
     lightestColor = sortedColors[7];
+    middleColor = sortedColors[4];
     darkestColor = sortedColors[0];
 
-    console.log('sorted colors: ', sortedColors);
+    // console.log('sorted colors: ', sortedColors);
+
+    averageColor = average(sortedColors);
+    // console.log('averageColor: ', JSON.stringify(averageColor));
+    averageColorHex = formatHex(averageColor);
+    // console.log('averageColorHex: ', averageColorHex);
 
     // Step 2: Convert to OKLCH
     let toOklch = converter('oklch');
+    let oklchColor = toOklch(averageColor);
 
-    let tempDominantOklchRegular = toOklch(dominantColor);
-    dominantOklch = `oklch(${tempDominantOklchRegular.l} ${tempDominantOklchRegular.c} ${tempDominantOklchRegular.h})`;
+    let middleOklch = toOklch(middleColor);
+    middleOklch.l += 0.2; // Adjust this value as needed
+    middleLighterOklchCss = `oklch(${middleOklch.l} ${middleOklch.c} ${middleOklch.h})`;
 
-    // lower oklch lightness
-    let tempDominantOklchDarker = toOklch(dominantColor);
-    tempDominantOklchDarker.l -= 0.3;
-    darkerDominantOklch = `oklch(${tempDominantOklchDarker.l} ${tempDominantOklchDarker.c} ${tempDominantOklchDarker.h})`;
+    // Step 3: Increase the lightness
+    oklchColor.c += 0.025; // Adjust this value as needed
+    moreChromaticDominantOklch = `oklch(${oklchColor.l} ${oklchColor.c} ${oklchColor.h})`;
+
+    let temp4DominantOklch = toOklch(darkestColor);
+    temp4DominantOklch.c += 0.05;
+    temp4DominantOklch.l += 0.05;
+    darkestChromaticOklch = `oklch(${temp4DominantOklch.l} ${temp4DominantOklch.c} ${temp4DominantOklch.h})`;
+
+    let temp3DominantOklch = toOklch(darkestColor);
+    darkestOklch = `oklch(${temp3DominantOklch.l} ${temp3DominantOklch.c} ${temp3DominantOklch.h})`;
+
+    let temp2DominantOklch = toOklch(dominantColor);
+    dominantOklch = `oklch(${temp2DominantOklch.l} ${temp2DominantOklch.c} ${temp2DominantOklch.h})`;
+
+    let tempDominantOklch = toOklch(dominantColor);
+    tempDominantOklch.l -= 0.1;
+    darkerDominantOklch = `oklch(${tempDominantOklch.l} ${tempDominantOklch.c} ${tempDominantOklch.h})`;
+
+    // ---------
+    // Flatten the Tailwind color object into an array of color objects
+    const colorsArray = Object.values(tailwindColors).flatMap((colorGroup) =>
+      Object.values(colorGroup).map((color) => parse(color))
+    );
+
+    // console.log(colorsArray[1]);
+    // Target color
+    // const targetColor = parse('#ff6347'); // tomato color
+    // const targetColor = '#ff6347'; // tomato color
+    // const targetColor = middleColor;
+    const targetColor = dominantColor;
+
+    // Find the nearest color using the Euclidean distance metric
+    const closestColor = nearest(colorsArray, differenceEuclidean());
+
+    // closestColor(targetColor);
+
+    // Output the closest color in hex format
+    // console.log(closestColor(targetColor, 1));
+    tailwindColor = closestColor(targetColor, 1);
+    // console.log('tailwindColor :');
+    // console.log(formatHex(tailwindColor[0]));
+
+    hexColor = formatHex(tailwindColor[0]);
+
+    function findTailwindColorName(hex) {
+      for (const [colorName, shades] of Object.entries(tailwindColors)) {
+        for (const [shade, shadeHex] of Object.entries(shades)) {
+          if (shadeHex.toLowerCase() === hex.toLowerCase()) {
+            return { colorName, shade };
+          }
+        }
+      }
+      return null; // Return null if the hex code is not found
+    }
+
+    // Example usage:
+    // const hexColor = '#f87171';
+    colorInfo = findTailwindColorName(hexColor);
+    // console.log(colorInfo); // { colorName: 'red', shade: '400' }
   }
 
   function lightOrDark(color) {
     let luminance = wcagLuminance(color);
-    console.log('luminance: ', luminance);
+    // console.log('luminance: ', luminance);
 
     // Using the HSP value, determine whether the color is light or dark
     if (luminance > 0.5) {
@@ -273,18 +323,43 @@
     }
   }
 
+  let countdown = 3.0; // Starting at 3 seconds with two decimals
+  let running = true; // Control variable
+
+  async function updateCountdown() {
+    if (running) {
+      countdown = 3.0; // Reset countdown
+      const interval = setInterval(async () => {
+        countdown = (countdown - 0.01).toFixed(2);
+        await tick();
+        if (countdown <= 0) {
+          countdown = 0.0;
+          clearInterval(interval); // Stop the countdown
+          await fetchPalette(); // Run async function
+          updateCountdown(); // Restart the process
+        }
+      }, 10); // Update interval set to 10ms for two decimal places
+    }
+  }
+
+  onMount(() => {
+    updateCountdown();
+  });
+
+  // To stop the countdown, you can set `running = false` when needed.
+
   // Function to toggle the boolean value
   function toggleColor() {
-    console.log('this runs every ten seconds...');
+    // console.log('this runs every ten seconds...');
   }
 
   // Call myFunction every 3 seconds (3000 milliseconds)
-  setInterval(toggleColor, 10000);
+  setInterval(toggleColor, 3000);
 </script>
 
 <div class="relative h-screen" style="--text-color: {textColor}">
   <div
-    style={`--text-color: ${textColor}; background-color: ${dominantColor}; background-image: radial-gradient(circle, ${dominantColor} 0%,  ${darkerDominantOklch} 85%);`}
+    style={`--text-color: ${textColor}; background-image: radial-gradient(circle, ${darkestChromaticOklch} 0%,  ${darkestOklch} 85%);`}
     class="flex min-h-screen flex-col items-center space-y-8 p-4"
   >
     <!-- Image section -->
@@ -309,11 +384,6 @@
       {/if}
     </div>
 
-    <!-- <div> -->
-    <!--   <p class="text">This text color changes based on the boolean value.</p> -->
-    <!--   <button on:click={toggleColor}>Toggle Color</button> -->
-    <!-- </div> -->
-
     <div class="grid grid-cols-2 gap-2">
       {#if paletteFetched}
         <section
@@ -324,6 +394,50 @@
           <p class="text-md mb-4" style={`color: ${darkerDominantOklch};`}>
             {$dominantColorStore}
           </p>
+        </section>
+      {/if}
+
+      <!-- Gradient additional section -->
+      {#if paletteFetched}
+        <section class="flex w-full max-w-md flex-col rounded-lg shadow-md">
+          <div
+            style={`background-image: radial-gradient(circle, ${darkestChromaticOklch} 0%,  ${darkestOklch} 85%);`}
+            class="flex-1 rounded-lg"
+          >
+            <h2
+              class="text-md h-1/2 p-2 font-bold"
+              style={`color: ${lightestColor};`}
+            >
+              Gradient
+            </h2>
+            <!-- <pre -->
+            <!--   style={`background-color: ${darkerDominantOklch};`} -->
+            <!--   class="h-1/2 overflow-y-scroll p-1 text-xs"> -->
+            <!--   {dominantOklch} -->
+            <!-- </pre> -->
+          </div>
+        </section>
+      {/if}
+
+      <!-- First additional section -->
+      {#if paletteFetched}
+        <section class="flex w-full max-w-md flex-col rounded-lg shadow-md">
+          <div
+            style={`background-color: ${hexColor};`}
+            class="h-1/2 flex-1 rounded-t-lg"
+          >
+            <h2 class="text-md h-1/2 p-2 font-bold">Tailwind Color</h2>
+            <p class="h-1/2 p-2 text-lg">
+              {colorInfo.colorName}
+              {colorInfo.shade}
+            </p>
+          </div>
+          <div
+            style={`background-color: ${$dominantColorStore};`}
+            class="h-1/2 flex-1 rounded-b-lg p-2 font-mono"
+          >
+            {$dominantColorStore}
+          </div>
         </section>
       {/if}
 
@@ -343,22 +457,17 @@
           </div>
         </section>
       {/if}
-      <!-- {#if cssOklchColor} -->
-      <!--   <section -->
-      <!--     style={`background-color: ${cssOklchColor};`} -->
-      <!--     class="w-full max-w-md rounded-lg bg-white p-6 shadow-md" -->
-      <!--   > -->
-      <!--     <h2 class="mb-4 text-xl font-bold">oklch Color</h2> -->
-      <!--   </section> -->
-      <!-- {/if} -->
     </div>
 
     {#if buttonVisible}
       <button
-        on:click={doItAll}
+        on:click={fetchPalette}
         transition:fade
         class="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-amber-600 px-6 font-medium text-neutral-200 transition hover:scale-110"
-        ><span>Fetch Palette</span>
+        ><span
+          >Fetch Palette<br />
+          <p class="font-lg">{countdown}</p></span
+        >
         <div
           class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]"
         >
@@ -421,5 +530,16 @@
   }
   :global(body) {
     color: var(--text-color);
+  }
+  .countdown {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .dark {
+    color: black;
+  }
+
+  .light {
+    color: white;
   }
 </style>
