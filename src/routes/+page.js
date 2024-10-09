@@ -9,9 +9,7 @@ const thumbnailUrl = get(newYtUrl);
 
 export const load = async ({ fetch, params }) => {
   const colorRes = await fetch(
-    `/api/color?${new URLSearchParams({
-      image: thumbnailUrl
-    }).toString()}`
+    `/api/color?${new URLSearchParams({ image: thumbnailUrl }).toString()}`
   );
   if (colorRes.ok) {
     const colorJson = await colorRes.json();

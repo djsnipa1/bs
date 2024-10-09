@@ -2,8 +2,6 @@ export async function GET({ url }) {
   const id = url.searchParams.get('id');
   const fetchUrl = url.searchParams.get('fetchUrl');
 
-  console.log(typeof fetchUrl, fetchUrl);
-
   let imageUrl;
 
   if (!id) {
@@ -11,12 +9,9 @@ export async function GET({ url }) {
       return new Response('id or fetchUrl is required', { status: 400 });
     } else {
       imageUrl = fetchUrl;
-      console.log(`imageUrl is ${fetchUrl}`)
     }
   } else {
     imageUrl = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-    // const imageUrl = `https://img.youtube.com/vi/pgtF0Zdcpbo/hqdefault.jpg`;
-    console.log(`imageUrl is ${imageUrl}`)
   }
   const response = await fetch(imageUrl);
 

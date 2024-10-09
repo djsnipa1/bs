@@ -67,3 +67,5 @@ export const imageUrlStore = writable(null);
 export const culoriSortColors = writable({});
 
 export const dominantColorStore = writable(null);
+
+export const paletteColorStore = writable([]);

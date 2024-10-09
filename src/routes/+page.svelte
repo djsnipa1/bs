@@ -37,7 +37,11 @@
 
   export let data;
 
-  $: color = data.color;
+  $: vibrantColors = data.vibrantColors;
+
+  if (vibrantColors) {
+    console.log(`vibrantRGBA: ${vibrantColors}`);
+  }
 
   let skipToIntro = true;
   let player;
@@ -80,8 +84,6 @@
   export let max = 33;
   export let step = 3;
   export let value = 0;
-
-  let style = '';
 
   $: style = `width: ${value}vw; height: ${value}px;`;
 

@@ -1,6 +1,7 @@
 <script>
   import { videoId } from '$lib/stores/store.js';
   import { getPalette } from '$lib/util/getColors.js';
+  import { getVividColors } from '$lib/util/getVivid.js';
 
   // let url = `https://img.youtube.com/vi/pgtF0Zdcpbo/hqdefault.jpg`;
   // let url = 'https://picsum.photos/300/200';
@@ -9,8 +10,10 @@
   let palette = [];
   let dominantColor = [];
   let allColors = {};
+  let vibrantColor = null;
 
   async function fetchPalette() {
+    await fetchVividPalette();
     try {
       const result = await getPalette(url);
       palette = result.palette;
@@ -21,6 +24,25 @@
       console.log('allColors: ', allColors);
       console.log('Palette:', palette);
       console.log('Dominant Color:', dominantColor);
+    } catch (error) {
+      console.error('Error fetching palette:', error);
+    }
+  }
+
+  async function fetchVividPalette() {
+    try {
+      const result = await getVividColors(url);
+      const vibrant = result;
+      // const vibrantColors = result.vibrantColors;
+      // const vibrantRGBA = result.vibrantRGBA;
+
+      // allColors = { dominantColor: dominantColor, ...palette };
+
+      console.log('vibrant hex: ', vibrant);
+      // console.log('vibrantColors:', vibrantColors);
+      // console.log('vibrantRGBA:', vibrantRGBA);
+      vibrantColor = vibrant;
+      return vibrant;
     } catch (error) {
       console.error('Error fetching palette:', error);
     }
@@ -46,6 +68,13 @@
       <h3>Dominant Color</h3>
       <div class="box" style={`background-color: ${dominantColor};`}></div>
       {dominantColor}
+    </div>
+  {/if}
+  {#if vibrantColor}
+    <div>
+      <h3>Vibrant</h3>
+      <div class="box" style={`background-color: ${vibrantColor};`}></div>
+      {vibrantColor}
     </div>
   {/if}
 </div>

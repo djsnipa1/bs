@@ -39,5 +39,6 @@ export const GET = async ({ url, fetch }) => {
       palette: vibrantPalette
     });
   }
-  return json({ color: null });
+  // return json({ color: null });
+  return json();
 };
