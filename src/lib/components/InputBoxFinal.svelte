@@ -1,12 +1,12 @@
 <script>
   import { PasteButton } from '$lib';
   import {
+    debugModeEnabled,
     isUrlOpen,
-    videoId,
     menuOpen,
-    showYoutubeTransition,
     showCircleAnimation,
-    debugModeEnabled
+    showYoutubeTransition,
+    videoId
   } from '$lib/stores/store.js';
   import getVideoId from 'get-video-id';
 
@@ -50,7 +50,7 @@
   }
 
   function fill() {
-    inputValue = 'https://youtu.be/OVTcnWT00s8';
+    inputValue = 'https://youtu.be/3gXLdl-aj_w';
     handleInput({ target: { value: inputValue } });
   }
 </script>

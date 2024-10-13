@@ -1,5 +1,8 @@
 <script>
-  import { getPaletteFromImage } from '$lib/util/vibrant';
+  import {
+    getPaletteFromImage,
+    getVibrantColorFromImage
+  } from '$lib/util/vibrant';
   import { onMount } from 'svelte';
 
   let getRandomNumber = (num) => {
@@ -20,6 +23,7 @@
   let imageUrl = `api/fetch-image?${getNewParams(getRandomNumber(10000))}`;
 
   let palette = {};
+  let vibrantColor = null;
 
   let loadNewImage = async () => {
     let newImageUrl = `api/fetch-image?${getNewParams(getRandomNumber(10000))}`;
@@ -30,6 +34,8 @@
   onMount(async () => {
     palette = await getPaletteFromImage(imageUrl);
     // console.log(Object.values(palette));
+    vibrantColor = await getVibrantColorFromImage(imageUrl);
+    console.log('vibrantColor: ', vibrantColor);
   });
 </script>
 

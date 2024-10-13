@@ -28,20 +28,13 @@
     menuOpen,
     showCircleAnimation,
     showYoutubeTransition,
-    videoId
+    videoId,
+    youtubeThumbnailUrl
   } from '$lib/stores/store.js';
   import { tailwindSize } from '$lib/util/tailwindSize.js';
   import { onMount } from 'svelte';
   import { copy } from 'svelte-copy';
   import { fade } from 'svelte/transition';
-
-  export let data;
-
-  $: vibrantColors = data.vibrantColors;
-
-  if (vibrantColors) {
-    console.log(`vibrantRGBA: ${vibrantColors}`);
-  }
 
   let skipToIntro = true;
   let player;

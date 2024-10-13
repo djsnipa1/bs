@@ -10,9 +10,9 @@ export const youtubeUrl = writable('https://youtu.be/9B1SQX9a_hU');
 export const videoId = writable('9B1SQX9a_hU');
 
 // Define the dependent store based on the base store
-export const newYtUrl = derived(
+export const youtubeThumbnailUrl = derived(
   videoId,
-  ($videoId) => `https://img.youtube.com/vi/${$videoId}/hqdefault.jpg` // Constructing the URL based on videoId
+  ($videoId) => `api/fetch-image?id=${$videoId}`
 );
 
 export const cssPosition = writable(0);
@@ -69,3 +69,5 @@ export const culoriSortColors = writable({});
 export const dominantColorStore = writable(null);
 
 export const paletteColorStore = writable([]);
+
+export const vibrantColorStore = writable(null);

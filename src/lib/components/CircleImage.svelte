@@ -1,21 +1,24 @@
 <script>
-  import { ImageFetchNew } from '$lib';
   import {
     debugModeEnabled,
     isVideoLoaded,
     showYoutubeTransition,
-    videoId
+    vibrantColorStore,
+    youtubeThumbnailUrl
   } from '$lib/stores/store.js';
+  import { getVibrantColorFromImage } from '$lib/util/vibrant';
   import anime from 'animejs';
   import { onMount } from 'svelte';
 
-  let thumbnailUrl, tl;
+  let tl;
   let loopAnimation = false;
+  let vibrantColor = null;
 
   let thumbnail, progress, scrubber, playBtn, pauseBtn, restartBtn;
 
-  onMount(() => {
-    thumbnailUrl = `https://img.youtube.com/vi/${$videoId}/hqdefault.jpg`;
+  onMount(async () => {
+    vibrantColor = await getVibrantColorFromImage($youtubeThumbnailUrl);
+    vibrantColorStore.set(vibrantColor);
 
     // parent div to attach the following elements
     const parentDiv = document.querySelector('#parentDiv');
@@ -42,7 +45,6 @@
     function easeInCirc(x) {
       return 1 - Math.sqrt(1 - Math.pow(x, 2));
     }
-
 
     if ($debugModeEnabled) {
       // Get the scrubber elements
@@ -272,9 +274,12 @@
       //  begin: function() { whiteBlurAnim.pause()}
     });
 
-    tl.add(circlesScaling('#circle4', {
-        borderWidth: [3, 3],
-    }), '-=1100');
+    tl.add(
+      circlesScaling('#circle4', {
+        borderWidth: [3, 3]
+      }),
+      '-=1100'
+    );
 
     // testing a for loop with dynamic divs
     /*
@@ -307,17 +312,20 @@
       }),
       '-=1550'
     );
- 
-    tl.add(circlesScaling('#circle3', {
-      borderWidth: [3, 3],
-      complete: function () {
-        showYoutubeTransition.set(true);
-       //  tl.restart();
-       //  tl.seek(0);
-       //  tl.pause();
+
+    tl.add(
+      circlesScaling('#circle3', {
+        borderWidth: [3, 3],
+        complete: function () {
+          showYoutubeTransition.set(true);
+          //  tl.restart();
+          //  tl.seek(0);
+          //  tl.pause();
         }
-    }), '-=1450');
-    
+      }),
+      '-=1450'
+    );
+
     /* 
     for (let i = 1; i <= 5; i++) {
       tl.add(circlesScaling(`#circle${i}`))
@@ -379,35 +387,17 @@
 
   <div
     class="absolute z-[3] size-[125px] overflow-hidden rounded-full border-2 border-white opacity-0"
-    style="--backgroundImage: url({thumbnailUrl})"
+    style="--backgroundImage: url({$youtubeThumbnailUrl})"
     id="blurOnlyDiv"
-  >
-    <!--
-    <img
-      src={thumbnailUrl}
-      alt="youtube_thumbnail"
-      class="h-full w-full scale-[1.35] transform object-cover opacity-100"
-    />
-    -->
-  
-  </div>
+  ></div>
 
-<div class="absolute z-[1] size-[125px] dropped-shadow">
-  <div
-    class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white drop-shadow-lg"
-    style="--backgroundImage: url({thumbnailUrl})"
-    id="thumbnail" bind:this={thumbnail}
-  >
-    
-  <ImageFetchNew />
-  </div>
-    <!--
-    <img
-      src={thumbnailUrl}
-      alt="youtube_thumbnail"
-      class="h-full w-full relative z-[2] scale-[1.35] transform object-cover opacity-100"
-    />
-    -->
+  <div class="dropped-shadow absolute z-[1] size-[125px]">
+    <div
+      class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white drop-shadow-lg"
+      style="--backgroundImage: url({$youtubeThumbnailUrl})"
+      id="thumbnail"
+      bind:this={thumbnail}
+    ></div>
   </div>
 </div>
 
@@ -560,7 +550,7 @@ background: radial-gradient(circle at center center, #31C77300 0%, #00000000 50%
     );
     background-blend-mode: color-dodge;
   }
-/*
+  /*
 .dropped-shadow {
   filter: drop-shadow(0.35rem 0.35rem 0.4rem rgba(0, 0, 0, 0.5));
 }

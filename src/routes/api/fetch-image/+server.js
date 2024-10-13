@@ -22,7 +22,7 @@ export async function GET({ url }) {
   const imageBuffer = await response.arrayBuffer();
   return new Response(imageBuffer, {
     headers: {
-      'Content-Type': response.headers.get('Content-Type') || 'image/jpeg',
+      'Content-Type': response.headers.get('Content-Type') || 'image/png',
     }
   });
 }
