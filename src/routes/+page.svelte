@@ -13,8 +13,6 @@
     UrlButton,
     YoutubeNewer
   } from '$lib';
-  import DominantColor from '$lib/components/DominantColor.svelte';
-  import DominantColorOrig from '$lib/components/DominantColorOrig.svelte';
   import {
     cssPosition,
     debugModeEnabled,
@@ -33,8 +31,6 @@
   } from '$lib/stores/store.js';
   import { tailwindSize } from '$lib/util/tailwindSize.js';
   import { onMount } from 'svelte';
-  import { copy } from 'svelte-copy';
-  import { fade } from 'svelte/transition';
 
   let skipToIntro = true;
   let player;
@@ -210,12 +206,6 @@
   {#if $showCircleAnimation}
     <CircleImage />
   {/if}
-
-  <div class="absolute bottom-40">
-    <h2>Dominant Color</h2>
-    <DominantColorOrig />
-    <!-- <DominantColor /> -->
-  </div>
 
   <HelpScreen />
 </div>
