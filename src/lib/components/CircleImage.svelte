@@ -46,6 +46,7 @@
       return 1 - Math.sqrt(1 - Math.pow(x, 2));
     }
 
+    // enable debug mode
     if ($debugModeEnabled) {
       // Get the scrubber elements
       scrubber = document.getElementById('scrubber');
@@ -54,6 +55,7 @@
       restartBtn = document.getElementById('restartBtn');
     }
 
+    // a common set of params for the circle animations.
     const circlesScaling = (targets, opts) => ({
       targets,
       opacity: [
@@ -108,6 +110,15 @@
       duration: 600
     });
 
+    tl.add(
+      {
+        targets: '#thumbnail',
+        duration: 600,
+        opacity: [0, 1]
+      },
+      '-=500'
+    );
+
     tl.add({
       targets: '#thumbnail',
       duration: 600,
@@ -118,11 +129,7 @@
         value: ['90%', '100%']
       },
       translateY: ['250px', '0px'],
-      opacity: {
-        value: [0, 1],
-        duration: 1
-      },
-      easing: 'easeOutQuad'
+      easing: 'easeOutExpo'
     });
 
     tl.add({
@@ -230,7 +237,6 @@
         { value: 1 },
         { value: [1, 0], duration: 1000 }
       ],
-      borderColor: 'rgb(200, 160, 255)',
       scale: {
         value: [0, 4],
         delay: -150
@@ -271,7 +277,6 @@
       },
       easing: 'easeOutQuad',
       duration: 200
-      //  begin: function() { whiteBlurAnim.pause()}
     });
 
     tl.add(
@@ -298,17 +303,18 @@
       }),
       '-=2200'
     );
+
     tl.add(
       circlesScaling('#gradientCircle', {
         duration: 1000
       }),
       '-=2050'
     );
+
     tl.add(
       circlesScaling('#circle2', {
         duration: 1000,
-        borderWidth: [5, 5],
-        borderColor: 'rgb(255, 0, 0)'
+        borderWidth: [5, 5]
       }),
       '-=1550'
     );
@@ -318,19 +324,10 @@
         borderWidth: [3, 3],
         complete: function () {
           showYoutubeTransition.set(true);
-          //  tl.restart();
-          //  tl.seek(0);
-          //  tl.pause();
         }
       }),
       '-=1450'
     );
-
-    /* 
-    for (let i = 1; i <= 5; i++) {
-      tl.add(circlesScaling(`#circle${i}`))
-    }
-    */
 
     if ($debugModeEnabled) {
       // Update the timeline progress when the scrubber value changes
@@ -391,9 +388,9 @@
     id="blurOnlyDiv"
   ></div>
 
-  <div class="dropped-shadow absolute z-[1] size-[125px]">
+  <div class="absolute z-[1] size-[125px]">
     <div
-      class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white drop-shadow-lg"
+      class="absolute z-[1] size-[125px] overflow-hidden rounded-full border-2 border-white opacity-0 drop-shadow-lg"
       style="--backgroundImage: url({$youtubeThumbnailUrl})"
       id="thumbnail"
       bind:this={thumbnail}
@@ -456,45 +453,11 @@
 {/if}
 
 <style>
-  bodyDiv {
-    font-size: 15pt;
-    background: rgb(63, 204, 251);
-    background: radial-gradient(
-      circle,
-      rgba(63, 204, 251, 1) 0%,
-      rgba(70, 90, 252, 1) 100%
-    );
-  }
-
-  #clipMask {
-    clip-path: inset(1px);
-  }
-  canvas {
-    width: 100%;
-    height: 100%;
-  }
   #parentDiv {
     position: relative;
     width: 100%;
     height: 60vh;
   }
-  #canvas-basic {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-  }
-
-  .circle-mask {
-    clip-path: circle(30%);
-  }
-
-  /* mask-image: radial-gradient(circle at center, black 0% 30%, transparent calc(50% - 5px), transparent 100%);
-  */
 
   #thumbnail {
     filter: blur(0);
@@ -506,10 +469,6 @@
     background-size: 200%;
     background-position: center;
     /*transition: filter 1s;*/
-  }
-
-  .radial-gradient {
-    background: radial-gradient(circle, transparent 40%, 70%, white);
   }
 
   #blurOnlyDiv {
@@ -549,38 +508,6 @@ background: radial-gradient(circle at center center, #31C77300 0%, #00000000 50%
       rgba(255, 255, 255, 0) 100%
     );
     background-blend-mode: color-dodge;
-  }
-  /*
-.dropped-shadow {
-  filter: drop-shadow(0.35rem 0.35rem 0.4rem rgba(0, 0, 0, 0.5));
-}
-*/
-  #reverseGradient2 {
-    border: red 2px solid;
-    background: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.5) 19%,
-      rgba(255, 255, 255, 1) 34%,
-      rgba(255, 255, 255, 1) 66%,
-      rgba(255, 255, 255, 0) 73%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    background-blend-mode: color-dodge;
-  }
-  .cropped-transform {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 55%;
-    transform: scale(0.5) translate(0, 5%);
-  }
-
-  #box {
-    width: 50px;
-    height: 50px;
-    background-color: #3498db;
   }
 
   #scrubber {
