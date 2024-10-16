@@ -1,2 +1,12 @@
-- [ ] Search for video
-- [ ] Not for desktop
+# ToDo
+
+##  Delete
+
+- [ ] DominantColor
+- [ ] DominantColorOrig
+
+Probably:
+
+- [ ] CreatePallette -> CreatePallette7
+ - [ ] dominantColorStore
+ - [ ]  paletteColorStore 
