@@ -1,9 +1,10 @@
 <!-- Main Route +page.svelte -->
-<script lang="ts">
+<script>
   import {
     Background,
     CircleImage,
     ControlsNew,
+    DebugButtons,
     HelpScreen,
     InputBoxFinal,
     Intro,
@@ -14,27 +15,24 @@
     YoutubeNewer
   } from '$lib';
   import {
-    cssPosition,
     debugModeEnabled,
     hideMainElements,
     isAnimationDone,
     isControlsOpen,
-    isPlayerReady,
     isUrlOpen,
     isVideoPaused,
     isVideoPlaying,
-    menuOpen,
     showCircleAnimation,
     showYoutubeTransition,
-    videoId,
-    youtubeThumbnailUrl
+    videoId
   } from '$lib/stores/store.js';
   import { tailwindSize } from '$lib/util/tailwindSize.js';
   import { onMount } from 'svelte';
 
+  // import { clickOutside } from 'svelte-outside';
+
   let skipToIntro = true;
   let player;
-  //let showBackground = true;
 
   onMount(async () => {
     if ($debugModeEnabled) {
@@ -69,16 +67,9 @@
     player.pauseVideo();
   }
 
-  export let min = -33;
-  export let max = 33;
-  export let step = 3;
-  export let value = 0;
-
-  $: style = `width: ${value}vw; height: ${value}px;`;
-
-  function clickOutside(element: HTMLElememt) {
-    function handleClick(event: MouseEvent) {
-      const targetEl = event.target as HTMLElement;
+  function clickOutside(element) {
+    function handleClick(event) {
+      const targetEl = event.target;
 
       if (element && !element.contains(targetEl)) {
         const clickOutsideEvent = new CustomEvent('outside');
@@ -98,6 +89,9 @@
   //  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
 </script>
 
+<!-- <div use:clickOutside={(e) => console.log('Clicked outside!')}> -->
+<!--   Click outside me! -->
+<!-- </div> -->
 <!-- background color -->
 <Background />
 <!-- <div class="background-gradient absolute z-[-10] min-h-screen min-w-full"></div> -->
@@ -115,9 +109,9 @@
   class="min-h-screen min-w-full touch-none border-0
   landscape:hidden {$hideMainElements ? 'hidden' : ''}"
 >
-  <div
-    class="relative top-20 z-[7500] h-20 w-20 border-blue-500 bg-pink-500"
-  ></div>
+  <!-- <div -->
+  <!--   class="relative top-20 z-[7500] h-20 w-20 border-blue-500 bg-pink-500" -->
+  <!-- ></div> -->
 
   <div
     class="{!$isUrlOpen ? 'endPos' : 'startPos'} absolute z-[450] min-w-full"
@@ -132,6 +126,19 @@
     <InputBoxFinal />
   </div>
 
+  <!-- <div -->
+  <!--   class="{!$isUrlOpen ? 'endPos' : 'startPos'} absolute z-[450] min-w-full" -->
+  <!--   on:outside={() => { -->
+  <!--     if (!$isUrlOpen) { -->
+  <!--       // $isUrlOpen = false; -->
+  <!--       isUrlOpen.update((value) => !value); -->
+  <!--     } -->
+  <!--   }} -->
+  <!--   use:clickOutside -->
+  <!-- > -->
+  <!--   <InputBoxFinal /> -->
+  <!-- <sdiv> -->
+
   <!-- changed z-index of this button to get it to work with CircleImage and HelpScreen present -->
   <button
     class="button btn btn-xs absolute z-[10000] items-center justify-center"
@@ -142,7 +149,7 @@
       //}
     }}>showYoutubeTransition: {$showYoutubeTransition}</button
   >
-
+  <DebugButtons />
   {#if $showYoutubeTransition}
     <div class="absolute right-0 top-0 z-[-5] w-screen">
       <Mask>
@@ -253,7 +260,7 @@
     transition: transform 0.6s cubic-bezier(0.5, 0, 0.75, 0);
   }
   .endPos {
-    transform: translateY(-34px);
+    transform: translateY(47px);
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   }
   .displayNone {
