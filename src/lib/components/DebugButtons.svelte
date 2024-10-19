@@ -2,23 +2,11 @@
   import { showYoutubeTransition } from '$lib/stores/store.js';
   import { fade } from 'svelte/transition';
 
-  $: uppercase = $showYoutubeTransition.toString().toUpperCase();
   // You can add any necessary logic here
 </script>
 
-<div class="absolute bottom-[16.67vh] w-full px-4 sm:px-6 md:px-8">
+<div class="fixed bottom-4 z-[1000000] w-full px-4 sm:px-6 md:px-8">
   <div class="grid grid-cols-2 gap-4">
-    <!-- <button -->
-    <!--   class="button-style flex flex-col items-center justify-center" -->
-    <!--   on:click={() => { -->
-    <!--     showYoutubeTransition.update((value) => !value); -->
-    <!--   }} -->
-    <!-- > -->
-    <!--   <span class="text-6xl text-white/50" -->
-    <!--     >{$showYoutubeTransition.toUppercas()}</span -->
-    <!--   > -->
-    <!--   <span class="text-center">showYoutubeTransition</span> -->
-    <!-- </button> -->
     <button
       class="button-style relative flex items-center justify-center"
       on:click={() => {
@@ -38,8 +26,8 @@
         >showYoutubeTransition</span
       >
     </button>
-    <button class="button-style"> Button 2 </button>
-    <button class="button-style"> Button 3 </button>
+    <button class="button-style" on:click>Fill with URL</button>
+    <button class="button-style" on:click>Switch Gradient </button>
     <button class="button-style"> Button 4 </button>
   </div>
 </div>

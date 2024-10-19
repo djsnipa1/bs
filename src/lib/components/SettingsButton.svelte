@@ -3,8 +3,10 @@
 </script>
 
 <button
+  class="z-[1000000]"
   {...$$restProps}
   on:click={() => {
+    console.log('click settings');
     isControlsOpen.update((value) => !value);
     //isControlsOpen.set(true);
   }}

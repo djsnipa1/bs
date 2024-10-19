@@ -2,6 +2,7 @@
   import '../app.pcss';
   // Supports weights 100-900
   import '@fontsource-variable/sofia-sans';
+
   import { hideMainElements } from '$lib/stores/store.js';
 </script>
 
@@ -18,6 +19,10 @@
 </div>
 
 <style>
+  :global(html) {
+    height: -webkit-fill-available;
+  }
+
   :global(body) {
     @apply w-full;
     -webkit-font-smoothing: antialiased;
@@ -25,6 +30,9 @@
     overflow: hidden;
     position: fixed;
     -webkit-overflow-scrolling: touch;
+    min-height: 100vh;
+    /* mobile viewport bug fix */
+    min-height: -webkit-fill-available;
   }
 
   .gradient {

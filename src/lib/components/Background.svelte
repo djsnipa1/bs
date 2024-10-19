@@ -73,7 +73,7 @@
     .map(([key, value]) => `--${key}:${value}`)
     .join(';');
 
-  function switchGradient() {
+  export function switchGradient() {
     currentGradients =
       currentGradients === gradients ? newGradients : gradients;
   }

@@ -10,6 +10,12 @@
   } from '$lib/stores/store.js';
   import getVideoId from 'get-video-id';
 
+  // import { createEventDispatcher } from 'svelte';
+
+  // const dispatch = createEventDispatcher();
+
+  let fillElement;
+
   $: currentBind = '';
   let inputBox;
 
@@ -48,11 +54,13 @@
       showCircleAnimation.set(true);
     }
   }
-
-  function fill() {
+  export const fill = () => {
     inputValue = 'https://youtu.be/3gXLdl-aj_w';
     handleInput({ target: { value: inputValue } });
-  }
+    if ($isUrlOpen) {
+      isUrlOpen.set(false);
+    }
+  };
 </script>
 
 <div class="glass relative flex h-16 items-center justify-center">

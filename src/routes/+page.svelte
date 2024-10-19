@@ -33,6 +33,7 @@
 
   let skipToIntro = true;
   let player;
+  let fillFunction, switchGradFunction;
 
   onMount(async () => {
     if ($debugModeEnabled) {
@@ -93,7 +94,7 @@
 <!--   Click outside me! -->
 <!-- </div> -->
 <!-- background color -->
-<Background />
+<Background bind:this={switchGradFunction} />
 <!-- <div class="background-gradient absolute z-[-10] min-h-screen min-w-full"></div> -->
 <!-- end background color -->
 
@@ -123,14 +124,14 @@
     }}
     use:clickOutside
   >
-    <InputBoxFinal />
+    <InputBoxFinal bind:this={fillFunction} />
   </div>
 
   <!-- <div -->
   <!--   class="{!$isUrlOpen ? 'endPos' : 'startPos'} absolute z-[450] min-w-full" -->
   <!--   on:outside={() => { -->
   <!--     if (!$isUrlOpen) { -->
-  <!--       // $isUrlOpen = false; -->
+  <!--      // $isUrlOpen = false; -->
   <!--       isUrlOpen.update((value) => !value); -->
   <!--     } -->
   <!--   }} -->
@@ -139,17 +140,13 @@
   <!--   <InputBoxFinal /> -->
   <!-- <sdiv> -->
 
-  <!-- changed z-index of this button to get it to work with CircleImage and HelpScreen present -->
-  <button
-    class="button btn btn-xs absolute z-[10000] items-center justify-center"
-    on:click={() => {
-      //if (!$showYoutubeTransition) {
-      // $isUrlOpen = false;
-      showYoutubeTransition.update((value) => !value);
-      //}
-    }}>showYoutubeTransition: {$showYoutubeTransition}</button
-  >
-  <DebugButtons />
+  {#if debugModeEnabled}
+    <DebugButtons
+      on:click={fillFunction.fill}
+      on:click={switchGradFunction.switchGradient}
+    />
+  {/if}
+
   {#if $showYoutubeTransition}
     <div class="absolute right-0 top-0 z-[-5] w-screen">
       <Mask>
@@ -206,10 +203,6 @@
 <div
   class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
 >
-  <div class="absolute bottom-20 text-2xl text-yellow-500">
-    {$showCircleAnimation}
-  </div>
-
   {#if $showCircleAnimation}
     <CircleImage />
   {/if}

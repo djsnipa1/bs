@@ -1,11 +1,11 @@
 <script>
-  import anime from 'animejs';
-  import { YoutubeLogo } from '$lib';
   import { browser } from '$app/environment';
-  import { blur } from 'svelte/transition';
-  import { cubicIn } from 'svelte/easing';
-  import { customFadeBlur } from '$lib/transitions/CustomFadeBlur.js';
+  import { YoutubeLogo } from '$lib';
   import { isUrlOpen } from '$lib/stores/store.js';
+  import { customFadeBlur } from '$lib/transitions/CustomFadeBlur.js';
+  import anime from 'animejs';
+  import { cubicIn } from 'svelte/easing';
+  import { blur } from 'svelte/transition';
 
   let show = false;
 
