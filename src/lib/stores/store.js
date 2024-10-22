@@ -70,4 +70,6 @@ export const dominantColorStore = writable(null);
 
 export const paletteColorStore = writable([]);
 
-export const vibrantColorStore = writable(null);
+export const vibrantColorStore = writable({});
+
+

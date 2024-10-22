@@ -33,7 +33,7 @@
 
   let skipToIntro = true;
   let player;
-  let fillFunction, switchGradFunction;
+  let fillFunction, switchGradFunction, helpHandleClick;
 
   onMount(async () => {
     if ($debugModeEnabled) {
@@ -144,6 +144,7 @@
     <DebugButtons
       on:click={fillFunction.fill}
       on:click={switchGradFunction.switchGradient}
+      on:click={helpHandleClick.handleClick}
     />
   {/if}
 
@@ -207,7 +208,7 @@
     <CircleImage />
   {/if}
 
-  <HelpScreen />
+  <HelpScreen bind:this={helpHandleClick} />
 </div>
 
 <!--

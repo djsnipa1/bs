@@ -1,4 +1,5 @@
 <script>
+  import { DebugColorPalette } from '$lib';
   import { vibrantColorStore } from '$lib/stores/store.js';
   import { converter } from 'culori';
   import { formatHex, formatRgb, modeLch, modeOklch, useMode } from 'culori/fn';
@@ -10,7 +11,7 @@
     hexColorDarker,
     hexColorLighter = null;
 
-  $: if ($vibrantColorStore !== null) {
+  $: if (Object.keys($vibrantColorStore).length !== 0) {
     let testColor = toLch($vibrantColorStore);
     console.log('testColor: ', testColor);
 
@@ -33,9 +34,14 @@
     hexColor = formatHex(testColor);
     hexColorDarker = formatHex(testColorDarker);
     hexColorLighter = formatHex(testColorLighter);
-    console.log('hexColor: ', hexColor);
-    // formatHex(testColorDarker)
-    // formatRgb(testColorDarker)
+
+    console.log(
+      `%c${hexColor}`,
+      `background-color: ${hexColor}; font-weight: bold; color:white;`
+    );
+
+    let vibrantObject = { hexColor, hexColorDarker, hexColorLighter };
+    vibrantColorStore.set(vibrantObject);
   }
 
   let gradients = {
@@ -50,14 +56,6 @@
   //   color2: 'orange',
   //   color3: 'orangered',
   //   color4: 'red'
-  // };
-  const hexColors = ['#FF5733', '#33FFCE', '#A633FF', '#FF33D6'];
-
-  // let newGradients = {
-  //   color1: hexColors[0],
-  //   color2: hexColors[1],
-  //   color3: hexColors[2],
-  //   color4: hexColors[3]
   // };
 
   $: newGradients = {
@@ -80,9 +78,13 @@
 </script>
 
 <div style={cssVarStyles} class="absolute min-h-screen min-w-full">
-  <div
-    class="background-gradient absolute z-[-10] min-h-screen min-w-full"
-  ></div>
+  <div class="background-gradient absolute z-[-10] min-h-screen min-w-full">
+    <div class="relative flex h-screen w-screen items-center justify-center">
+      <div class="absolute bottom-1/4 -translate-y-2/4 transform">
+        <DebugColorPalette />
+      </div>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -91,8 +93,18 @@
     --color2: hsl(203deg 100% 43%);
     --color3: hsl(213deg 80% 40%);
     --color4: hsl(215deg 80% 29%);
+    --oklch-grad: linear-gradient(
+      circle in oklch decreasing hue,
+      color(display-p3 0.25 0.25 1) 0%,
+      color(display-p3 1 0.85 0.3) 33%,
+      oklch(0.8 0.3 236) 66%,
+      oklch(0.8 0.3 146) 100%
+    );
   }
 
+  .oklch-gradient {
+    background-image: var(--oklch-grad);
+  }
   .background-gradient {
     background-image: radial-gradient(
       circle at 50% 25%,
