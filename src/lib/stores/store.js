@@ -72,4 +72,5 @@ export const paletteColorStore = writable([]);
 
 export const vibrantColorStore = writable({});
 
+export const triggerStore = writable(false);
 

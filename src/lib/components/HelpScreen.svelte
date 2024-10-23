@@ -1,7 +1,7 @@
 <script>
   import { browser } from '$app/environment';
   import { YoutubeLogo } from '$lib';
-  import { isUrlOpen } from '$lib/stores/store.js';
+  import { isUrlOpen, triggerStore } from '$lib/stores/store.js';
   import { customFadeBlur } from '$lib/transitions/CustomFadeBlur.js';
   import anime from 'animejs';
 
@@ -13,6 +13,12 @@
     isUrlOpen.set(false);
     startDelay();
   }
+
+  function myFunction() {
+    console.log('Function in Component1 is called');
+  }
+
+  $: $triggerStore, myFunction();
 
   let helpTitle, arrow, helpText1, helpText2, helpText3;
 

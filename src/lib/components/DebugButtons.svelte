@@ -1,9 +1,14 @@
 <script>
   import {
     showYoutubeTransition,
+    triggerStore,
     vibrantColorStore
   } from '$lib/stores/store.js';
   import { fade } from 'svelte/transition';
+
+  function handleClick() {
+    triggerStore.set(true);
+  }
 
   $: currentHexColors = $vibrantColorStore;
   let hexColors = null;
@@ -83,7 +88,7 @@
       on:click
       >Switch Gradient
     </button>
-    <button class="button-style" on:click>Button 4</button>
+    <button class="button-style" on:click={handleClick}>Button 4</button>
   </div>
 </div>
 
@@ -98,7 +103,7 @@
 
   /* @apply z-[1000000] select-none rounded-lg bg-gradient-to-b from-zinc-700 via-zinc-700 to-zinc-800 p-4 px-3 text-xs font-semibold leading-8 text-zinc-50 shadow-[0_-1px_0_1px_rgba(0,0,0,0.8)_inset,0_0_0_1px_rgb(9_9_11)_inset,0_0.5px_0_1.5px_#71717a_inset] drop-shadow-lg  active:text-zinc-400 md:text-base; */
   .button-style {
-    @apply z-[1000000] select-none rounded-lg bg-gradient-to-b from-zinc-700 via-zinc-700 to-zinc-800 p-4 px-3 text-xs font-semibold leading-8 text-zinc-50 shadow-[inset_-1px_-1px_0_0_rgba(0,0,0,0.75),inset_0_0_0_1px_rgb(9_9_11),inset_1px_1px_0_0.5px_#71717a] drop-shadow-lg  active:text-zinc-400 md:text-base;
+    @apply z-[1000000] select-none rounded-lg bg-gradient-to-b from-zinc-700 via-zinc-700 to-zinc-800 p-4 px-3 text-xs font-semibold leading-8 text-zinc-50 shadow-[inset_-1px_-1px_0_0_rgba(0,0,0,0.75),inset_0_0_0_1px_rgb(9_9_11),inset_1px_1px_0_0.5px_#71717a] drop-shadow-lg active:text-zinc-400 md:text-base;
     /* @apply z-[1000000] select-none rounded-lg bg-gradient-to-b from-zinc-700 via-zinc-700 to-zinc-800 p-4 px-3 text-xs font-semibold leading-8 text-zinc-50  drop-shadow-lg  active:text-zinc-400 md:text-base; */
     /* box-shadow: */
     /*   inset -1px -1px 0 0px var(--hexColor), */
@@ -114,7 +119,7 @@
   /* } */
 
   .background-gradient {
-    @apply z-[1000000] select-none rounded-lg p-4 px-3 text-xs font-semibold leading-8 text-zinc-50 drop-shadow-lg  active:text-zinc-400 md:text-base;
+    @apply z-[1000000] select-none rounded-lg p-4 px-3 text-xs font-semibold leading-8 text-zinc-50 drop-shadow-lg active:text-zinc-400 md:text-base;
     background-image: linear-gradient(
       to bottom,
       var(--hexColorLighter) 0%,
