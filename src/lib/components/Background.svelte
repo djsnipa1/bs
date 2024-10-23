@@ -16,7 +16,10 @@
     console.log('testColor: ', testColor);
 
     let okLchColor = toOklch($vibrantColorStore);
-    console.log('okLchColor : ', okLchColor);
+    console.log(
+      `%cokLchColor: ${okLchColor}`,
+      `background-color: oklch(${hexColor.l} ${hexColor.c} ${hexColor.h}; font-weight: bold; color:white;`
+    );
 
     const testColorDarker = {
       ...testColor,
