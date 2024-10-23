@@ -1,10 +1,9 @@
 <script>
-  const colors = [
-    { name: 'Coral', hex: '#FF6B6B' },
-    { name: 'Teal', hex: '#4ECDC4' },
-    { name: 'Yellow', hex: '#FFD93D' },
-    { name: 'Lavender', hex: '#6A0572' }
-  ];
+  import { debugColorPaletteStore } from '$lib/stores/store';
+
+  let colors = $debugColorPaletteStore;
+
+  // const colors = ['#FF6B6B', '#4ECDC4', '#FFD93D', '#6A0572'];
 </script>
 
 <div class="rounded-md bg-white p-2 text-xs shadow-lg">
@@ -14,10 +13,10 @@
       <div class="flex flex-col items-center">
         <div
           class="h-6 w-6 rounded-sm shadow-inner"
-          style="background-color: {color.hex};"
-          title={color.name}
+          style="background-color: {color};"
+          title={color}
         ></div>
-        <span class="mt-0.5 text-[8px]">{color.hex}</span>
+        <span class="mt-0.5 text-[8px]">{color}</span>
       </div>
     {/each}
   </div>

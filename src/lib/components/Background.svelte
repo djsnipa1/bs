@@ -1,6 +1,7 @@
 <script>
   import { DebugColorPalette } from '$lib';
   import { vibrantColorStore } from '$lib/stores/store.js';
+  import { oklchObj2String } from '$lib/util/colorUtils';
   import { converter } from 'culori';
   import { formatHex, formatRgb, modeLch, modeOklch, useMode } from 'culori/fn';
 
@@ -16,9 +17,12 @@
     console.log('testColor: ', testColor);
 
     let okLchColor = toOklch($vibrantColorStore);
+    let oklchString = oklchObj2String(okLchColor);
+    console.log('okLchColor: ', okLchColor);
     console.log(
-      `%cokLchColor: ${okLchColor}`,
-      `background-color: oklch(${hexColor.l} ${hexColor.c} ${hexColor.h}; font-weight: bold; color:white;`
+      `%c${oklchString}`,
+      `background-color: ${oklchString}; color: #fff;`
+      // `background-color: oklch(${okLchColor.l} ${okLchColor.c} ${okLchColor.h}); color: #fff;`
     );
 
     const testColorDarker = {

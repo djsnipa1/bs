@@ -1,5 +1,13 @@
 import { writable, derived } from 'svelte/store';
 
+// const colors = [
+//   { mode: 'hex', color: '#FF6B6B' },
+//   { mode: 'hex', color: '#4ECDC4' },
+//   { mode: 'hex', color: '#FFD93D' },
+//   { mode: 'hex', color: '#6A0572' }
+// ];
+const colors = ['#FF6B6B', '#4ECDC4', '#FFD93D', '#6A0572'];
+
 const variables = {
   showCircleAnimationControls: true
 };
@@ -73,4 +81,6 @@ export const paletteColorStore = writable([]);
 export const vibrantColorStore = writable({});
 
 export const triggerStore = writable(false);
+
+export const debugColorPaletteStore = writable(colors);
 
