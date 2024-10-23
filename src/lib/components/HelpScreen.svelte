@@ -4,38 +4,23 @@
   import { isUrlOpen } from '$lib/stores/store.js';
   import { customFadeBlur } from '$lib/transitions/CustomFadeBlur.js';
   import anime from 'animejs';
-  import { cubicIn } from 'svelte/easing';
-  import { blur } from 'svelte/transition';
 
   let show = false;
 
-  function handleClick() {
+  export function handleClick() {
     show = !show;
     // setup();
     isUrlOpen.set(false);
     startDelay();
   }
 
-  let maskPath, glassBg, helpTitle, arrow, helpText1, helpText2, helpText3;
-  let wipeHover,
-    glassFade = false;
-
-  function delayedFunction() {
-    console.log('This runs after 1 second');
-  }
+  let helpTitle, arrow, helpText1, helpText2, helpText3;
 
   function startDelay() {
     setTimeout(setup, 100);
   }
 
-  function testthis() {
-    animation2.play();
-    wipeHover = true;
-  }
-
   function setup() {
-    wipeHover = false;
-
     let animation = anime.timeline({
       easing: 'easeOutQuad',
       autoplay: true,
@@ -75,25 +60,6 @@
       }
     });
 
-    /* animation.finished.then(function() {
-  console.log('finished')
-  animation2.play()
-});
-     */
-
-    /*  
-      animation2.add({
-        targets: arrow,
-        duration: 1500,
-        begin: () => {wipeHover = true}
-      });
-      animation2.add({
-        targets: arrow,
-        duration: 2000,
-        translateY: [0, -30]
-      })
-      */
-
     animation2.add({
       targets: '.rectangle-reveal',
       clipPath: [
@@ -127,16 +93,6 @@
       // delay:
     });
 
-    /*
-     animation2.add({
-      targets: helpText1,
-      outlineColor: {
-       value: [helpBorder, 'transparent'],
-       duration: 1000
-      },
-      delay: 1500
-     })
-*/
     animation.play();
   }
 
@@ -186,7 +142,7 @@
 
 {#if show}
   <div
-    class="relative flex flex min-h-screen flex-row flex-nowrap items-center justify-center overflow-hidden"
+    class="relative flex min-h-screen flex-row flex-nowrap items-center justify-center overflow-hidden"
   >
     <!--<div class="form-wrapper 
          min-h-screen
@@ -220,7 +176,7 @@
           class="list-outside list-decimal border border-yellow-500 marker:text-slate-700"
         >
           <li
-            class="outside border-box second-glass flex justify-evenly border-0"
+            class="outside border-box flex justify-evenly border-0"
             id="helpText1"
             bind:this={helpText1}
           >
@@ -313,9 +269,6 @@
     --wipe-position: 100%;
     --gradient-length: 20%;
   }
-  .Mask {
-    mask-image: linear-gradient(black 25%, transparent 50%);
-  }
 
   /*
   .wipe {
@@ -330,45 +283,9 @@
   }
   */
 
-  .wipeHover {
-    --wipe-position: calc(-1 * var(--gradient-length));
-  }
-
-  .gradient {
-    opacity: 50%;
-    /*   mask-image: linear-gradient(to bottom, black 55%, rgba(0, 0, 0, 0.01) 90%);  */
-    mask-image: linear-gradient(
-      to top,
-      black var(--wipe-position),
-      transparent calc(var(--wipe-position) + var(--gradient-length)),
-      transparent
-    );
-    transition: --wipe-position 1600ms cubic-bezier(0, 0.55, 0.45, 1);
-  }
-
-  .gradient:hover,
-  .gradientHover {
-    --wipe-position: calc(-1 * var(--gradient-length));
-  }
-
-  .puff-in-center {
-    animation: puff-in-center 1s cubic-bezier(0.5, 0, 0.75, 0) both;
-  }
-
   .help,
   .help-title {
     opacity: 0;
-  }
-
-  .arrowMask {
-    background-image: url('https://placehold.co/600x400.png');
-    background-size: cover;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    mask-image: linear-gradient(black 25%, transparent 50%);
-    mask-repeat: no-repeat;
-    animation: botToTop 5s forwards;
   }
 
   @keyframes botToTop {
@@ -393,34 +310,10 @@
     }
   }
 
-  /* Modified .wipe class to include the infinite animation */
-  .wipe {
-    -webkit-mask-image: linear-gradient(
-      to bottom right,
-      black var(--wipe-position),
-      transparent calc(var(--wipe-position) + var(--gradient-length)),
-      transparent
-    );
-    /* Add the animation property here 
-  animation: wipeAnimation 1200ms ease-in-out infinite;
-  */
-  }
-
   .rectangle-reveal {
     clip-path: inset(100% 0% 0% 0%); /* Initially clips the entire element */
     /*  animation: reveal-up 1s ease-in-out forwards; */
   }
-
-  /*
-@keyframes reveal-up {
-  from {
-    clip-path: inset(100% 0% 0% 0%);
-  }
-  to {
-    clip-path: inset(0% 0% 0% 0%); 
-  }
-}
-*/
 
   #helpText1 {
     /* box-shadow: 0 0 10px 5px rgba(255,255,0,0.6); */
@@ -440,9 +333,5 @@
 
   svg {
     overflow: visible;
-  }
-
-  .second-glass {
-    /* @apply glass shadow-none shadow-slate-700/40 ring ring-gray-200/5; */
   }
 </style>
