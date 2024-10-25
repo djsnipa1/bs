@@ -90,6 +90,13 @@
   //  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
 </script>
 
+<svelte:head>
+  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>
+    eruda.init();
+  </script>
+</svelte:head>
+
 <!-- <div use:clickOutside={(e) => console.log('Clicked outside!')}> -->
 <!--   Click outside me! -->
 <!-- </div> -->
