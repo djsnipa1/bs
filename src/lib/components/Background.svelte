@@ -79,6 +79,7 @@
     .join(';');
 
   export function switchGradient() {
+    // console.log(`%cPUSHED ON IT!`, `font-weight: bold; color: darkmagenta;`);
     currentGradients =
       currentGradients === gradients ? newGradients : gradients;
   }
