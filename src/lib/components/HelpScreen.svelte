@@ -8,6 +8,7 @@
   let show = false;
 
   export function handleClick() {
+    console.log('Function handeClick is called from HelpScreen.svelte');
     show = !show;
     // setup();
     isUrlOpen.set(false);
@@ -18,7 +19,7 @@
     console.log('Function in Component1 is called');
   }
 
-  $: $triggerStore, myFunction();
+  $: $triggerStore, handleClick();
 
   let helpTitle, arrow, helpText1, helpText2, helpText3;
 
