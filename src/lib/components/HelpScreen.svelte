@@ -28,6 +28,8 @@
   }
 
   function setup() {
+    if (typeof window === 'undefined') return; // Ensure this code runs only in the browser
+
     let animation = anime.timeline({
       easing: 'easeOutQuad',
       autoplay: true,
@@ -151,10 +153,10 @@
   <div
     class="relative flex min-h-screen flex-row flex-nowrap items-center justify-center overflow-hidden"
   >
-    <!--<div class="form-wrapper 
+    <!--<div class="form-wrapper
          min-h-screen
          [ p-4 md:p-6 lg:p-8 ]
-         [ flex justify-center items-center ]"> 
+         [ flex justify-center items-center ]">
   <div class="signup-form
                max-w-sm
                rounded-2xl
@@ -251,12 +253,12 @@
         id="arrow"
         bind:this={arrow}
         class="fill-slate-200 stroke-slate-700 stroke-2"
-        
+
      >
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
-          stroke-miterlimit="10" 
+          stroke-miterlimit="10"
           d="m717.524 995.254 18.95 6.785-14.737 10.665c64.754 91.093-12.532 238.678-12.532 238.678.123 1.398-4.694-.045-5.82.635 4.602-8.92 75.882-150.354 13.715-235.576l-12.282 10.417-2.067-20.021-3.6-19.804zm-14.37 257.206a.439.439 0 0 1 .231-.443l-.23.443z"
         />
       </svg>
