@@ -78,15 +78,25 @@
     .map(([key, value]) => `--${key}:${value}`)
     .join(';');
 
-  export function switchGradient() {
-    // console.log(`%cPUSHED ON IT!`, `font-weight: bold; color: darkmagenta;`);
+  export const switchGradient = () => {
+    // export function switchGradient() {
+    console.log(
+      `%cPUSHED ON IT!`,
+      `font-weight: bold; background-color: darkmagenta; color: #fff;`
+    );
     currentGradients =
       currentGradients === gradients ? newGradients : gradients;
-  }
+  };
 </script>
 
+<!-- background-image: radial-gradient( circle at 50% 25%, var(--color1) 0%, -->
+<!-- var(--color2) 33%, var(--color3) 67%, var(--color4) 100% ) -->
+<!-- <div class="bg-[radial-gradient(circle_at_50%_25%,color:--color1_0%,color:--color2_33%,color:--color3_67%,color:--color4_100%)]"> -->
 <div style={cssVarStyles} class="absolute min-h-screen min-w-full">
-  <div class="background-gradient absolute z-[-10] min-h-screen min-w-full">
+  <!-- <div class="background-gradient absolute z-[-10] min-h-screen min-w-full"> -->
+  <div
+    class="background-gradient-new absolute z-[-10] min-h-screen min-w-full bg-[radial-gradient(circle_at_50%_25%,var(--color1)_0%,var(--color2)_33%,var(--color3)_67%,var(--color4)_100%)]"
+  >
     <div class="relative flex h-screen w-screen items-center justify-center">
       <div class="absolute bottom-1/4 -translate-y-2/4 transform">
         <DebugColorPalette />
@@ -113,6 +123,15 @@
   .oklch-gradient {
     background-image: var(--oklch-grad);
   }
+
+  .background-gradient-new {
+    transition:
+      --color1 0.25s,
+      --color2 0.75s,
+      --color3 1.25s,
+      --color4 1.75s;
+  }
+
   .background-gradient {
     background-image: radial-gradient(
       circle at 50% 25%,

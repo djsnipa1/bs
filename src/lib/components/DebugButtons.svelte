@@ -6,9 +6,10 @@
   } from '$lib/stores/store.js';
   import { fade } from 'svelte/transition';
 
-  function handleClick() {
+  // function handleClick() {
+  export const handleClick = () => {
     triggerStore.set(true);
-  }
+  };
 
   $: currentHexColors = $vibrantColorStore;
   let hexColors = null;
@@ -83,6 +84,7 @@
       >
     </button>
     <button class="button-style" on:click>Fill with URL</button>
+
     <button
       class="background-gradient bg-gradient-to-b from-[color:--hexColor] via-[color:--hexColor] to-[color:--hexColorDarker] shadow-[inset_-1px_-1px_0_0_rgba(0,0,0,0.75),inset_0_0_0_1px_var(--shadow-color),inset_1px_1px_0_0.5px_var(--highlight-color)]"
       on:click
