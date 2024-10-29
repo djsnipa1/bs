@@ -7,7 +7,7 @@
     "build": "vite build",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "dev": "sleep 10 && vite dev --host",
+    "dev": "sleep 5 && vite dev --host",
     "tmole": "tmole 5173 | tee output.log",
     "devall": "run-p tmole dev",
     "format": "prettier --write .",

@@ -6,13 +6,14 @@
   } from '$lib/stores/store.js';
   import { fade } from 'svelte/transition';
 
-  let isToggled = true;
-
-  export const handleClick = () => {
-    isToggled = !isToggled;
-    triggerStore.set(isToggled);
+  // This is how I got the HelpScreen button to work
+  let helpScreenToggle = false;
+  let handleClick = () => {
+    helpScreenToggle = !helpScreenToggle;
+    triggerStore.set(helpScreenToggle);
   };
 
+  // This is all for the gradient animation on the button
   $: currentHexColors = $vibrantColorStore;
   let hexColors = null;
   $: hexColor = currentHexColors.hexColor ?? '#3f3f46';
@@ -56,9 +57,6 @@
     console.log('newHexColor: ', newHexColor);
     console.log('hexColors: ', hexColors);
   }
-
-  // $: console.log('finalCssVars: ', JSON.stringify(finalCssVars));
-  // You can add any necessary logic here
 </script>
 
 <div
@@ -92,11 +90,23 @@
       on:click
       >Switch Gradient
     </button>
-    <button class="button-style" on:click={handleClick}>
-      {#if isToggled}
-        Toggle Off
+    <button
+      class="button-style relative flex items-center justify-center"
+      on:click={handleClick}
+    >
+      <span
+        class="absolute inset-0 flex items-center justify-center text-5xl text-white/25"
+      >
+        {#if helpScreenToggle}
+          <p in:fade>TRUE</p>
+        {:else}
+          <p in:fade>FALSE</p>
+        {/if}
+      </span>
+      {#if helpScreenToggle}
+        Help Toggle Off
       {:else}
-        Toggle On
+        Help Toggle On
       {/if}
     </button>
   </div>

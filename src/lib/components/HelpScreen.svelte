@@ -5,14 +5,13 @@
   import { customFadeBlur } from '$lib/transitions/CustomFadeBlur.js';
   import anime from 'animejs';
 
-  let show = false;
-
   export function handleClick() {
-    console.log('Function handeClick is called from HelpScreen.svelte');
-    show = !show;
-    // setup();
-    isUrlOpen.set(false);
-    startDelay();
+    if (browser) {
+      console.log('Function handeClick is called from HelpScreen.svelte');
+      // setup();
+      isUrlOpen.set(false);
+      startDelay();
+    }
   }
 
   function myFunction() {
@@ -145,29 +144,14 @@
 
 <!-- <div class="min-w-full min-h-screen flex flex-col items-center justify-center"> -->
 
-<button class="btn absolute top-[300px] z-[5000]" on:click={handleClick}>
-  show {show}
-</button>
+<!-- <button class="btn absolute top-[300px] z-[5000]" on:click={handleClick}> -->
+<!--   show {show} -->
+<!-- </button> -->
 
-{#if show}
+{#if $triggerStore}
   <div
     class="relative flex min-h-screen flex-row flex-nowrap items-center justify-center overflow-hidden"
   >
-    <!--<div class="form-wrapper
-         min-h-screen
-         [ p-4 md:p-6 lg:p-8 ]
-         [ flex justify-center items-center ]">
-  <div class="signup-form
-               max-w-sm
-               rounded-2xl
-               text-[#1A2421]
-               backdrop-blur-lg
-               [ p-8 md:p-10 lg:p-10 ]
-               [ bg-gradient-to-b from-white/40 to-white/20 ]
-               [ border-[1px] border-solid border-white border-opacity-30 ]
-               [ shadow-black/70 shadow-2xl ]">
-      -->
-
     <div
       class="glass relative top-0 mx-4 h-[300px] max-w-full rounded-md px-4 shadow-xl shadow-slate-700/40 ring-1 ring-gray-900/5"
       transition:customFadeBlur
