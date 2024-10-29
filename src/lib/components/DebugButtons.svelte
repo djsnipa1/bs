@@ -6,9 +6,11 @@
   } from '$lib/stores/store.js';
   import { fade } from 'svelte/transition';
 
-  // function handleClick() {
+  let isToggled = false;
+
   export const handleClick = () => {
-    triggerStore.set(true);
+    isToggled = !isToggled;
+    triggerStore.set(isToggled);
   };
 
   $: currentHexColors = $vibrantColorStore;
@@ -90,7 +92,13 @@
       on:click
       >Switch Gradient
     </button>
-    <button class="button-style" on:click={handleClick}>Button 4</button>
+    <button class="button-style" on:click={handleClick}>
+      {#if isToggled}
+        Toggle Off
+      {:else}
+        Toggle On
+      {/if}
+    </button>
   </div>
 </div>
 
