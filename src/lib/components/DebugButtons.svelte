@@ -6,7 +6,7 @@
   } from '$lib/stores/store.js';
   import { fade } from 'svelte/transition';
 
-  let isToggled = false;
+  let isToggled = true;
 
   export const handleClick = () => {
     isToggled = !isToggled;
