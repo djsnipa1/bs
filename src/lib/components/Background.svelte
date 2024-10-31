@@ -74,25 +74,50 @@
 
   $: currentGradients = gradients;
 
-  $: cssVarStyles = Object.entries(currentGradients)
-    .map(([key, value]) => `--${key}:${value}`)
-    .join(';');
+  $: objectToCssVars = (object) => {
+    let cssVars = Object.entries(object)
+      .map(([key, value]) => `--${key}:${value}`)
+      .join(';');
+    return cssVars;
+  };
 
-  export const switchGradient = () => {
+  $: finalCssVars = objectToCssVars(gradients);
+
+  console.log('gradients: ', gradients);
+  // $: cssVarStyles = Object.entries(currentGradients)
+  //   .map(([key, value]) => `--${key}:${value}`)
+  //   .join(';');
+
+  export const switchGradient = async () => {
     // export function switchGradient() {
     console.log(
       `%cPUSHED ON IT!`,
       `font-weight: bold; background-color: darkmagenta; color: #fff;`
     );
-    currentGradients =
-      currentGradients === gradients ? newGradients : gradients;
+    // this line means: "Set `currentGradients`
+    // to `newGradients` if `currentGradients` is already equal to
+    // `gradients`; otherwise, keep it as `gradients`."
+    // currentGradients =
+    // currentGradients === gradients ? newGradients : gradients;
+
+    // Wait for newGradients to be populated
+    await new Promise((resolve) => {
+      const checkGradients = setInterval(() => {
+        if (newGradients.color1 && newGradients.color2 && newGradients.color3 && newGradients.color4) {
+          clearInterval(checkGradients);
+          resolve();
+        }
+      }, 100);
+    });
+
+    finalCssVars = objectToCssVars(newGradients);
   };
 </script>
 
 <!-- background-image: radial-gradient( circle at 50% 25%, var(--color1) 0%, -->
 <!-- var(--color2) 33%, var(--color3) 67%, var(--color4) 100% ) -->
 <!-- <div class="bg-[radial-gradient(circle_at_50%_25%,color:--color1_0%,color:--color2_33%,color:--color3_67%,color:--color4_100%)]"> -->
-<div style={cssVarStyles} class="absolute min-h-screen min-w-full">
+<div style={finalCssVars} class="absolute min-h-screen min-w-full">
   <!-- <div class="background-gradient absolute z-[-10] min-h-screen min-w-full"> -->
   <div
     class="background-gradient-new absolute z-[-10] min-h-screen min-w-full bg-[radial-gradient(circle_at_50%_25%,var(--color1)_0%,var(--color2)_33%,var(--color3)_67%,var(--color4)_100%)]"
