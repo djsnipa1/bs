@@ -8,7 +8,9 @@
   const toLch = useMode(modeLch);
   const toOklch = useMode(modeOklch);
 
-  let hexColor, hexColorDarker, hexColorLighter = null;
+  let hexColor,
+    hexColorDarker,
+    hexColorLighter = null;
 
   $: if (Object.keys($vibrantColorStore).length !== 0) {
     const testColor = toLch($vibrantColorStore);
@@ -101,15 +103,12 @@
 
 <div style={finalCssVars} class="absolute min-h-screen min-w-full">
   <div
-    class="background-gradient-new absolute z-[-10] min-h-screen min-w-full bg-[radial-gradient(circle_at_50%_25%,var(--color1)_0%,var(--color2)_33%,var(--color3)_67%,var(--color4)_100%)]"
+    class="background-gradient absolute z-[-10] min-h-screen min-w-full bg-[radial-gradient(circle_at_50%_25%,var(--color1)_0%,var(--color2)_33%,var(--color3)_67%,var(--color4)_100%)]"
   >
     <div class="relative flex h-screen w-screen items-center justify-center">
       <div class="absolute bottom-1/4 -translate-y-2/4 transform">
         <DebugColorPalette />
       </div>
-      <button class="button btn" on:click={switchGradient}>
-        Toggle Gradient
-      </button>
     </div>
   </div>
 </div>
@@ -120,41 +119,30 @@
     --color2: hsl(203deg 100% 43%);
     --color3: hsl(213deg 80% 40%);
     --color4: hsl(215deg 80% 29%);
-    --oklch-grad: linear-gradient(
-      circle in oklch decreasing hue,
-      color(display-p3 0.25 0.25 1) 0%,
-      color(display-p3 1 0.85 0.3) 33%,
-      oklch(0.8 0.3 236) 66%,
-      oklch(0.8 0.3 146) 100%
-    );
-  }
-
-  .oklch-gradient {
-    background-image: var(--oklch-grad);
-  }
-
-  .background-gradient-new {
-    transition:
-      --color1 0.25s,
-      --color2 0.75s,
-      --color3 1.25s,
-      --color4 1.75s;
   }
 
   .background-gradient {
-    background-image: radial-gradient(
-      circle at 50% 25%,
-      var(--color1) 0%,
-      var(--color2) 33%,
-      var(--color3) 67%,
-      var(--color4) 100%
-    );
     transition:
       --color1 0.25s,
       --color2 0.75s,
       --color3 1.25s,
       --color4 1.75s;
   }
+
+  /* .background-gradient { */
+  /*   background-image: radial-gradient( */
+  /*     circle at 50% 25%, */
+  /*     var(--color1) 0%, */
+  /*     var(--color2) 33%, */
+  /*     var(--color3) 67%, */
+  /*     var(--color4) 100% */
+  /*   ); */
+  /*   transition: */
+  /*     --color1 0.25s, */
+  /*     --color2 0.75s, */
+  /*     --color3 1.25s, */
+  /*     --color4 1.75s; */
+  /* } */
 
   @property --color1 {
     syntax: '<color>';
