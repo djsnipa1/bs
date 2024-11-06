@@ -5,6 +5,7 @@
     CircleImage,
     ControlsNew,
     DebugButtons,
+    DebugCode,
     HelpScreen,
     InputBoxFinal,
     Intro,
@@ -19,6 +20,7 @@
     hideMainElements,
     isAnimationDone,
     isControlsOpen,
+    isPlayerControlsReady,
     isUrlOpen,
     isVideoPaused,
     isVideoPlaying,
@@ -28,6 +30,7 @@
   } from '$lib/stores/store.js';
   import { tailwindSize } from '$lib/util/tailwindSize.js';
   import { onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
 
   // import { clickOutside } from 'svelte-outside';
 
@@ -100,6 +103,7 @@
 <!-- <div use:clickOutside={(e) => console.log('Clicked outside!')}> -->
 <!--   Click outside me! -->
 <!-- </div> -->
+<DebugCode />
 <!-- background color -->
 <Background bind:this={switchGradFunction} />
 <!-- <div class="background-gradient absolute z-[-10] min-h-screen min-w-full"></div> -->
@@ -147,25 +151,29 @@
   <!--   <InputBoxFinal /> -->
   <!-- <sdiv> -->
 
-  {#if debugModeEnabled}
+  <!-- comment back on -->
+  {#if $debugModeEnabled}
     <DebugButtons
       on:click={fillFunction.fill}
       on:click={switchGradFunction.switchGradient}
       on:click={helpHandleClick.handleClick}
     />
   {/if}
+  <!-- end comment back on -->
+
+  <!-- ControlsNew  -->
+  <div
+    class="top-0 w-full"
+    class:initialPosition={!$isControlsOpen}
+    class:endPosition={$isControlsOpen}
+  >
+    <ControlsNew />
+  </div>
+  <!-- ControlsNew END -->
 
   {#if $showYoutubeTransition}
     <div class="absolute right-0 top-0 z-[-5] w-screen">
       <Mask>
-        <div
-          class="top-0 w-full"
-          class:initialPosition={!$isControlsOpen}
-          class:endPosition={$isControlsOpen}
-        >
-          <ControlsNew />
-        </div>
-
         <YoutubeNewer bind:player />
 
         <!-- <PlayerControlsTest /> -->
@@ -203,11 +211,18 @@
     <ControlsNew />
   </div>
 -->
-  <div class="z-[50] translate-y-16">
-    <PlayerControlsTest />
-  </div>
+
+  <!-- comment back on -->
+  {#if $isPlayerControlsReady}
+    <div class="z-[50] translate-y-1/2" transition:fade>
+      <PlayerControlsTest />
+    </div>
+  {/if}
+  <!-- end comment back on -->
 </div>
 
+<!-- this needs to be redone so its not blocking the rest of the interactivity -->
+<!-- comment back on -->
 <div
   class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
 >
@@ -217,6 +232,8 @@
 
   <HelpScreen bind:this={helpHandleClick} />
 </div>
+
+<!-- end comment back on -->
 
 <!--
 <div
@@ -236,7 +253,7 @@
     transition: all 600ms cubic-bezier(0.6, 0.04, 0.98, 0.335); /* easeInCirc */
   }
   .endPosition {
-    /* transform: translateY(60px); */
+    transform: translateY(45px);
     /*		transition: all 500ms cubic-bezier(0.25, 1, 0.5, 1); */
     transition: all 600ms cubic-bezier(0.075, 0.82, 0.165, 1); /* easeOutCirc */
     @apply top-11 z-[10];

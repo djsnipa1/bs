@@ -119,6 +119,9 @@ importers:
       svelte-copy:
         specifier: ^2.0.0
         version: 2.0.0(svelte@5.0.5)
+      svelte-gestures:
+        specifier: ^5.0.6
+        version: 5.0.6
       svelte-outside:
         specifier: ^0.0.3
         version: 0.0.3
@@ -2932,6 +2935,9 @@ packages:
     peerDependenciesMeta:
       svelte:
         optional: true
+
+  svelte-gestures@5.0.6:
+    resolution: {integrity: sha512-kElJnoZrQtlkXE0O/RcKioz9NP0Sxx05j31ohyosNkydo6NOEsZB85mhoaCxOQNjxN+QPumYWfmIUsznYFjihA==}
 
   svelte-outside@0.0.3:
     resolution: {integrity: sha512-4mJttaDRXkBBL+8JqjfA1P5Ny64qmkZL3x5zELAW3tqehic3LLHvPNDcGAk8PVRooM2qUym9Oz3TfA9lO4OctA==}
@@ -6120,6 +6126,8 @@ snapshots:
       postcss-scss: 4.0.9(postcss@8.4.47)
     optionalDependencies:
       svelte: 5.0.5
+
+  svelte-gestures@5.0.6: {}
 
   svelte-outside@0.0.3: {}
 

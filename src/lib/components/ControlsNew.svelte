@@ -1,13 +1,13 @@
 <script>
-  import { isControlsOpen, cssPosition } from '$lib/stores/store.js';
-  import { Slider, FineTuning, BlankButton } from '$lib';
+  import { BlankButton, FineTuning, Slider } from '$lib';
+  import { cssPosition, isControlsOpen } from '$lib/stores/store.js';
 
   let isVisible = false;
 </script>
 
 <div class="container relative flex items-center justify-center">
   <div
-    class="glass left-0 top-0 z-[100] z-[1500] h-[230px] w-[375px] rounded-xl bg-slate-600/20 shadow-xl"
+    class="glass left-0 top-0 z-[1500] h-[230px] w-[375px] rounded-xl bg-slate-600/20 shadow-xl"
   >
     <!--	class:visible={$isControlsOpen} class:notVisible={!$isControlsOpen} -->
 
@@ -19,6 +19,7 @@
 		> -->
     <div class="absolute right-5 top-2 h-4 w-4">
       <button
+        aria-label="button"
         class="glass-button button rounded-md text-slate-700 shadow-md transition hover:scale-110 hover:text-slate-800 active:scale-90"
         on:click={() => {
           isControlsOpen.set(false);

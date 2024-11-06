@@ -29,3 +29,5 @@ export { default as ImageFetchNew } from './components/ImageFetchNew.svelte';
 export { default as Background } from './components/Background.svelte';
 export { default as DebugButtons } from './components/DebugButtons.svelte';
 export { default as DebugColorPalette } from './components/DebugColorPalette.svelte';
+export { default as DebugCode } from './components/DebugCode.svelte';
+export { default as DebugPlayerControls } from './components/DebugPlayerControls.svelte';

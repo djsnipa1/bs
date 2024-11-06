@@ -1,4 +1,5 @@
 <script>
+  import { DebugPlayerControls } from '$lib';
   import {
     debugModeEnabled,
     isVideoLoaded,
@@ -220,7 +221,7 @@
         ],
         scaleY: [
           { value: [1, 1], duration: 1450, easing: 'linear' },
-          -{ value: 1.3, duration: 100, easing: 'linear' },
+          { value: 1.3, duration: 100, easing: 'linear' },
           { value: [1.3, 1], duration: 50, easing: 'linear' }
         ],
         duration: 1600,
@@ -398,6 +399,7 @@
   </div>
 </div>
 
+<!-- <DebugPlayerControls /> -->
 {#if $debugModeEnabled}
   <div class="container border-2 border-teal-500">
     <input

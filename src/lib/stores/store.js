@@ -68,7 +68,7 @@ export const showYoutubeTransition = writable(false);
 
 export const showCircleAnimation = writable(false);
 
-export const debugModeEnabled = writable(true);
+export const debugModeEnabled = writable(false);
 
 export const imageUrlStore = writable(null);
 
@@ -83,4 +83,6 @@ export const vibrantColorStore = writable({});
 export const triggerStore = writable(false);
 
 export const debugColorPaletteStore = writable(colors);
+
+export const isPlayerControlsReady = writable(false);
 

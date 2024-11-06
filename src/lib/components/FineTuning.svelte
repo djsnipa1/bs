@@ -1,7 +1,7 @@
 <script>
-  import { fade } from 'svelte/transition';
+  import { BlankButton, NeuromorphicText } from '$lib';
   import { cssPosition, nudgeLeft, nudgeRight } from '$lib/stores/store.js';
-  import { NeuromorphicText, BlankButton } from '$lib';
+
   let hovered = false;
   let isActive = false;
 

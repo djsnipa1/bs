@@ -1,13 +1,18 @@
 <!-- src/components/Mask.svelte -->
 <script>
+  import { isPlayerControlsReady } from '$lib/stores/store.js';
   import { circleTransition } from '$lib/transitions/CircleTransition.js';
 
   let circle;
   let status = 'waiting...';
   export let circleVisible = false;
   let range = 100;
-</script>
 
+  function playOnIntroEnd() {
+    status = 'intro ended';
+    isPlayerControlsReady.set(true);
+  }
+</script>
 
 <div class="fixed inset-0 z-10 flex items-center justify-center">
   <span class="text-xl text-black">{status}</span>
@@ -21,7 +26,7 @@
   bind:this={circle}
   on:introstart={() => (status = 'intro started')}
   on:outrostart={() => (status = 'outro started')}
-  on:introend={() => (status = 'intro ended')}
+  on:introend={() => playOnIntroEnd()}
   on:outroend={() => (status = 'outro ended')}
 >
   <slot />
@@ -31,5 +36,4 @@
   .clip {
     clip-path: var(--clip-range);
   }
-
 </style>
