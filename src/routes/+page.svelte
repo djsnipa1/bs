@@ -30,9 +30,8 @@
   } from '$lib/stores/store.js';
   import { tailwindSize } from '$lib/util/tailwindSize.js';
   import { onMount } from 'svelte';
+  import { clickOutside } from 'svelte-use-click-outside';
   import { fade } from 'svelte/transition';
-
-  // import { clickOutside } from 'svelte-outside';
 
   let skipToIntro = true;
   let player;
@@ -71,24 +70,32 @@
     player.pauseVideo();
   }
 
-  function clickOutside(element) {
-    function handleClick(event) {
-      const targetEl = event.target;
-
-      if (element && !element.contains(targetEl)) {
-        const clickOutsideEvent = new CustomEvent('outside');
-        element.dispatchEvent(clickOutsideEvent);
-      }
+  // NEW CLICK-OUTSIDE
+  function clickOutsideHandler() {
+    if (!$isUrlOpen) {
+      // $isUrlOpen = false;
+      isUrlOpen.update((value) => !value);
     }
-
-    document.addEventListener('click', handleClick, true);
-
-    return {
-      destroy() {
-        document.removeEventListener('click', handleClick, true);
-      }
-    };
   }
+
+  // function clickOutside(element) {
+  //   function handleClick(event) {
+  //     const targetEl = event.target;
+  //
+  //     if (element && !element.contains(targetEl)) {
+  //       const clickOutsideEvent = new CustomEvent('outside');
+  //       element.dispatchEvent(clickOutsideEvent);
+  //     }
+  //   }
+  //
+  //   document.addEventListener('click', handleClick, true);
+  //
+  //   return {
+  //     destroy() {
+  //       document.removeEventListener('click', handleClick, true);
+  //     }
+  //   };
+  // }
 
   //  $: console.log(`isUrlOpen: ${$isUrlOpen}`);
 </script>
@@ -118,7 +125,7 @@
 </div>
 
 <div
-  class="min-h-screen min-w-full touch-none border-0
+  class="relative min-h-screen min-w-full touch-none border-0
   landscape:hidden {$hideMainElements ? 'hidden' : ''}"
 >
   <!-- <div -->
@@ -127,13 +134,7 @@
 
   <div
     class="{!$isUrlOpen ? 'endPos' : 'startPos'} absolute z-[450] min-w-full"
-    on:outside={() => {
-      if (!$isUrlOpen) {
-        // $isUrlOpen = false;
-        isUrlOpen.update((value) => !value);
-      }
-    }}
-    use:clickOutside
+    use:clickOutside={clickOutsideHandler}
   >
     <InputBoxFinal bind:this={fillFunction} />
   </div>
@@ -224,7 +225,7 @@
 <!-- this needs to be redone so its not blocking the rest of the interactivity -->
 <!-- comment back on -->
 <div
-  class="absolute right-0 top-0 z-[15] h-full w-screen border-2 border-green-500"
+  class="absolute right-0 top-0 z-[400] h-full w-screen border-2 border-green-500"
 >
   {#if $showCircleAnimation}
     <CircleImage />

@@ -122,9 +122,9 @@ importers:
       svelte-gestures:
         specifier: ^5.0.6
         version: 5.0.6
-      svelte-outside:
-        specifier: ^0.0.3
-        version: 0.0.3
+      svelte-use-click-outside:
+        specifier: ^1.0.0
+        version: 1.0.0
       tailwindcss:
         specifier: ^3.4.14
         version: 3.4.14
@@ -2939,8 +2939,8 @@ packages:
   svelte-gestures@5.0.6:
     resolution: {integrity: sha512-kElJnoZrQtlkXE0O/RcKioz9NP0Sxx05j31ohyosNkydo6NOEsZB85mhoaCxOQNjxN+QPumYWfmIUsznYFjihA==}
 
-  svelte-outside@0.0.3:
-    resolution: {integrity: sha512-4mJttaDRXkBBL+8JqjfA1P5Ny64qmkZL3x5zELAW3tqehic3LLHvPNDcGAk8PVRooM2qUym9Oz3TfA9lO4OctA==}
+  svelte-use-click-outside@1.0.0:
+    resolution: {integrity: sha512-tOWeMPxeIoW9RshS0WbogRhdYdbxcJV0ebkzSh1lwR7Ihl0hSZMmB4YyCHHoXJK4xcbxCCFh0AnQ1vkzGZfLVQ==}
 
   svelte@5.0.5:
     resolution: {integrity: sha512-f4WBlP5g8W6pEoDfx741lewMlemy+LIGpEqjGPWqnHVP92wqlQXl87U5O5Bi2tkSUrO95OxOoqwU8qlqiHmFKA==}
@@ -6129,7 +6129,7 @@ snapshots:
 
   svelte-gestures@5.0.6: {}
 
-  svelte-outside@0.0.3: {}
+  svelte-use-click-outside@1.0.0: {}
 
   svelte@5.0.5:
     dependencies:
