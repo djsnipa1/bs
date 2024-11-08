@@ -22,7 +22,7 @@
   </div>
 
   <button
-    class="test button btn absolute left-48 top-40 bg-orange-500 text-orange-900 active:bg-orange-600"
+    class="test button btn absolute left-48 top-40 bg-orange-500 text-orange-900 active:bg-orange-600 z-50"
     on:mousedown={handleMouseDown}
     on:mouseup={handleMouseUp}
     on:touchstart|preventDefault={handleMouseDown}

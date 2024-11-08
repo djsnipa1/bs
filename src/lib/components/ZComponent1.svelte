@@ -16,21 +16,21 @@
   <div
     class="{fillBox
       ? 'bg-pink-300'
-      : ''} flex size-32 items-center justify-center border-2 border-pink-800"
+      : ''} flex size-28 items-center justify-center border-2 border-pink-800"
   >
     <p class="text-2xl font-bold">1</p>
   </div>
 
   <button
-    class="test button btn absolute left-28 top-20 bg-orange-500 text-orange-900 active:bg-orange-600"
+    class="test button btn absolute left-12 top-16 bg-orange-500 text-orange-900 active:bg-orange-600 z-50"
     on:mousedown={handleMouseDown}
     on:mouseup={handleMouseUp}
     on:touchstart|preventDefault={handleMouseDown}
     on:touchend={handleMouseUp}
-    on:mouseleave={handleMouseUp}>CLICK</button
+    on:mouseleave={handleMouseUp}>Click 1</button
   >
 
-  <div class="absolute left-8 top-36 font-sofiasans font-thin">
+  <div class="absolute right-2 top-4 font-sofiasans font-thin">
     <p class="py-2 text-3xl leading-8 text-orange-500">Layer 1 test text...</p>
     <p class="test py-2 text-xl leading-8 text-amber-400">
       Shouldn't be selectable...
