@@ -11,3 +11,18 @@
     <ZComponent2 />
   </div>
 </div>
+
+<!-- <div class="flex h-screen flex-col"> -->
+<!-- Top Half -->
+<!--   <div class="flex h-1/2 items-center justify-center"> -->
+<!--     <div class="flex h-1/4 w-full items-center justify-center bg-blue-500"> -->
+<!--       Top Centered Box -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- Bottom Half -->
+<!--   <div class="flex h-1/2 items-center justify-center"> -->
+<!--     <div class="flex h-1/4 w-full items-center justify-center bg-green-500"> -->
+<!--       Bottom Centered Box -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </div> -->
