@@ -29,9 +29,9 @@
 <div
   use:swipe={{ timeframe: 300, minSwipeDistance: 60 }}
   on:swipe={handler}
-  class="absolute inset-0 z-[9999] flex items-center justify-center"
+  class="inset-0 flex h-screen w-3/4 items-center justify-center border-2 border-dotted border-pink-500"
 >
-  <!-- direction: {direction} -->
+  direction: {direction}
 
   <!-- {#if codeEntered} -->
   <!--   <p class="mx-auto text-center font-kiona text-2xl">Code Entered!</p> -->
