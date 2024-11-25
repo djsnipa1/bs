@@ -99,8 +99,11 @@
   </script>
 </svelte:head>
 
-<div class="relative h-screen w-full" id="app">
-  <div id="debugCode" class="absolute inset-0 h-screen w-full">
+<div class="pointer-events-none relative h-screen w-full" id="app">
+  <div
+    id="debugCode"
+    class="pointer-events-auto absolute inset-0 h-screen w-full"
+  >
     <DebugCode />
   </div>
   <div class="absolute inset-0 h-screen w-full" id="background">
@@ -150,7 +153,7 @@
 
     <!-- ControlsNew  -->
     <div
-      class="top-0 w-full"
+      class="pointer-events-auto top-0 w-full"
       class:initialPosition={!$isControlsOpen}
       class:endPosition={$isControlsOpen}
       id="controlsNew"
@@ -160,7 +163,10 @@
     <!-- ControlsNew END -->
 
     {#if $showYoutubeTransition}
-      <div class="absolute right-0 top-0 w-screen" id="showYoutubeTransition">
+      <div
+        class="pointer-events-auto absolute right-0 top-0 w-screen"
+        id="showYoutubeTransition"
+      >
         <Mask>
           <YoutubeNewer bind:player />
 
@@ -175,7 +181,7 @@
     >
       <!-- <div class="absolute left-[30px] top-[350px] z-[2000] text-4xl"></div> -->
       <UrlButton
-        class="button ml-4 flex-none rounded-md bg-slate-300 p-1 text-slate-700 shadow-md hover:bg-slate-400 hover:text-slate-800"
+        class="button pointer-events-auto ml-4 flex-none rounded-md bg-slate-300 p-1 text-slate-700 shadow-md hover:bg-slate-400 hover:text-slate-800"
         on:click={() => {
           isUrlOpen.update((value) => !value);
         }}
@@ -187,7 +193,7 @@
       </div>
 
       <SettingsButton
-        class="button mr-4 flex-none rounded-md bg-slate-300 p-1 text-slate-700 shadow-md hover:bg-slate-400 hover:text-slate-800"
+        class="button pointer-events-auto mr-4 flex-none rounded-md bg-slate-300 p-1 text-slate-700 shadow-md hover:bg-slate-400 hover:text-slate-800"
       />
     </nav>
 
