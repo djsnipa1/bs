@@ -1,15 +1,15 @@
 <script>
   import {
-    isUrlOpen,
-    videoId,
-    menuOpen,
-    isVideoPlaying,
+    isPlayerReady,
+    // isUrlOpen,
     isVideoPaused,
-    playerStore,
-    isPlayerReady
+    isVideoPlaying,
+    // menuOpen,
+    playerStore
+    // videoId
   } from '$lib/stores/store.js';
-  import { onMount } from 'svelte';
   import anime from 'animejs';
+  import { onMount } from 'svelte';
 
   let displayPlayBtn = false;
   let playButtonHover = false;
@@ -30,11 +30,11 @@
     stopButton,
     playButtonSvg;
 
-  let classes = [
-    'hover:scale-[120%]',
-    'hover:transition-all',
-    'hover:duration-300'
-  ];
+  // let classes = [
+  //   'hover:scale-[120%]',
+  //   'hover:transition-all',
+  //   'hover:duration-300'
+  // ];
 
   const buttonDuration = 300;
   const buttonScale = [0, 1];
@@ -242,7 +242,6 @@
   const scaleCircle = (targets, opts) => ({
     targets,
     scale: 4,
-    // borderWidth: '5px',
     ...opts
   });
   const opacityCircle = (targets, opts) => ({
@@ -264,50 +263,50 @@
   });
 
   let isComplete = 0;
-  function setup() {
-    anime
-      .timeline({
-        easing: 'easeOutExpo',
-        autoplay: true,
-        loop: true,
-        loopBegin: function (anim) {
-          console.log('loopBegin');
-        },
-        loopComplete: function (anim) {
-          isComplete++;
-          console.log(isComplete);
-        }
-      })
-      .add({
-        targets: mainCircle,
-        scale: [0, 1],
-        duration: 700,
-        transformOrigin: 'center center'
-      })
-      .add(visible(circle1), '-=500')
-      .add(scaleCircle(circle1, { duration: 1000 }), '-=500')
-      .add(opacityCircle(circle1, { duration: 700 }), 1000)
-      .add(killOpacity(circle1), '-=900')
-      .add(visible(circle2), 900)
-      .add(scaleCircle(circle2, { duration: 1200 }), 900)
-      .add(opacityCircle(circle2, { duration: 700 }), 1000)
-      .add(killOpacity(circle2), '-=900')
-      .add(visible(circle3), 1000)
-      .add(scaleCircle(circle3, { scale: 3, duration: 1200 }), 1000)
-      .add(opacityCircle(circle3, { duration: 700 }), 1200)
-      .add(killOpacity(circle3), '-=400');
-    /*    .add(
-        {
-          targets: div3,
-          scale: 8,
-          borderWidth: 5,
-          duration: 4000,
-          opacity: 100
-        },
-        0
-      );
-*/
-  }
+  //   function setup() {
+  //     anime
+  //       .timeline({
+  //         easing: 'easeOutExpo',
+  //         autoplay: true,
+  //         loop: true,
+  //         loopBegin: function (anim) {
+  //           console.log('loopBegin');
+  //         },
+  //         loopComplete: function (anim) {
+  //           isComplete++;
+  //           console.log(isComplete);
+  //         }
+  //       })
+  //       .add({
+  //         targets: mainCircle,
+  //         scale: [0, 1],
+  //         duration: 700,
+  //         transformOrigin: 'center center'
+  //       })
+  //       .add(visible(circle1), '-=500')
+  //       .add(scaleCircle(circle1, { duration: 1000 }), '-=500')
+  //       .add(opacityCircle(circle1, { duration: 700 }), 1000)
+  //       .add(killOpacity(circle1), '-=900')
+  //       .add(visible(circle2), 900)
+  //       .add(scaleCircle(circle2, { duration: 1200 }), 900)
+  //       .add(opacityCircle(circle2, { duration: 700 }), 1000)
+  //       .add(killOpacity(circle2), '-=900')
+  //       .add(visible(circle3), 1000)
+  //       .add(scaleCircle(circle3, { scale: 3, duration: 1200 }), 1000)
+  //       .add(opacityCircle(circle3, { duration: 700 }), 1200)
+  //       .add(killOpacity(circle3), '-=400');
+  //     /*    .add(
+  //         {
+  //           targets: div3,
+  //           scale: 8,
+  //           borderWidth: 5,
+  //           duration: 4000,
+  //           opacity: 100
+  //         },
+  //         0
+  //       );
+  // */
+  //   }
   // setup.finished.then(() => {
   //   console.log('setup finished');
   //   buttonAnimation()
@@ -351,7 +350,7 @@
     ></div>
 
     <button
-      class="buttonClass group col-span-2 col-start-2"
+      class="buttonClass group pointer-events-auto col-span-2 col-start-2"
       bind:this={fbButton}
       on:click={skipBackward10Seconds}
     >
@@ -368,7 +367,7 @@
       </svg>
     </button>
     <button
-      class="buttonClass group col-span-2 col-start-5"
+      class="buttonClass group pointer-events-auto col-span-2 col-start-5"
       bind:this={ffButton}
       on:click={skipForward10Seconds}
     >
@@ -385,7 +384,7 @@
       </svg>
     </button>
     <button
-      class="buttonClass group col-span-2 row-start-2"
+      class="buttonClass group pointer-events-auto col-span-2 row-start-2"
       bind:this={revButton}
       on:click={setBackPlayBackRate}
     >
@@ -409,7 +408,7 @@
     <!-- {#if $isVideoPlaying === null} -->
     {#if !displayPlayBtn}
       <button
-        class="buttonClass group col-span-3 col-start-3 row-start-2 !h-14 !w-14 !opacity-100"
+        class="buttonClass group pointer-events-auto col-span-3 col-start-3 row-start-2 !h-14 !w-14 !opacity-100"
         on:click={() => {
           pressPowerInit();
         }}
@@ -430,7 +429,7 @@
     {:else if displayPlayBtn}
       {#if !$isVideoPlaying}
         <button
-          class="buttonClass group col-span-3 col-start-3 row-start-2 !h-14 !w-14 !opacity-100"
+          class="buttonClass group pointer-events-auto col-span-3 col-start-3 row-start-2 !h-14 !w-14 !opacity-100"
           on:click={() => {
             isVideoPlaying.set(true);
             //   if ($isVideoPlaying === null) {
@@ -461,7 +460,7 @@
         </button>
       {:else if $isVideoPlaying}
         <button
-          class="buttonClass group col-span-3 col-start-3 row-start-2 !h-14 !w-14 !opacity-100"
+          class="buttonClass group pointer-events-auto col-span-3 col-start-3 row-start-2 !h-14 !w-14 !opacity-100"
           on:click={() => {
             isVideoPaused.set(true);
           }}
@@ -486,7 +485,7 @@
 
     <button
       <button
-      class="buttonClass group col-span-2 col-start-6 row-start-2"
+      class="buttonClass group pointer-events-auto col-span-2 col-start-6 row-start-2"
       bind:this={fwdButton}
       on:click={setFwdPlayBackRate}
     >
@@ -506,7 +505,7 @@
       >
     </button>
     <button
-      class="buttonClass group col-span-2 col-start-2 row-start-3"
+      class="buttonClass group pointer-events-auto col-span-2 col-start-2 row-start-3"
       bind:this={backButton}
       on:click={restartVideo}
     >
@@ -524,7 +523,7 @@
       >
     </button>
     <button
-      class="buttonClass group col-span-2 col-start-5 row-start-3"
+      class="buttonClass group pointer-events-auto col-span-2 col-start-5 row-start-3"
       bind:this={stopButton}
       on:click={stopVideo}
     >
@@ -559,13 +558,13 @@
     @apply absolute z-0 h-6 w-6 text-white/50 opacity-100 transition-all hover:text-[oklch(86%_0.367_92)] group-hover:scale-110 group-hover:text-amber-400 group-active:scale-100 group-active:text-amber-400;
   }
 
-  .playButtonHover {
-    @apply glass-button relative flex h-10 w-10 transform-gpu flex-col items-center justify-center rounded-full border border-white/40 p-2 text-slate-700 opacity-0 shadow-sm transition transition-all duration-300 hover:scale-[120%] hover:text-slate-800 hover:transition-all hover:duration-300;
-  }
+  /* .playButtonHover { */
+  /*   @apply glass-button relative flex h-10 w-10 transform-gpu flex-col items-center justify-center rounded-full border border-white/40 p-2 text-slate-700 opacity-0 shadow-sm transition transition-all duration-300 hover:scale-[120%] hover:text-slate-800 hover:transition-all hover:duration-300; */
+  /* } */
 
-  .playButtonNoHover {
-    @apply glass-button relative flex h-10 w-10 transform-gpu flex-col items-center justify-center rounded-full border border-white/40 p-2 text-slate-700 opacity-0 shadow-sm;
-  }
+  /* .playButtonNoHover { */
+  /*   @apply glass-button relative flex h-10 w-10 transform-gpu flex-col items-center justify-center rounded-full border border-white/40 p-2 text-slate-700 opacity-0 shadow-sm; */
+  /* } */
 
   .playButtonSvg {
     @apply absolute z-0 h-6 w-6 text-white/50 opacity-100 transition-all hover:text-[oklch(86%_0.367_92)] group-hover:scale-110 group-hover:text-amber-400 group-active:scale-100 group-active:text-amber-400;

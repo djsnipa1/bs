@@ -19,7 +19,7 @@
 </div>
 
 <div
-  class="clip top-0 h-screen w-screen bg-orange-500"
+  class="clip pointer-events-auto top-0 h-screen w-screen bg-orange-500"
   style="--clip-range: circle({range * 0.1 + 100}% at center)"
   in:circleTransition={{ duration: 3000, delay: 1000 }}
   out:circleTransition={{ duration: 300, delay: 0 }}

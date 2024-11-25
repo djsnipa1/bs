@@ -3,8 +3,8 @@
   import { swipe } from 'svelte-gestures';
 
   let direction;
-  let target;
-  let pointerType;
+  // let target;
+  // let pointerType;
 
   const CODE = 'top,top,bottom,bottom,left,right,left,right';
 
@@ -26,13 +26,17 @@
   }
 </script>
 
+<!-- <div class="flex h-screen w-screen items-center justify-center bg-gray-100"> -->
+<!-- </div> -->
+
 <div
   use:swipe={{ timeframe: 300, minSwipeDistance: 60 }}
   on:swipe={handler}
-  class="inset-0 flex h-screen w-3/4 items-center justify-center border-2 border-dotted border-pink-500"
+  class="inset-0 flex h-screen w-full items-center justify-center"
 >
+  <!-- <div class="max-w-3/4 aspect-square w-3/4 rounded-lg bg-blue-500 shadow-lg"> -->
   direction: {direction}
-
+  <!-- </div> -->
   <!-- {#if codeEntered} -->
   <!--   <p class="mx-auto text-center font-kiona text-2xl">Code Entered!</p> -->
   <!-- {/if} -->

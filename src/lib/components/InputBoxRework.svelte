@@ -1,25 +1,29 @@
 <script>
   import {
+    isControlsOpen,
     isUrlOpen,
     showCircleAnimation,
     videoId
   } from '$lib/stores/store.js';
   import getVideoId from 'get-video-id';
+  import { onMount } from 'svelte';
+
+  // import { clickOutside } from 'svelte-use-click-outside';
 
   // import { clickOutside } from 'svelte-use-click-outside';
 
   let inputBox;
+  let inputValue = '';
+  let ytValue = '';
 
   function getYouTubeID(url) {
     const { id } = getVideoId(url); //=> 'dQw4w9WgXcQ'
     return id;
   }
 
-  let inputValue = '';
-  let ytValue = '';
-
   // function clickOutsideHandler() {
   //   if (!$isUrlOpen) {
+  //     // $isUrlOpen = false;
   //     isUrlOpen.update((value) => !value);
   //   }
   // }
@@ -46,18 +50,26 @@
       isUrlOpen.set(false);
     }
   };
+
+  function transitionInputBox() {
+    if (!$isUrlOpen) {
+      // $isUrlOpen = false;
+      isUrlOpen.update((value) => !value);
+    }
+  }
+
+  onMount(() => {
+    setTimeout(transitionInputBox, 4000);
+  });
 </script>
 
-<div
-  class="{!$isUrlOpen
-    ? 'endPos'
-    : 'startPos'} glass relative flex h-16 w-full min-w-full items-center justify-center"
->
-  <!--  <PasteButton
-    class="button mx-4 flex-1 rounded-md bg-slate-300 p-1 text-slate-700 shadow-md hover:bg-slate-400 hover:text-slate-800"
-  />
-  -->
+<!-- use:clickOutside={clickOutsideHandler} -->
 
+<div
+  class="{$isUrlOpen ? 'endPos' : 'startPos'} glass {$isControlsOpen
+    ? 'pointer-events-none'
+    : 'pointer-events-auto'} relative flex h-16 w-full min-w-full items-center justify-center"
+>
   <input
     type="text"
     placeholder="https://youtu.be/m_xoN8KlP3w"
@@ -67,6 +79,8 @@
     class="input input-sm input-bordered w-full max-w-xs md:input-md md:max-w-md lg:max-w-lg xl:max-w-xl"
   />
 </div>
+
+<!-- </div> -->
 
 <style>
   .startPos {

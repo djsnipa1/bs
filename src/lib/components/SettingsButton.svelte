@@ -4,7 +4,6 @@
 
 <button
   aria-label="button"
-  class="z-[1000000]"
   {...$$restProps}
   on:click={() => {
     console.log('click settings');

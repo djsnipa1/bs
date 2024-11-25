@@ -65,7 +65,7 @@
 >
   <div class="grid grid-cols-2 gap-4">
     <button
-      class="button-style relative flex items-center justify-center"
+      class="button-style pointer-events-auto relative flex items-center justify-center"
       on:click={() => {
         showYoutubeTransition.update((value) => !value);
       }}
@@ -83,15 +83,17 @@
         >showYoutubeTransition</span
       >
     </button>
-    <button class="button-style" on:click>Fill with URL</button>
+    <button class="button-style pointer-events-auto" on:click
+      >Fill with URL</button
+    >
 
     <button
-      class="background-gradient bg-gradient-to-b from-[color:--hexColor] via-[color:--hexColor] to-[color:--hexColorDarker] shadow-[inset_-1px_-1px_0_0_rgba(0,0,0,0.75),inset_0_0_0_1px_var(--shadow-color),inset_1px_1px_0_0.5px_var(--highlight-color)]"
+      class="background-gradient pointer-events-auto bg-gradient-to-b from-[color:--hexColor] via-[color:--hexColor] to-[color:--hexColorDarker] shadow-[inset_-1px_-1px_0_0_rgba(0,0,0,0.75),inset_0_0_0_1px_var(--shadow-color),inset_1px_1px_0_0.5px_var(--highlight-color)]"
       on:click
       >Switch Gradient
     </button>
     <button
-      class="button-style relative flex items-center justify-center"
+      class="button-style pointer-events-auto relative flex items-center justify-center"
       on:click={handleClick}
     >
       <span

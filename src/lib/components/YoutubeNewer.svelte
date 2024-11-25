@@ -1,14 +1,14 @@
 <script>
-  import { onMount } from 'svelte';
   import {
     cssPosition,
-    isVideoPlaying,
-    isVideoPaused,
-    playerStore,
     isPlayerReady,
-    videoId,
-    isVideoLoaded
+    isVideoLoaded,
+    isVideoPaused,
+    isVideoPlaying,
+    playerStore,
+    videoId
   } from '$lib/stores/store.js';
+  import { onMount } from 'svelte';
 
   export let player;
   export let initialVideoId = '9B1SQX9a_hU';
@@ -74,9 +74,11 @@
   <script src="https://www.youtube.com/iframe_api"></script>
 </svelte:head>
 
-<div class="video-background container flex items-center justify-center">
+<div
+  class="video-background container pointer-events-auto flex items-center justify-center"
+>
   <div class="video-foreground" style="--translate: {$cssPosition}%;">
-    <div class="iframe" id={ytPlayerId} />
+    <div class="iframe pointer-events-auto" id={ytPlayerId} />
   </div>
 </div>
 
