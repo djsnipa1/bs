@@ -59,7 +59,7 @@
   }
 
   onMount(() => {
-    setTimeout(transitionInputBox, 4000);
+    setTimeout(transitionInputBox, 1500);
   });
 </script>
 

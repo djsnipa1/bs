@@ -109,7 +109,7 @@
     startDelay();
     setTimeout(() => {
       console.log(anime.get('#arrow', 'height', 'px'));
-      console.log(`clientHeight: ${arrow.clientHeight}`);
+      // console.log(`clientHeight: ${arrow.clientHeight}`);
     }, 8000);
     /*
     setTimeout(() => {
