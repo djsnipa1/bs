@@ -1,14 +1,22 @@
 <script>
+  import DebugCode from '$lib/components/DebugCode.svelte';
   import ZComponent1 from '$lib/components/ZComponent1.svelte';
   import ZComponent2 from '$lib/components/ZComponent2.svelte';
+  import ZComponent3 from '$lib/components/ZComponent3.svelte';
 </script>
 
-<div class="relative h-screen w-full">
+<div id="testing" class="relative h-screen w-full">
   <div class="absolute inset-0 h-screen w-full">
     <ZComponent1 />
   </div>
   <div class="absolute inset-0 h-screen w-full">
     <ZComponent2 />
+  </div>
+  <div class="absolute inset-0 z-30 h-screen w-full">
+    <DebugCode />
+  </div>
+  <div class="absolute inset-0 z-20 h-screen w-full">
+    <ZComponent3 />
   </div>
 </div>
 
@@ -26,3 +34,11 @@
 <!--     </div> -->
 <!--   </div> -->
 <!-- </div> -->
+
+<style>
+  #testing {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+</style>
