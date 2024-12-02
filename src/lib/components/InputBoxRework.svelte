@@ -74,6 +74,12 @@
     type="text"
     placeholder="https://youtu.be/m_xoN8KlP3w"
     on:input={handleInput}
+    on:focus={(event) => (event.target.placeholder = '')}
+    on:blur={(event) => {
+      if (event.target.value === '') {
+        event.target.placeholder = 'https://youtu.be/m_xoN8KlP3w';
+      }
+    }}
     bind:this={inputBox}
     bind:value={inputValue}
     class="input input-sm input-bordered w-full max-w-xs md:input-md md:max-w-md lg:max-w-lg xl:max-w-xl"
